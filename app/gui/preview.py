@@ -73,3 +73,33 @@ def open_preview(products: list[Product]) -> int:
     tmp.close()
     webbrowser.open(f"file://{tmp.name}")
     return len(with_desc)
+
+
+def open_single_preview(product: Product) -> None:
+    """Open a single product's description rendered in system browser."""
+    if not product.description:
+        return
+    score = product.quality_score if product.quality_score >= 0 else score_description(product.description)
+    label, color = get_label(score)
+    badge = f'<span class="score-badge" style="background:{color}">{score}/10 {label}</span>'
+    html = f"""<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>{product.sku} — Podgląd opisu</title>
+<style>{JUMI_CSS}</style>
+</head>
+<body>
+<div class="product-card">
+  <div class="product-header">
+    <h2>{product.title or product.name}{badge}</h2>
+    <div class="meta">SKU: {product.sku} | Marka: {product.brand or '—'} | EAN: {product.ean or '—'}</div>
+  </div>
+  {product.description}
+</div>
+</body>
+</html>"""
+    tmp = tempfile.NamedTemporaryFile(mode="w", suffix=".html", encoding="utf-8", delete=False)
+    tmp.write(html)
+    tmp.close()
+    webbrowser.open(f"file://{tmp.name}")
