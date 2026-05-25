@@ -143,15 +143,12 @@ def save_description(conn: sqlite3.Connection, sku: str, html: str, quality_scor
         """,
         (sku, html),
     )
-    # Write new version to description_versions
-    next_ver = conn.execute(
-        "SELECT COALESCE(MAX(version), 0) + 1 FROM description_versions WHERE sku = ?",
-        (sku,),
-    ).fetchone()[0]
+    # Single atomic INSERT...SELECT — version counter computed inside one statement
     conn.execute(
         "INSERT INTO description_versions (sku, version, description_html, quality_score) "
-        "VALUES (?, ?, ?, ?)",
-        (sku, next_ver, html, quality_score),
+        "SELECT ?, COALESCE(MAX(version), 0) + 1, ?, ? "
+        "FROM description_versions WHERE sku = ?",
+        (sku, html, quality_score, sku),
     )
 
 
@@ -168,8 +165,8 @@ def get_description_history(conn: sqlite3.Connection, sku: str) -> list[dict]:
 def restore_description_version(conn: sqlite3.Connection, sku: str, version_id: int) -> str:
     """Set descriptions[sku] to the HTML from description_versions[version_id]. Returns HTML."""
     row = conn.execute(
-        "SELECT description_html FROM description_versions WHERE id = ?",
-        (version_id,),
+        "SELECT description_html FROM description_versions WHERE id = ? AND sku = ?",
+        (version_id, sku),
     ).fetchone()
     if not row:
         raise ValueError(f"Version id={version_id} not found for sku={sku}")
