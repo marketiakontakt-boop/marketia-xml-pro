@@ -51,6 +51,18 @@ CREATE TABLE IF NOT EXISTS batch_state (
     submitted_count INTEGER DEFAULT 0,
     updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS description_versions (
+    id               INTEGER PRIMARY KEY AUTOINCREMENT,
+    sku              TEXT NOT NULL,
+    version          INTEGER NOT NULL,
+    description_html TEXT NOT NULL,
+    quality_score    INTEGER DEFAULT -1,
+    generated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_desc_ver_sku_ver
+    ON description_versions(sku, version);
 """
 
 
@@ -119,7 +131,8 @@ def get_cached_description(conn: sqlite3.Connection, sku: str) -> str | None:
     return row["description_html"] if row else None
 
 
-def save_description(conn: sqlite3.Connection, sku: str, html: str) -> None:
+def save_description(conn: sqlite3.Connection, sku: str, html: str, quality_score: int = -1) -> None:
+    # Keep descriptions table as current/latest (backward compat)
     conn.execute(
         """
         INSERT INTO descriptions (sku, description_html)
@@ -130,6 +143,43 @@ def save_description(conn: sqlite3.Connection, sku: str, html: str) -> None:
         """,
         (sku, html),
     )
+    # Write new version to description_versions
+    next_ver = conn.execute(
+        "SELECT COALESCE(MAX(version), 0) + 1 FROM description_versions WHERE sku = ?",
+        (sku,),
+    ).fetchone()[0]
+    conn.execute(
+        "INSERT INTO description_versions (sku, version, description_html, quality_score) "
+        "VALUES (?, ?, ?, ?)",
+        (sku, next_ver, html, quality_score),
+    )
+
+
+def get_description_history(conn: sqlite3.Connection, sku: str) -> list[dict]:
+    """Return all saved versions for sku, newest first."""
+    rows = conn.execute(
+        "SELECT id, version, quality_score, generated_at "
+        "FROM description_versions WHERE sku = ? ORDER BY version DESC",
+        (sku,),
+    ).fetchall()
+    return [dict(r) for r in rows]
+
+
+def restore_description_version(conn: sqlite3.Connection, sku: str, version_id: int) -> str:
+    """Set descriptions[sku] to the HTML from description_versions[version_id]. Returns HTML."""
+    row = conn.execute(
+        "SELECT description_html FROM description_versions WHERE id = ?",
+        (version_id,),
+    ).fetchone()
+    if not row:
+        raise ValueError(f"Version id={version_id} not found for sku={sku}")
+    html = row["description_html"]
+    conn.execute(
+        "UPDATE descriptions SET description_html = ?, generated_at = CURRENT_TIMESTAMP "
+        "WHERE sku = ?",
+        (html, sku),
+    )
+    return html
 
 
 def save_batch_id(conn: sqlite3.Connection, batch_id: str | None, count: int) -> None:
