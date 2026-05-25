@@ -23,6 +23,7 @@ from app.transformer.description_generator import (
     generate_descriptions,
     load_cached_descriptions,
 )
+from app.transformer.attribute_extractor import enrich_product_attributes
 from app.transformer.xml_diff import run_diff, STATUS_NEW, STATUS_CHANGED
 from app.exporter.xml_exporter import export_xml
 from app.images.thumbnail_generator import generate_thumbnails, THUMB_DIR
@@ -328,6 +329,8 @@ class App(ctk.CTk):
                 p.ean_valid = validate_ean(p.ean)
             # Try to load cached descriptions
             load_cached_descriptions(self.products)
+            for p in self.products:
+                enrich_product_attributes(p)
             self.q.put(("transformed",))
         except Exception as e:
             self.q.put(("error", f"Transform: {e}"))

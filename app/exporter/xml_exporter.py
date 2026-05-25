@@ -83,4 +83,11 @@ def _product_to_element(p: Product) -> etree._Element:
             extra = etree.SubElement(e, f"image_extra_{i}")
             extra.text = url
 
+    if getattr(p, "attributes", None):
+        attrs_elem = etree.SubElement(e, "attributes")
+        for name, value in p.attributes.items():
+            attr = etree.SubElement(attrs_elem, "attribute")
+            etree.SubElement(attr, "attribute_name").text = name
+            etree.SubElement(attr, "attribute_value").text = str(value)
+
     return e
