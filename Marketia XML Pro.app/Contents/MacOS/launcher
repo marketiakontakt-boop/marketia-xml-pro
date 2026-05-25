@@ -1,0 +1,27 @@
+#!/bin/bash
+# Marketia XML Pro launcher.
+# Tries relative path first (bundle next to project), then hardcoded fallback.
+# Logs startup to ~/Library/Logs/MarketiaXMLPro.log for debugging silent failures.
+
+REL_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
+FALLBACK_DIR="/Users/jakubknap/Projects/marketia-xml-pro"
+LOG="$HOME/Library/Logs/MarketiaXMLPro.log"
+mkdir -p "$(dirname "$LOG")"
+echo "--- $(date) launcher invoked, REL_DIR=$REL_DIR" >> "$LOG"
+
+if [ -x "$REL_DIR/venv/bin/python" ] && [ -d "$REL_DIR/app" ]; then
+  PROJECT="$REL_DIR"
+elif [ -x "$FALLBACK_DIR/venv/bin/python" ] && [ -d "$FALLBACK_DIR/app" ]; then
+  PROJECT="$FALLBACK_DIR"
+else
+  echo "no project found" >> "$LOG"
+  /usr/bin/osascript -e 'display dialog "Marketia XML Pro: brak venv/bin/python lub katalogu app/.\n\nProjekt powinien być w: '"$FALLBACK_DIR"'\nReinstall: cd '"$FALLBACK_DIR"' && python3 -m venv venv && venv/bin/pip install -r requirements.txt" buttons {"OK"} default button "OK" with icon stop with title "Marketia XML Pro"' >/dev/null 2>&1
+  exit 1
+fi
+
+cd "$PROJECT" || { echo "cd failed" >> "$LOG"; exit 1; }
+echo "starting python from $PROJECT (native arm64)" >> "$LOG"
+# Force native arm64 — LaunchServices on Apple Silicon may otherwise spawn the
+# bash script under Rosetta, which then loads x86_64 Python and crashes on
+# arm64-only .so files (PIL/_imaging, lxml etc).
+exec /usr/bin/arch -arm64 ./venv/bin/python -m app.main >> "$LOG" 2>&1

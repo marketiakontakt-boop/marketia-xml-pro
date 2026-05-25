@@ -1,0 +1,61 @@
+{
+  "intex": {
+    "name": "INTEX",
+    "tagline": "",
+    "keywords": [
+      "intex"
+    ]
+  },
+  "hopla_toys": {
+    "name": "HOPLA TOYS",
+    "tagline": "Dodajemy uśmiech do dzieciństwa Twojego dziecka",
+    "keywords": [
+      "zabawka", "lalka", "klocki", "samochodzik", "pluszak",
+      "gra dziecięca", "edukacyjna", "dla dziecka", "dla niemowląt",
+      "interaktywna", "drewniana zabawka", "puzzle",
+      "dla dzieci", "domek dla lalek", "domki dla lalek",
+      "namiot dla dzieci", "namioty dla dzieci", "piłki do basenu",
+      "ecotoys", "iplay"
+    ]
+  },
+  "gardenstein": {
+    "name": "GARDENSTEIN",
+    "tagline": "Twój inteligentny ogród",
+    "keywords": [
+      "ogród", "ogrodowy", "taras", "balkon", "donica", "grill",
+      "namiot ogrodowy", "meble ogrodowe", "parasol", "huśtawka ogrodowa",
+      "leżak", "altana", "pergola", "dla ogrodu", "suszarka ogrodowa",
+      "bramka piłkarska", "multigames", "multistar"
+    ]
+  },
+  "villago": {
+    "name": "VILLAGO",
+    "tagline": "Stwórz przestrzeń, którą pokochasz",
+    "keywords": [
+      "sofa", "krzesło", "stół", "stolik", "fotel", "łóżko",
+      "regał", "komoda", "szafka", "meble do domu", "wnętrz",
+      "biurko", "stolik kawowy", "ława"
+    ]
+  },
+  "marketia_home": {
+    "name": "MARKETIA HOME",
+    "tagline": "Inteligentne rozwiązania dla Twojego domu",
+    "keywords": [
+      "wycieraczka", "tacka", "ociekacz", "organizer",
+      "kosz na pranie", "akcesoria łazienkowe", "akcesoria kuchenne",
+      "mata", "podstawka", "uchwyt", "dozownik",
+      "skrzynka na listy", "skrzynka pocztowa", "wieszak", "suszarka",
+      "hantle", "ławeczka", "ławka do ćwiczeń", "sztanga",
+      "dla domu", "modernhome", "multistore"
+    ]
+  },
+  "zoovera": {
+    "name": "ZOOVERA",
+    "tagline": "Szczęśliwy zwierzak, spokojny dom",
+    "keywords": [
+      "pies", "kot", "kojec", "klatka", "mata", "zwierzę",
+      "zoologiczne", "transporter", "drapak", "legowisko",
+      "miska dla", "smycz", "obroża"
+    ]
+  }
+}
