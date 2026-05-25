@@ -76,6 +76,21 @@ class Product:
     quality_score: int = -1   # -1 = not yet scored
     ai_done: bool = False
     thumbnail_url: str = ""   # local path or ImgBB URL after Phase 4
+    attributes: dict[str, str] = field(default_factory=dict)
+
+
+def _collect_attributes(elem: Any) -> dict[str, str]:
+    """Parse <attributes><attribute> children into a name→value dict."""
+    attrs_elem = elem.find("attributes")
+    if attrs_elem is None:
+        return {}
+    result: dict[str, str] = {}
+    for attr in attrs_elem.findall("attribute"):
+        name = _text(attr, "attribute_name")
+        value = _text(attr, "attribute_value")
+        if name and value:
+            result[name] = value
+    return result
 
 
 def _collect_images(elem: Any) -> list[str]:
@@ -113,4 +128,5 @@ def normalize_product(elem: Any) -> Product:
         description_extra_2=_text(elem, "description_extra_2"),
         images=_collect_images(elem),
         raw_element=elem,
+        attributes=_collect_attributes(elem),
     )
