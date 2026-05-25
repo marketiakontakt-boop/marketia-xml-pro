@@ -28,6 +28,8 @@ from app.exporter.xml_exporter import export_xml
 from app.images.thumbnail_generator import generate_thumbnails, THUMB_DIR
 from app.images.imgbb_uploader import upload_thumbnails
 from app.gui.preview import open_preview
+from app.gui.product_detail import ProductDetailWindow
+from app.transformer.description_generator import generate_single_description
 from app.validator import validate_ean, get_label
 
 ctk.set_appearance_mode("system")
@@ -47,7 +49,7 @@ class ProductRow(ctk.CTkFrame):
     # SKU | TYTUŁ | MARKA | MODEL | EAN | T | AI | Q
     COL_WIDTHS = (130, 340, 110, 100, 130, 40, 40, 50)
 
-    def __init__(self, master, product: Product, **kwargs):
+    def __init__(self, master, product: Product, on_click=None, **kwargs):
         diff = getattr(product, "diff_status", None)
         bg = DIFF_COLORS.get(diff) if diff else None
         super().__init__(master, fg_color=bg or "transparent", **kwargs)
@@ -83,6 +85,11 @@ class ProductRow(ctk.CTkFrame):
         else:
             ctk.CTkLabel(self, text="—").grid(row=0, column=7, sticky="w", padx=4)
 
+        if on_click:
+            self.bind("<Button-1>", lambda e: on_click())
+            for child in self.winfo_children():
+                child.bind("<Button-1>", lambda e: on_click())
+
 
 class App(ctk.CTk):
     def __init__(self):
@@ -94,6 +101,7 @@ class App(ctk.CTk):
         self.products: list[Product] = []
         self.q: queue.Queue = queue.Queue()
         self._xml_path: str | None = None
+        self._detail_win: ProductDetailWindow | None = None
         self._filter_brand: str = "Wszystkie"
         self._filter_ai: str = "Wszystkie"
         self._session_generated: int = 0
@@ -478,6 +486,43 @@ class App(ctk.CTk):
         except Exception as e:
             self.q.put(("error", f"Miniatury: {e}"))
 
+    def _on_row_click(self, product: Product) -> None:
+        brands = sorted({p.brand for p in self.products if p.brand})
+        if self._detail_win is not None:
+            try:
+                if self._detail_win.winfo_exists():
+                    self._detail_win.load_product(product)
+                    self._detail_win.lift()
+                    return
+            except Exception:
+                pass
+            self._detail_win = None
+        self._detail_win = ProductDetailWindow(
+            self,
+            product,
+            all_brands=brands,
+            on_brand_change=self._on_brand_change,
+            on_regenerate=self._on_regenerate_product,
+        )
+
+    def _on_brand_change(self, product: Product, new_brand: str) -> None:
+        product.brand = new_brand
+        self._render_table()
+
+    def _on_regenerate_product(self, product: Product) -> None:
+        threading.Thread(
+            target=self._single_regen_worker,
+            args=(product,),
+            daemon=True,
+        ).start()
+
+    def _single_regen_worker(self, product: Product) -> None:
+        try:
+            generate_single_description(product)
+            self.q.put(("single_regen_done", product))
+        except Exception as e:
+            self.q.put(("error", f"Regeneracja {product.sku}: {e}"))
+
     def _no_op(self):
         messagebox.showinfo(
             APP_NAME,
@@ -580,6 +625,17 @@ class App(ctk.CTk):
                     self.btn_ai.configure(state="normal")
                     messagebox.showerror(APP_NAME, err)
 
+                elif tag == "single_regen_done":
+                    _, product = msg
+                    self._render_table()
+                    self._update_stats()
+                    if self._detail_win:
+                        try:
+                            self._detail_win.refresh()
+                            self._detail_win.enable_regen_btn()
+                        except Exception:
+                            pass
+
         except queue.Empty:
             pass
         self.after(100, self._poll_queue)
@@ -604,7 +660,7 @@ class App(ctk.CTk):
         cap = 300
         filtered = self._filtered_products()
         for idx, p in enumerate(filtered[:cap], 1):
-            row = ProductRow(self.list_frame, p)
+            row = ProductRow(self.list_frame, p, on_click=lambda prod=p: self._on_row_click(prod))
             row.grid(row=idx, column=0, sticky="ew", pady=1)
 
         if len(filtered) > cap:
