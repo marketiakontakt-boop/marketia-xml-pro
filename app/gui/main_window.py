@@ -94,10 +94,22 @@ class App(ctk.CTk):
         self.products: list[Product] = []
         self.q: queue.Queue = queue.Queue()
         self._xml_path: str | None = None
+        self._filter_brand: str = "Wszystkie"
+        self._filter_ai: str = "Wszystkie"
 
         self._build_layout()
         self.after(50, lambda: (self.lift(), self.focus_force()))
         self.after(100, self._poll_queue)
+
+    def _filtered_products(self) -> list[Product]:
+        result = self.products
+        if self._filter_brand != "Wszystkie":
+            result = [p for p in result if (p.brand or "—") == self._filter_brand]
+        if self._filter_ai == "Z opisem":
+            result = [p for p in result if getattr(p, "ai_done", False)]
+        elif self._filter_ai == "Bez opisu":
+            result = [p for p in result if not getattr(p, "ai_done", False)]
+        return result
 
     # ── layout ────────────────────────────────────────────────────────────
 
@@ -156,7 +168,7 @@ class App(ctk.CTk):
         main = ctk.CTkFrame(self)
         main.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
         main.grid_columnconfigure(0, weight=1)
-        main.grid_rowconfigure(1, weight=1)
+        main.grid_rowconfigure(2, weight=1)
 
         header = ctk.CTkFrame(main, fg_color="transparent")
         header.grid(row=0, column=0, sticky="ew", pady=(0, 6))
@@ -166,8 +178,10 @@ class App(ctk.CTk):
             font=ctk.CTkFont(size=13),
         ).pack(side="left", padx=8)
 
+        self._build_filter_bar(main)
+
         self.list_frame = ctk.CTkScrollableFrame(main, label_text="Produkty")
-        self.list_frame.grid(row=1, column=0, sticky="nsew")
+        self.list_frame.grid(row=2, column=0, sticky="nsew")
         self.list_frame.grid_columnconfigure(0, weight=1)
 
         # Footer
@@ -181,6 +195,50 @@ class App(ctk.CTk):
         ctk.CTkLabel(footer, textvariable=self.status_var, anchor="e").grid(
             row=0, column=1, sticky="e"
         )
+
+    def _build_filter_bar(self, parent: ctk.CTkFrame) -> None:
+        bar = ctk.CTkFrame(parent, fg_color="transparent")
+        bar.grid(row=1, column=0, sticky="ew", pady=(0, 4))
+
+        ctk.CTkLabel(bar, text="Marka:").pack(side="left", padx=(8, 2))
+        self._brand_menu = ctk.CTkOptionMenu(
+            bar,
+            values=["Wszystkie"],
+            width=160,
+            command=self._on_filter_brand,
+        )
+        self._brand_menu.pack(side="left", padx=(0, 12))
+
+        ctk.CTkLabel(bar, text="Status AI:").pack(side="left", padx=(0, 2))
+        self._ai_seg = ctk.CTkSegmentedButton(
+            bar,
+            values=["Wszystkie", "Z opisem", "Bez opisu"],
+            command=self._on_filter_ai,
+        )
+        self._ai_seg.set("Wszystkie")
+        self._ai_seg.pack(side="left", padx=(0, 12))
+
+        ctk.CTkButton(bar, text="Wyczyść", width=80, command=self._clear_filters).pack(side="left")
+
+    def _on_filter_brand(self, value: str) -> None:
+        self._filter_brand = value
+        self._render_table()
+
+    def _on_filter_ai(self, value: str) -> None:
+        self._filter_ai = value
+        self._render_table()
+
+    def _clear_filters(self) -> None:
+        self._filter_brand = "Wszystkie"
+        self._filter_ai = "Wszystkie"
+        self._brand_menu.set("Wszystkie")
+        self._ai_seg.set("Wszystkie")
+        self._render_table()
+
+    def _update_brand_filter_options(self) -> None:
+        brands = sorted({p.brand for p in self.products if p.brand})
+        self._brand_menu.configure(values=["Wszystkie"] + brands)
+        self._brand_menu.set("Wszystkie")
 
     # ── actions ───────────────────────────────────────────────────────────
 
@@ -409,6 +467,7 @@ class App(ctk.CTk):
                     )
                     self.status_var.set("Wczytano. Kliknij krok 3 — Uruchom transformy.")
                     self._render_table()
+                    self._update_brand_filter_options()
 
                 elif tag == "transformed":
                     ai_done = sum(1 for p in self.products if getattr(p, "ai_done", False))
@@ -501,14 +560,15 @@ class App(ctk.CTk):
             ).grid(row=0, column=i, sticky="w", padx=4, pady=4)
 
         cap = 300
-        for idx, p in enumerate(self.products[:cap], 1):
+        filtered = self._filtered_products()
+        for idx, p in enumerate(filtered[:cap], 1):
             row = ProductRow(self.list_frame, p)
             row.grid(row=idx, column=0, sticky="ew", pady=1)
 
-        if len(self.products) > cap:
+        if len(filtered) > cap:
             ctk.CTkLabel(
                 self.list_frame,
-                text=f"… (+{len(self.products) - cap} kolejnych)",
+                text=f"… (+{len(filtered) - cap} kolejnych)",
                 text_color="#888",
             ).grid(row=cap + 1, column=0, pady=8)
 
