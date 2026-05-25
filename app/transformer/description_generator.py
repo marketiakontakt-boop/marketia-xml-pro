@@ -99,13 +99,37 @@ def generate_descriptions(
         for sku, html in results.items():
             if html is None:
                 continue
+            score = score_description(html)
             if sku in sku_map:
                 p = sku_map[sku]
                 p.description = html
                 p.ai_done = True
-                p.quality_score = score_description(html)
-            save_description(conn, sku, html)
+                p.quality_score = score
+            save_description(conn, sku, html, quality_score=score)
 
     errors = sum(1 for v in results.values() if v is None)
     log(f"Gotowe: {generated} wygenerowanych | {errors} błędów | {cached_count} z cache")
     return generated, cached_count
+
+
+def generate_single_description(product: Product) -> str:
+    """Generate description for one product synchronously (for popup regeneration).
+
+    Updates product in-place and saves to cache. Returns HTML.
+    """
+    brand_data = _load_brand_data()
+    brand_key = product.brand or "unknown"
+    brand_info = brand_data.get(brand_key, {"name": brand_key.upper(), "tagline": ""})
+    user_msg = build_description_prompt(product, brand_info, brand_key)
+
+    client = ClaudeClient()
+    html = client.call(SYSTEM_PROMPT, user_msg)
+    score = score_description(html)
+
+    with open_cache() as conn:
+        save_description(conn, product.sku, html, quality_score=score)
+
+    product.description = html
+    product.ai_done = True
+    product.quality_score = score
+    return html
