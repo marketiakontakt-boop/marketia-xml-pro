@@ -1,7 +1,6 @@
 """Product detail popup — HTML preview, brand edit, description history."""
 from __future__ import annotations
 
-import threading
 from typing import Callable
 
 import customtkinter as ctk
