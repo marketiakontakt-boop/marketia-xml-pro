@@ -50,7 +50,7 @@ class ProductRow(ctk.CTkFrame):
     # SKU | TYTUŁ | MARKA | MODEL | EAN | T | AI | Q
     COL_WIDTHS = (130, 340, 110, 100, 130, 40, 40, 50)
 
-    def __init__(self, master, product: Product, on_click=None, **kwargs):
+    def __init__(self, master, product: Product, on_click=None, all_brands: list[str] | None = None, on_brand_change=None, **kwargs):
         diff = getattr(product, "diff_status", None)
         bg = DIFF_COLORS.get(diff) if diff else None
         super().__init__(master, fg_color=bg or "transparent", **kwargs)
@@ -61,7 +61,17 @@ class ProductRow(ctk.CTkFrame):
         ctk.CTkLabel(
             self, text=product.title or product.name, anchor="w", wraplength=330
         ).grid(row=0, column=1, sticky="w", padx=4)
-        ctk.CTkLabel(self, text=product.brand or "—", anchor="w").grid(row=0, column=2, sticky="w", padx=4)
+        if all_brands and on_brand_change:
+            _brand_var = ctk.StringVar(value=product.brand or "—")
+            ctk.CTkOptionMenu(
+                self,
+                variable=_brand_var,
+                values=all_brands,
+                width=105, height=26,
+                command=lambda v, p=product: on_brand_change(p, v),
+            ).grid(row=0, column=2, sticky="w", padx=4, pady=2)
+        else:
+            ctk.CTkLabel(self, text=product.brand or "—", anchor="w").grid(row=0, column=2, sticky="w", padx=4)
         ctk.CTkLabel(self, text=product.model_name or "—", anchor="w").grid(row=0, column=3, sticky="w", padx=4)
 
         ean_color = "#1f883d" if getattr(product, "ean_valid", True) else "#d1242f"
@@ -662,8 +672,14 @@ class App(ctk.CTk):
 
         cap = 300
         filtered = self._filtered_products()
+        brands = sorted({p.brand for p in self.products if p.brand})
         for idx, p in enumerate(filtered[:cap], 1):
-            row = ProductRow(self.list_frame, p, on_click=lambda prod=p: self._on_row_click(prod))
+            row = ProductRow(
+                self.list_frame, p,
+                on_click=lambda prod=p: self._on_row_click(prod),
+                all_brands=brands if brands else None,
+                on_brand_change=self._on_brand_change if brands else None,
+            )
             row.grid(row=idx, column=0, sticky="ew", pady=1)
 
         if len(filtered) > cap:
