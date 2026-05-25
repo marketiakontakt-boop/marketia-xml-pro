@@ -96,6 +96,8 @@ class App(ctk.CTk):
         self._xml_path: str | None = None
         self._filter_brand: str = "Wszystkie"
         self._filter_ai: str = "Wszystkie"
+        self._session_generated: int = 0
+        self._session_cached: int = 0
 
         self._build_layout()
         self.after(50, lambda: (self.lift(), self.focus_force()))
@@ -186,7 +188,7 @@ class App(ctk.CTk):
 
         # Footer
         footer = ctk.CTkFrame(self, fg_color="transparent")
-        footer.grid(row=1, column=0, columnspan=2, sticky="ew", padx=10, pady=(0, 10))
+        footer.grid(row=1, column=0, columnspan=2, sticky="ew", padx=10, pady=(4, 0))
         footer.grid_columnconfigure(0, weight=1)
         self.progress = ctk.CTkProgressBar(footer)
         self.progress.set(0)
@@ -195,6 +197,41 @@ class App(ctk.CTk):
         ctk.CTkLabel(footer, textvariable=self.status_var, anchor="e").grid(
             row=0, column=1, sticky="e"
         )
+
+        self._build_stats_bar()
+
+    def _build_stats_bar(self) -> None:
+        self._stat_total = ctk.StringVar(value="Produkty: —")
+        self._stat_ai    = ctk.StringVar(value="Z opisem: —")
+        self._stat_q     = ctk.StringVar(value="Q avg: —")
+        self._stat_cost  = ctk.StringVar(value="Koszt: —")
+        self._stat_cache = ctk.StringVar(value="Cache: —")
+
+        bar = ctk.CTkFrame(self, fg_color="transparent")
+        bar.grid(row=2, column=0, columnspan=2, sticky="ew", padx=10, pady=(0, 6))
+
+        for var in (self._stat_total, self._stat_ai, self._stat_q, self._stat_cost, self._stat_cache):
+            ctk.CTkLabel(
+                bar, textvariable=var, anchor="w",
+                font=ctk.CTkFont(size=11),
+                text_color="#aaa",
+            ).pack(side="left", padx=10)
+
+    def _update_stats(self) -> None:
+        total = len(self.products)
+        ai_done = sum(1 for p in self.products if getattr(p, "ai_done", False))
+        pct = int(ai_done / total * 100) if total else 0
+        scores = [p.quality_score for p in self.products if getattr(p, "quality_score", -1) >= 0]
+        q_avg = sum(scores) / len(scores) if scores else 0.0
+        cost = self._session_generated * 0.005
+        total_calls = self._session_generated + self._session_cached
+        cache_pct = int(self._session_cached / total_calls * 100) if total_calls else 0
+
+        self._stat_total.set(f"Produkty: {total}")
+        self._stat_ai.set(f"Z opisem: {ai_done} ({pct}%)")
+        self._stat_q.set(f"Q avg: {q_avg:.1f}" if scores else "Q avg: —")
+        self._stat_cost.set(f"Koszt: ~${cost:.2f}")
+        self._stat_cache.set(f"Cache: {cache_pct}%")
 
     def _build_filter_bar(self, parent: ctk.CTkFrame) -> None:
         bar = ctk.CTkFrame(parent, fg_color="transparent")
@@ -468,6 +505,7 @@ class App(ctk.CTk):
                     self.status_var.set("Wczytano. Kliknij krok 3 — Uruchom transformy.")
                     self._render_table()
                     self._update_brand_filter_options()
+                    self._update_stats()
 
                 elif tag == "transformed":
                     ai_done = sum(1 for p in self.products if getattr(p, "ai_done", False))
@@ -479,6 +517,7 @@ class App(ctk.CTk):
                     self.progress.set(1.0)
                     self.status_var.set("Transformy OK. Krok 4 — Generuj opisy.")
                     self._render_table()
+                    self._update_stats()
 
                 elif tag == "status":
                     self.status_var.set(msg[1])
@@ -500,6 +539,9 @@ class App(ctk.CTk):
                     )
                     self.btn_ai.configure(state="normal")
                     self._render_table()
+                    self._session_generated += submitted
+                    self._session_cached += cached
+                    self._update_stats()
 
                 elif tag == "imgbb_done":
                     _, uploaded = msg
