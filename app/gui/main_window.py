@@ -25,6 +25,7 @@ from app.transformer.description_generator import (
     load_cached_descriptions,
 )
 from app.transformer.attribute_extractor import enrich_product_attributes
+from app.transformer.category_mapper import load_category_map, map_all_products
 from app.transformer.xml_diff import run_diff, STATUS_NEW, STATUS_CHANGED
 from app.exporter.xml_exporter import export_xml
 from app.images.thumbnail_generator import generate_thumbnails, THUMB_DIR
@@ -373,6 +374,8 @@ class App(ctk.CTk):
             load_cached_descriptions(self.products)
             for p in self.products:
                 enrich_product_attributes(p)
+            _cat_map = load_category_map()
+            map_all_products(self.products, _cat_map)
             self.q.put(("transformed",))
         except Exception as e:
             self.q.put(("error", f"Transform: {e}"))
