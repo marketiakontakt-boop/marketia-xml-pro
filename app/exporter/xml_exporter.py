@@ -43,7 +43,7 @@ def _product_to_element(p: Product) -> etree._Element:
     add("quantity", p.quantity)
     add("ean", p.ean)
     add("sku", p.sku)
-    add("category_name", p.category_name)
+    add("category_name", getattr(p, "allegro_category", "") or p.category_name)
     add("manufacturer_name", p.manufacturer_name)
     add("price", p.price)
     add("purchase_price", "")
