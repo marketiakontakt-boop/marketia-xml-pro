@@ -31,6 +31,7 @@ from app.exporter.xml_exporter import export_xml
 from app.images.thumbnail_generator import generate_thumbnails, THUMB_DIR
 from app.images.imgbb_uploader import upload_thumbnails
 from app.gui.preview import open_preview
+from app.gui.audit_preview import open_audit_preview
 from app.gui.product_detail import ProductDetailWindow
 from app.gui.brand_colors import get_brand_chip_colors
 from app.gui.category_mapper_window import CategoryMapperWindow
@@ -218,6 +219,10 @@ class App(ctk.CTk):
             sidebar, text="Podgląd opisów HTML", command=self._open_preview,
             fg_color="#374151", hover_color="#1f2937",
         ).pack(fill="x", padx=12, pady=(12, 4))
+        ctk.CTkButton(
+            sidebar, text="Audyt produktów", command=self._open_audit,
+            fg_color="#374151", hover_color="#1f2937",
+        ).pack(fill="x", padx=12, pady=(0, 4))
         self.btn_export = ctk.CTkButton(
             sidebar, text="5. Eksport XML", command=self._export_xml,
             fg_color="#0a5c99", hover_color="#074880",
@@ -477,6 +482,13 @@ class App(ctk.CTk):
             messagebox.showinfo(APP_NAME, "Brak produktów z opisami AI. Uruchom krok 4.")
         else:
             self.status_var.set(f"Podgląd otwarty w przeglądarce ({count} opisów).")
+
+    def _open_audit(self) -> None:
+        if not self.products:
+            messagebox.showinfo(APP_NAME, "Najpierw wczytaj XML.")
+            return
+        count = open_audit_preview(self.products)
+        self.status_var.set(f"Audyt otwarty w przeglądarce ({count} produktów).")
 
     def _open_category_mapper(self) -> None:
         if not self.products:
