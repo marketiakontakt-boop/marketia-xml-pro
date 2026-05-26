@@ -49,6 +49,18 @@ def build_description_prompt(
         spec_parts.append(f"<b>Kod produktu:</b> {product.ean}")
     spec_parts.append(f"<b>Marka:</b> {brand_display}")
 
+    # Inject extracted attributes (skip keys already in spec_parts)
+    _spec_keys_used = {"szerokość", "wysokość", "głębokość", "waga", "marka", "kod produktu"}
+    for attr_name, attr_val in (product.attributes or {}).items():
+        if attr_name.lower() not in _spec_keys_used:
+            spec_parts.append(f"<b>{attr_name}:</b> {attr_val}")
+
+    # Block injected before skeleton so Gemini can reference throughout description
+    _attrs_block = ""
+    if product.attributes:
+        lines = "\n".join(f"• {k}: {v}" for k, v in product.attributes.items())
+        _attrs_block = f"\nZNANE PARAMETRY PRODUKTU (uwzględnij w opisie i specyfikacji):\n{lines}\n"
+
     # Clean original description for context
     orig = re.sub(r"<[^>]+>", " ", product.description or "")
     orig = re.sub(r"\s+", " ", orig).strip()[:1200]
@@ -156,7 +168,7 @@ PRODUKT:
 Tytuł: {product.title or product.name}
 Kategoria: {product.category_name or '—'}
 Oryginał (kontekst): {orig}
-
+{_attrs_block}
 INSTRUKCJA:
 Wypełnij poniższy HTML — zastąp wszystkie komentarze <!-- ... --> rzeczywistą treścią.
 Zachowaj WSZYSTKIE tagi HTML i URL-e zdjęć DOKŁADNIE tak jak są — nie modyfikuj src ani klas.
