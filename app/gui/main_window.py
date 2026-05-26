@@ -10,6 +10,7 @@ from pathlib import Path
 from tkinter import filedialog, messagebox
 
 import customtkinter as ctk
+from PIL import Image
 from dotenv import load_dotenv
 
 load_dotenv(Path(__file__).resolve().parents[2] / ".env")
@@ -156,22 +157,27 @@ class App(ctk.CTk):
         self.grid_rowconfigure(0, weight=1)
 
         # Sidebar
-        sidebar = ctk.CTkFrame(self, width=210, corner_radius=0)
+        sidebar = ctk.CTkFrame(self, width=210, corner_radius=0, fg_color="#F9FAFB")
         sidebar.grid(row=0, column=0, sticky="nsew")
         sidebar.grid_propagate(False)
 
+        _logo_path = Path("/Users/jakubknap/Documents/_meta/logo/LOGO MARKETIA.png")
+        try:
+            _logo_img = ctk.CTkImage(Image.open(_logo_path), size=(155, 48))
+            ctk.CTkLabel(sidebar, image=_logo_img, text="").pack(pady=(16, 2))
+        except Exception:
+            ctk.CTkLabel(
+                sidebar, text="MARKETIA", font=ctk.CTkFont(size=18, weight="bold")
+            ).pack(pady=(20, 2))
         ctk.CTkLabel(
-            sidebar, text="MARKETIA\nXML PRO", font=ctk.CTkFont(size=18, weight="bold")
-        ).pack(pady=(20, 4))
-        ctk.CTkLabel(
-            sidebar, text="v2 — z Claude AI",
-            text_color="#888", font=ctk.CTkFont(size=10),
-        ).pack(pady=(0, 18))
+            sidebar, text="XML PRO",
+            text_color="#6B7280", font=ctk.CTkFont(size=11, weight="bold"),
+        ).pack(pady=(0, 16))
 
         ctk.CTkButton(sidebar, text="1. Wczytaj XML", command=self._pick_xml).pack(
             fill="x", padx=12, pady=4
         )
-        ctk.CTkButton(sidebar, text="2. Marka (auto)", command=self._no_op).pack(
+        ctk.CTkButton(sidebar, text="2. Marka (inline)", command=self._no_op).pack(
             fill="x", padx=12, pady=4
         )
         ctk.CTkButton(sidebar, text="3. Uruchom transformy", command=self._run_transforms).pack(
@@ -279,10 +285,10 @@ class App(ctk.CTk):
         self._stat_cache.set(f"Cache: {cache_pct}%")
 
     def _build_filter_bar(self, parent: ctk.CTkFrame) -> None:
-        bar = ctk.CTkFrame(parent, fg_color="transparent")
-        bar.grid(row=1, column=0, sticky="ew", pady=(0, 4))
+        bar = ctk.CTkFrame(parent, fg_color="#F3F4F6", corner_radius=8)
+        bar.grid(row=1, column=0, sticky="ew", pady=(0, 6))
 
-        ctk.CTkLabel(bar, text="Marka:").pack(side="left", padx=(8, 2))
+        ctk.CTkLabel(bar, text="Marka:", text_color="#374151").pack(side="left", padx=(12, 2))
         self._brand_menu = ctk.CTkOptionMenu(
             bar,
             values=["Wszystkie"],
@@ -291,7 +297,7 @@ class App(ctk.CTk):
         )
         self._brand_menu.pack(side="left", padx=(0, 12))
 
-        ctk.CTkLabel(bar, text="Status AI:").pack(side="left", padx=(0, 2))
+        ctk.CTkLabel(bar, text="Status AI:", text_color="#374151").pack(side="left", padx=(8, 2))
         self._ai_seg = ctk.CTkSegmentedButton(
             bar,
             values=["Wszystkie", "Z opisem", "Bez opisu"],
@@ -565,7 +571,8 @@ class App(ctk.CTk):
     def _no_op(self):
         messagebox.showinfo(
             APP_NAME,
-            "Marka liczona automatycznie podczas kroku 3 (Uruchom transformy).",
+            "Marka jest liczona automatycznie podczas transformów (krok 3).\n\n"
+            "Możesz zmienić markę inline — kliknij dropdown marki przy produkcie w liście.",
         )
 
     # ── queue / UI updates ────────────────────────────────────────────────
