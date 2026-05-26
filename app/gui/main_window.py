@@ -25,6 +25,7 @@ from app.transformer.description_generator import (
     load_cached_descriptions,
 )
 from app.transformer.attribute_extractor import enrich_product_attributes
+from app.transformer.description_cleaner import strip_jumi_descriptions
 from app.transformer.category_mapper import load_category_map, map_all_products
 from app.transformer.xml_diff import run_diff, STATUS_NEW, STATUS_CHANGED
 from app.exporter.xml_exporter import export_xml
@@ -463,6 +464,10 @@ class App(ctk.CTk):
                 p.ean_valid = validate_ean(p.ean)
             # Try to load cached descriptions
             load_cached_descriptions(self.products)
+            # Strip legacy JUMI-format descriptions so AI regenerates them
+            stripped = strip_jumi_descriptions(self.products)
+            if stripped:
+                self.q.put(("status", f"Usunięto {stripped} opisów w formacie JUMI — zostaną wygenerowane przez AI."))
             for p in self.products:
                 enrich_product_attributes(p)
             _cat_map = load_category_map()
