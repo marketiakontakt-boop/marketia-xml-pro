@@ -90,7 +90,9 @@ def upload_thumbnails(
 
     uploaded = 0
     for i, p in enumerate(products, 1):
-        path = thumb_dir / f"{p.sku}.jpg"
+        path = thumb_dir / f"{p.sku}_lifestyle.jpg"
+        if not path.exists():
+            path = thumb_dir / f"{p.sku}.jpg"
         if not path.exists():
             continue
         if progress_callback:
