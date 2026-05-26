@@ -30,10 +30,11 @@ from app.images.thumbnail_generator import generate_thumbnails, THUMB_DIR
 from app.images.imgbb_uploader import upload_thumbnails
 from app.gui.preview import open_preview
 from app.gui.product_detail import ProductDetailWindow
+from app.gui.brand_colors import get_brand_chip_colors
 from app.transformer.description_generator import generate_single_description
 from app.validator import validate_ean, get_label
 
-ctk.set_appearance_mode("system")
+ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("blue")
 
 APP_NAME = "Marketia XML Pro"
@@ -52,8 +53,15 @@ class ProductRow(ctk.CTkFrame):
 
     def __init__(self, master, product: Product, on_click=None, all_brands: list[str] | None = None, on_brand_change=None, **kwargs):
         diff = getattr(product, "diff_status", None)
-        bg = DIFF_COLORS.get(diff) if diff else None
-        super().__init__(master, fg_color=bg or "transparent", **kwargs)
+        diff_border = DIFF_COLORS.get(diff) if diff else None
+        super().__init__(
+            master,
+            fg_color="#FFFFFF",
+            border_width=1,
+            border_color=diff_border or "#E5E7EB",
+            corner_radius=6,
+            **kwargs,
+        )
         for i, w in enumerate(self.COL_WIDTHS):
             self.grid_columnconfigure(i, minsize=w, weight=0)
 
@@ -61,6 +69,7 @@ class ProductRow(ctk.CTkFrame):
         ctk.CTkLabel(
             self, text=product.title or product.name, anchor="w", wraplength=330
         ).grid(row=0, column=1, sticky="w", padx=4)
+        bg_c, fg_c = get_brand_chip_colors(product.brand or "")
         if all_brands and on_brand_change:
             _brand_var = ctk.StringVar(value=product.brand or "—")
             ctk.CTkOptionMenu(
@@ -68,10 +77,18 @@ class ProductRow(ctk.CTkFrame):
                 variable=_brand_var,
                 values=all_brands,
                 width=105, height=26,
+                fg_color=bg_c, text_color=fg_c,
+                button_color=bg_c, button_hover_color="#E5E7EB",
+                dropdown_fg_color="white",
+                font=ctk.CTkFont(size=10, weight="bold"),
                 command=lambda v, p=product: on_brand_change(p, v),
             ).grid(row=0, column=2, sticky="w", padx=4, pady=2)
         else:
-            ctk.CTkLabel(self, text=product.brand or "—", anchor="w").grid(row=0, column=2, sticky="w", padx=4)
+            ctk.CTkLabel(
+                self, text=(product.brand or "—").upper()[:10],
+                fg_color=bg_c, text_color=fg_c,
+                corner_radius=4, font=ctk.CTkFont(size=10, weight="bold"),
+            ).grid(row=0, column=2, sticky="w", padx=4, pady=4)
         ctk.CTkLabel(self, text=product.model_name or "—", anchor="w").grid(row=0, column=3, sticky="w", padx=4)
 
         ean_color = "#1f883d" if getattr(product, "ean_valid", True) else "#d1242f"
@@ -201,7 +218,7 @@ class App(ctk.CTk):
 
         self._build_filter_bar(main)
 
-        self.list_frame = ctk.CTkScrollableFrame(main, label_text="Produkty")
+        self.list_frame = ctk.CTkScrollableFrame(main, label_text="", fg_color="#FAFAFA")
         self.list_frame.grid(row=2, column=0, sticky="nsew")
         self.list_frame.grid_columnconfigure(0, weight=1)
 
@@ -221,20 +238,29 @@ class App(ctk.CTk):
 
     def _build_stats_bar(self) -> None:
         self._stat_total = ctk.StringVar(value="Produkty: —")
-        self._stat_ai    = ctk.StringVar(value="Z opisem: —")
-        self._stat_q     = ctk.StringVar(value="Q avg: —")
-        self._stat_cost  = ctk.StringVar(value="Koszt: —")
+        self._stat_ai    = ctk.StringVar(value="AI: —")
+        self._stat_q     = ctk.StringVar(value="Q: —")
+        self._stat_cost  = ctk.StringVar(value="~$0.00")
         self._stat_cache = ctk.StringVar(value="Cache: —")
 
         bar = ctk.CTkFrame(self, fg_color="transparent")
         bar.grid(row=2, column=0, columnspan=2, sticky="ew", padx=10, pady=(0, 6))
 
-        for var in (self._stat_total, self._stat_ai, self._stat_q, self._stat_cost, self._stat_cache):
+        chip_specs = [
+            (self._stat_total, "#DBEAFE", "#1D4ED8"),
+            (self._stat_ai,    "#DCFCE7", "#15803D"),
+            (self._stat_q,     "#FEF3C7", "#92400E"),
+            (self._stat_cost,  "#F3F4F6", "#374151"),
+            (self._stat_cache, "#EDE9FE", "#6D28D9"),
+        ]
+        for var, bg, fg in chip_specs:
             ctk.CTkLabel(
-                bar, textvariable=var, anchor="w",
-                font=ctk.CTkFont(size=11),
-                text_color="#aaa",
-            ).pack(side="left", padx=10)
+                bar, textvariable=var,
+                fg_color=bg, text_color=fg,
+                corner_radius=12,
+                font=ctk.CTkFont(size=11, weight="bold"),
+                padx=10, pady=4,
+            ).pack(side="left", padx=4, pady=4)
 
     def _update_stats(self) -> None:
         total = len(self.products)
@@ -657,7 +683,7 @@ class App(ctk.CTk):
         for child in self.list_frame.winfo_children():
             child.destroy()
 
-        header_row = ctk.CTkFrame(self.list_frame, fg_color="#1f1f1f")
+        header_row = ctk.CTkFrame(self.list_frame, fg_color="#F3F4F6", corner_radius=4)
         header_row.grid(row=0, column=0, sticky="ew", pady=(0, 4))
         for i, (text, w) in enumerate(
             zip(("SKU", "TYTUŁ / NAZWA", "MARKA", "MODEL", "EAN", "OK", "AI", "Q"),
@@ -667,7 +693,7 @@ class App(ctk.CTk):
             ctk.CTkLabel(
                 header_row, text=text, anchor="w",
                 font=ctk.CTkFont(size=11, weight="bold"),
-                text_color="#ddd",
+                text_color="#6B7280",
             ).grid(row=0, column=i, sticky="w", padx=4, pady=4)
 
         cap = 300
