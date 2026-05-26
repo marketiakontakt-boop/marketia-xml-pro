@@ -33,6 +33,7 @@ from app.images.imgbb_uploader import upload_thumbnails
 from app.gui.preview import open_preview
 from app.gui.product_detail import ProductDetailWindow
 from app.gui.brand_colors import get_brand_chip_colors
+from app.gui.category_mapper_window import CategoryMapperWindow
 from app.transformer.description_generator import generate_single_description
 from app.validator import validate_ean, get_label
 
@@ -50,8 +51,8 @@ DIFF_COLORS = {
 
 
 class ProductRow(ctk.CTkFrame):
-    # SKU | TYTUŁ | MARKA | MODEL | EAN | T | AI | Q
-    COL_WIDTHS = (130, 340, 110, 100, 130, 40, 40, 50)
+    # SKU | TYTUŁ | MARKA | KAT. | MODEL | EAN | T | AI | Q
+    COL_WIDTHS = (130, 310, 110, 80, 100, 130, 40, 40, 50)
 
     def __init__(self, master, product: Product, on_click=None, all_brands: list[str] | None = None, on_brand_change=None, **kwargs):
         diff = getattr(product, "diff_status", None)
@@ -91,29 +92,41 @@ class ProductRow(ctk.CTkFrame):
                 fg_color=bg_c, text_color=fg_c,
                 corner_radius=4, font=ctk.CTkFont(size=10, weight="bold"),
             ).grid(row=0, column=2, sticky="w", padx=4, pady=4)
-        ctk.CTkLabel(self, text=product.model_name or "—", anchor="w").grid(row=0, column=3, sticky="w", padx=4)
+        # Col 3: Allegro category chip
+        allegro_cat = getattr(product, "allegro_category", "")
+        if allegro_cat:
+            cat_short = allegro_cat.split(" > ")[-1][:12]
+            ctk.CTkLabel(self, text=cat_short, fg_color="#DCFCE7", text_color="#15803D",
+                         corner_radius=4, font=ctk.CTkFont(size=9)).grid(
+                row=0, column=3, sticky="w", padx=4, pady=4)
+        else:
+            ctk.CTkLabel(self, text="?", fg_color="#FFEDD5", text_color="#C2410C",
+                         corner_radius=4, font=ctk.CTkFont(size=9, weight="bold")).grid(
+                row=0, column=3, sticky="w", padx=4, pady=4)
+
+        ctk.CTkLabel(self, text=product.model_name or "—", anchor="w").grid(row=0, column=4, sticky="w", padx=4)
 
         ean_color = "#1f883d" if getattr(product, "ean_valid", True) else "#d1242f"
         ctk.CTkLabel(self, text=product.ean or "—", anchor="w", text_color=ean_color).grid(
-            row=0, column=4, sticky="w", padx=4
+            row=0, column=5, sticky="w", padx=4
         )
 
         title_len = len(product.title or "")
         t_ok = "✓" if 0 < title_len <= 75 else "✗"
         t_color = "#1f883d" if t_ok == "✓" else "#d1242f"
-        ctk.CTkLabel(self, text=t_ok, text_color=t_color).grid(row=0, column=5, sticky="w", padx=4)
+        ctk.CTkLabel(self, text=t_ok, text_color=t_color).grid(row=0, column=6, sticky="w", padx=4)
 
         ai_sym = "🤖" if getattr(product, "ai_done", False) else "·"
-        ctk.CTkLabel(self, text=ai_sym).grid(row=0, column=6, sticky="w", padx=4)
+        ctk.CTkLabel(self, text=ai_sym).grid(row=0, column=7, sticky="w", padx=4)
 
         score = getattr(product, "quality_score", -1)
         if score >= 0:
             _, sc = get_label(score)
             ctk.CTkLabel(self, text=str(score), text_color=sc, font=ctk.CTkFont(weight="bold")).grid(
-                row=0, column=7, sticky="w", padx=4
+                row=0, column=8, sticky="w", padx=4
             )
         else:
-            ctk.CTkLabel(self, text="—").grid(row=0, column=7, sticky="w", padx=4)
+            ctk.CTkLabel(self, text="—").grid(row=0, column=8, sticky="w", padx=4)
 
         if on_click:
             self.bind("<Button-1>", lambda e: on_click())
@@ -181,6 +194,8 @@ class App(ctk.CTk):
         ctk.CTkButton(sidebar, text="2. Marka (inline)", command=self._no_op).pack(
             fill="x", padx=12, pady=4
         )
+        ctk.CTkButton(sidebar, text="Mapa kategorii", command=self._open_category_mapper,
+                      fg_color="#374151", hover_color="#1f2937").pack(fill="x", padx=12, pady=(0, 4))
         ctk.CTkButton(sidebar, text="3. Uruchom transformy", command=self._run_transforms).pack(
             fill="x", padx=12, pady=4
         )
@@ -463,6 +478,16 @@ class App(ctk.CTk):
         else:
             self.status_var.set(f"Podgląd otwarty w przeglądarce ({count} opisów).")
 
+    def _open_category_mapper(self) -> None:
+        if not self.products:
+            messagebox.showinfo(APP_NAME, "Najpierw wczytaj XML.")
+            return
+        def _on_save(updated_map):
+            from app.transformer.category_mapper import map_all_products
+            map_all_products(self.products, updated_map)
+            self._render_table()
+        CategoryMapperWindow(self, self.products, on_save=_on_save)
+
     def _run_imgbb(self):
         if not self.products:
             messagebox.showinfo(APP_NAME, "Najpierw wczytaj XML.")
@@ -696,7 +721,7 @@ class App(ctk.CTk):
         header_row = ctk.CTkFrame(self.list_frame, fg_color="#F3F4F6", corner_radius=4)
         header_row.grid(row=0, column=0, sticky="ew", pady=(0, 4))
         for i, (text, w) in enumerate(
-            zip(("SKU", "TYTUŁ / NAZWA", "MARKA", "MODEL", "EAN", "OK", "AI", "Q"),
+            zip(("SKU", "TYTUŁ / NAZWA", "MARKA", "KAT.", "MODEL", "EAN", "OK", "AI", "Q"),
                 ProductRow.COL_WIDTHS)
         ):
             header_row.grid_columnconfigure(i, minsize=w)
