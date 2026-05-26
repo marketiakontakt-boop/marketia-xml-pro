@@ -35,6 +35,7 @@ from app.gui.audit_preview import open_audit_preview
 from app.gui.product_detail import ProductDetailWindow
 from app.gui.brand_colors import get_brand_chip_colors
 from app.gui.category_mapper_window import CategoryMapperWindow
+from app.gui.lifestyle_picker import LifestylePickerWindow
 from app.transformer.description_generator import generate_single_description
 from app.validator import validate_ean, get_label
 
@@ -215,6 +216,11 @@ class App(ctk.CTk):
             fg_color="#9d174d", hover_color="#831843",
         )
         self.btn_imgbb.pack(fill="x", padx=12, pady=4)
+        self.btn_lifestyle = ctk.CTkButton(
+            sidebar, text="4.7 Lifestyle thumb.", command=self._run_lifestyle,
+            fg_color="#0891B2", hover_color="#0e7490",
+        )
+        self.btn_lifestyle.pack(fill="x", padx=12, pady=4)
         ctk.CTkButton(
             sidebar, text="Podgląd opisów HTML", command=self._open_preview,
             fg_color="#374151", hover_color="#1f2937",
@@ -489,6 +495,20 @@ class App(ctk.CTk):
             return
         count = open_audit_preview(self.products)
         self.status_var.set(f"Audyt otwarty w przeglądarce ({count} produktów).")
+
+    def _run_lifestyle(self) -> None:
+        if not self.products:
+            messagebox.showinfo(APP_NAME, "Najpierw wczytaj i przetransformuj XML.")
+            return
+        self.btn_lifestyle.configure(state="disabled")
+        LifestylePickerWindow(self, self.products, on_done=self._lifestyle_done)
+
+    def _lifestyle_done(self, count: int) -> None:
+        self.btn_lifestyle.configure(state="normal")
+        self.status_var.set(f"Lifestyle: {count} miniaturek zapisanych jako *_lifestyle.jpg.")
+        messagebox.showinfo(APP_NAME,
+            f"Lifestyle thumbnails gotowe!\n{count} plików zapisanych w output/thumbnails/\n"
+            "Format: {sku}_lifestyle.jpg\nImgBB upload będzie preferować te pliki.")
 
     def _open_category_mapper(self) -> None:
         if not self.products:
