@@ -36,6 +36,7 @@ from app.gui.product_detail import ProductDetailWindow
 from app.gui.brand_colors import get_brand_chip_colors
 from app.gui.category_mapper_window import CategoryMapperWindow
 from app.gui.lifestyle_picker import LifestylePickerWindow
+from app.gui.tooltip import Tooltip
 from app.transformer.description_generator import generate_single_description
 from app.validator import validate_ean, get_label
 
@@ -50,6 +51,50 @@ DIFF_COLORS = {
     "changed":   "#b08000",
     "unchanged": None,
 }
+
+
+def _thumb_mode_dialog(parent, n_products: int) -> str | None:
+    """Show 3-button dialog: returns 'missing', 'all', or None (cancel)."""
+    result: list[str | None] = [None]
+
+    win = ctk.CTkToplevel(parent)
+    win.title("Generuj miniatury")
+    win.geometry("420x190")
+    win.resizable(False, False)
+    win.grab_set()
+
+    ctk.CTkLabel(
+        win,
+        text=f"Generować miniatury dla {n_products} produktów?",
+        font=ctk.CTkFont(size=13, weight="bold"),
+        wraplength=380,
+    ).pack(pady=(20, 4))
+    ctk.CTkLabel(
+        win,
+        text="rembg usuwa tło · białe 1200×1200 · zapis: output/thumbnails/",
+        text_color="#6B7280",
+        font=ctk.CTkFont(size=11),
+        wraplength=380,
+    ).pack(pady=(0, 16))
+
+    btn_f = ctk.CTkFrame(win, fg_color="transparent")
+    btn_f.pack()
+
+    def _pick(mode: str):
+        result[0] = mode
+        win.destroy()
+
+    ctk.CTkButton(btn_f, text="Tylko brakujące", width=140,
+                  command=lambda: _pick("missing")).grid(row=0, column=0, padx=4)
+    ctk.CTkButton(btn_f, text="Regeneruj wszystkie", width=155,
+                  fg_color="#7c3aed", hover_color="#6d28d9",
+                  command=lambda: _pick("all")).grid(row=0, column=1, padx=4)
+    ctk.CTkButton(btn_f, text="Anuluj", width=80,
+                  fg_color="#374151", hover_color="#1f2937",
+                  command=win.destroy).grid(row=0, column=2, padx=4)
+
+    parent.wait_window(win)
+    return result[0]
 
 
 class ProductRow(ctk.CTkFrame):
@@ -190,50 +235,70 @@ class App(ctk.CTk):
             text_color="#6B7280", font=ctk.CTkFont(size=11, weight="bold"),
         ).pack(pady=(0, 16))
 
-        ctk.CTkButton(sidebar, text="1. Wczytaj XML", command=self._pick_xml).pack(
-            fill="x", padx=12, pady=4
-        )
-        ctk.CTkButton(sidebar, text="2. Marka (inline)", command=self._no_op).pack(
-            fill="x", padx=12, pady=4
-        )
-        ctk.CTkButton(sidebar, text="Mapa kategorii", command=self._open_category_mapper,
-                      fg_color="#374151", hover_color="#1f2937").pack(fill="x", padx=12, pady=(0, 4))
-        ctk.CTkButton(sidebar, text="3. Uruchom transformy", command=self._run_transforms).pack(
-            fill="x", padx=12, pady=4
-        )
-        self.btn_ai = ctk.CTkButton(
-            sidebar, text="4. Generuj opisy (AI)", command=self._run_ai,
-            fg_color="#1a6f3a", hover_color="#145c2f",
-        )
-        self.btn_ai.pack(fill="x", padx=12, pady=4)
-        self.btn_thumb = ctk.CTkButton(
-            sidebar, text="4.5 Generuj miniatury", command=self._run_thumbnails,
-            fg_color="#7c3aed", hover_color="#6d28d9",
-        )
-        self.btn_thumb.pack(fill="x", padx=12, pady=4)
-        self.btn_imgbb = ctk.CTkButton(
-            sidebar, text="4.6 Upload ImgBB", command=self._run_imgbb,
-            fg_color="#9d174d", hover_color="#831843",
-        )
-        self.btn_imgbb.pack(fill="x", padx=12, pady=4)
-        self.btn_lifestyle = ctk.CTkButton(
-            sidebar, text="4.7 Lifestyle thumb.", command=self._run_lifestyle,
-            fg_color="#0891B2", hover_color="#0e7490",
-        )
-        self.btn_lifestyle.pack(fill="x", padx=12, pady=4)
-        ctk.CTkButton(
-            sidebar, text="Podgląd opisów HTML", command=self._open_preview,
-            fg_color="#374151", hover_color="#1f2937",
-        ).pack(fill="x", padx=12, pady=(12, 4))
-        ctk.CTkButton(
-            sidebar, text="Audyt produktów", command=self._open_audit,
-            fg_color="#374151", hover_color="#1f2937",
-        ).pack(fill="x", padx=12, pady=(0, 4))
-        self.btn_export = ctk.CTkButton(
-            sidebar, text="5. Eksport XML", command=self._export_xml,
-            fg_color="#0a5c99", hover_color="#074880",
-        )
-        self.btn_export.pack(fill="x", padx=12, pady=4)
+        def _sb(text, cmd, tip, pady=4, **kw) -> ctk.CTkButton:
+            btn = ctk.CTkButton(sidebar, text=text, command=cmd, **kw)
+            btn.pack(fill="x", padx=12, pady=pady)
+            Tooltip(btn, tip)
+            return btn
+
+        _sb("1. Wczytaj XML", self._pick_xml,
+            "Wczytaj plik XML eksportu BaseLinker z listą produktów.")
+        _sb("2. Marka (inline)", self._no_op,
+            "Marka jest edytowalna bezpośrednio w tabeli — kliknij dropdown w kolumnie MARKA.",
+            pady=4)
+        _sb("Mapa kategorii", self._open_category_mapper,
+            "Edytuj mapowanie kategorii BaseLinker → Allegro.\n"
+            "Brakujące kategorie można uzupełnić automatycznie (AI).",
+            pady=(0, 4), fg_color="#374151", hover_color="#1f2937")
+        _sb("3. Uruchom transformy", self._run_transforms,
+            "Uruchamia pipeline transformacji:\n"
+            "• Wykrywanie marki i modelu\n"
+            "• Generowanie tytułu SEO (≤75 zn.)\n"
+            "• Walidacja EAN\n"
+            "• Mapowanie kategorii Allegro\n"
+            "• Ekstrakcja atrybutów (waga, wymiary itp.)")
+        self.btn_ai = _sb("4. Generuj opisy (AI)", self._run_ai,
+            "Generuje opisy HTML przez Gemini AI dla wszystkich produktów bez opisu.\n"
+            "Używa cache SQLite — wygenerowane opisy nie są regenerowane.\n"
+            "Koszt: ~$0.005 / produkt (Batch API).",
+            fg_color="#1a6f3a", hover_color="#145c2f")
+        self.btn_thumb = _sb("4.5 Generuj miniatury", self._run_thumbnails,
+            "Generuje miniatury 1200×1200 px:\n"
+            "• rembg usuwa tło (u2net)\n"
+            "• Biała kanwa, produkt na 75% pola\n"
+            "• Mała kopia w prawym dolnym rogu\n"
+            "• Zapis: output/thumbnails/{SKU}.jpg\n"
+            "Można wybrać 'Tylko brakujące' lub 'Regeneruj wszystkie'.",
+            fg_color="#7c3aed", hover_color="#6d28d9")
+        self.btn_imgbb = _sb("4.6 Upload ImgBB", self._run_imgbb,
+            "Wysyła miniatury na ImgBB (CDN) i zapisuje URL w produkcie.\n"
+            "URL jest używany w eksporcie XML jako link do zdjęcia.\n"
+            "Wymaga IMGBB_API_KEY w pliku .env.",
+            fg_color="#9d174d", hover_color="#831843")
+        self.btn_lifestyle = _sb("4.7 Lifestyle thumb.", self._run_lifestyle,
+            "Nakłada element 'lifestyle' (pies, kwiat, dziecko itp.) na miniaturkę.\n"
+            "Każda marka ma swój zestaw PNG-ek:\n"
+            "• ZOOVERA → psy/koty\n"
+            "• GARDENSTEIN → kwiaty\n"
+            "• INTEX → dzieci w wodzie\n"
+            "Efekt: wyższy CTR, styl KanzaSklep.\n"
+            "Zapis: output/thumbnails/{SKU}_lifestyle.jpg",
+            fg_color="#0891B2", hover_color="#0e7490")
+        _sb("Podgląd opisów HTML", self._open_preview,
+            "Otwiera podgląd wygenerowanych opisów HTML w przeglądarce.",
+            pady=(12, 4), fg_color="#374151", hover_color="#1f2937")
+        _sb("Audyt produktów", self._open_audit,
+            "Otwiera raport HTML ze statusem każdego produktu:\n"
+            "• Q score, EAN, długość tytułu\n"
+            "• Kategoria Allegro, atrybuty\n"
+            "• Fragment opisu\n"
+            "Czerwona krawędź = produkt z problemem.",
+            pady=(0, 4), fg_color="#374151", hover_color="#1f2937")
+        self.btn_export = _sb("5. Eksport XML", self._export_xml,
+            "Eksportuje przetransformowane produkty do XML BaseLinker.\n"
+            "Używa kategorii Allegro zamiast BaseLinker (jeśli zmapowana).\n"
+            "Zawiera atrybuty w formacie <attributes>.",
+            fg_color="#0a5c99", hover_color="#074880")
 
         # Main area
         main = ctk.CTkFrame(self)
@@ -557,28 +622,24 @@ class App(ctk.CTk):
             messagebox.showinfo(APP_NAME, "Brak produktów z URL-ami zdjęć.")
             return
 
-        if not messagebox.askyesno(
-            APP_NAME,
-            f"Wygenerować miniatury dla {len(with_images)} produktów?\n"
-            f"(rembg usuwa tło + białe 1200×1200 + scale trick)\n"
-            f"Zapis: output/thumbnails/",
-        ):
+        mode = _thumb_mode_dialog(self, len(with_images))
+        if mode is None:
             return
 
+        force = (mode == "all")
         self.btn_thumb.configure(state="disabled")
         self.status_var.set(f"Generuję miniatury dla {len(with_images)} prod…")
         self.progress.configure(mode="determinate")
         self.progress.set(0)
         threading.Thread(
-            target=self._thumb_worker, args=(with_images,), daemon=True
+            target=self._thumb_worker, args=(with_images, force), daemon=True
         ).start()
 
-    def _thumb_worker(self, products: list):
+    def _thumb_worker(self, products: list, force: bool = False):
         total = len(products)
 
         def log(msg: str):
             self.q.put(("status", msg))
-            # extract i/total from message "Miniatury: i/total — sku"
             try:
                 i = int(msg.split(":")[1].split("/")[0].strip())
                 self.q.put(("progress", i / total))
@@ -586,7 +647,7 @@ class App(ctk.CTk):
                 pass
 
         try:
-            done, skipped = generate_thumbnails(products, progress_callback=log)
+            done, skipped = generate_thumbnails(products, progress_callback=log, force=force)
             self.q.put(("thumb_done", done, skipped))
         except Exception as e:
             self.q.put(("error", f"Miniatury: {e}"))
