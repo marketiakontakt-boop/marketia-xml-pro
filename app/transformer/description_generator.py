@@ -54,6 +54,7 @@ def generate_descriptions(
     products: list[Product],
     progress_callback: Callable[[str], None] | None = None,
     cancel_check: "Callable[[], bool] | None" = None,
+    wait_on_cooldown: bool = False,
 ) -> tuple[int, int]:
     """Generate descriptions for pending products via Gemini.
 
@@ -105,7 +106,7 @@ def generate_descriptions(
             log(f"[{done}/{total_}] ✓ {sku}{suffix}")
 
     log(f"Generuję {total} opisów przez Gemini 2.5 Flash...")
-    results = client.generate_all(requests, progress_callback=on_progress)
+    results = client.generate_all(requests, progress_callback=on_progress, wait_on_cooldown=wait_on_cooldown)
 
     with open_cache() as conn:
         for sku, raw in results.items():

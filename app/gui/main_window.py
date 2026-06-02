@@ -701,6 +701,7 @@ class App(_BaseApp):
                 products,
                 progress_callback=log,
                 cancel_check=lambda: self._cancel_event.is_set(),
+                wait_on_cooldown=True,
             )
             if self._cancel_event.is_set():
                 self.q.put(("cancelled", f"Zatrzymano. Zapisano: {submitted} opisów."))

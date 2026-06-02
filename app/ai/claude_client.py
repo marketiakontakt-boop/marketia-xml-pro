@@ -201,78 +201,116 @@ class ClaudeClient:
         self,
         requests: list[dict],
         progress_callback=None,
+        wait_on_cooldown: bool = False,
     ) -> dict[str, str | None]:
         """Process requests in parallel (up to CONCURRENCY simultaneous).
 
-        Uses KeyScheduler: on 429, key enters cooldown and request retries
-        automatically with the next available key. Never drops a request
-        due to rate limits — waits until a key recovers.
+        wait_on_cooldown=False (default): try all keys once, return None on quota — fast mode.
+        wait_on_cooldown=True: wait for cooldown recovery and retry — unattended mode.
 
         progress_callback(done, total, custom_id, error=None, cooling_status="")
         Returns {custom_id: text_or_None}.
         """
         return asyncio.run(
-            self._generate_all_async(requests, progress_callback)
+            self._generate_all_async(requests, progress_callback, wait_on_cooldown)
         )
 
     async def _generate_all_async(
         self,
         requests: list[dict],
         progress_callback=None,
+        wait_on_cooldown: bool = False,
     ) -> dict[str, str | None]:
         results: dict[str, str | None] = {}
         total = len(requests)
         done_count = 0
         sem = asyncio.Semaphore(CONCURRENCY)
         result_lock = asyncio.Lock()
-        max_attempts = self._scheduler.key_count * 3
 
         async def process_one(req: dict):
             nonlocal done_count
             custom_id = req["custom_id"]
             async with sem:
                 last_err: Exception | None = None
-                for _ in range(max_attempts):
-                    key_idx = await self._scheduler.acquire()
-                    try:
-                        resp = await self._scheduler.get_client(key_idx).aio.models.generate_content(
-                            model=MODEL,
-                            config=_make_config(req["system"], json_mode=req.get("json_mode", False)),
-                            contents=req["content"],
-                        )
-                        html = _strip_fences(resp.text)
-                        async with result_lock:
-                            results[custom_id] = html
+
+                if wait_on_cooldown:
+                    # Unattended mode: wait for available key, retry up to key_count*3 times
+                    max_attempts = self._scheduler.key_count * 3
+                    for _ in range(max_attempts):
+                        key_idx = await self._scheduler.acquire()
+                        try:
+                            resp = await self._scheduler.get_client(key_idx).aio.models.generate_content(
+                                model=MODEL,
+                                config=_make_config(req["system"], json_mode=req.get("json_mode", False)),
+                                contents=req["content"],
+                            )
+                            html = _strip_fences(resp.text)
+                            async with result_lock:
+                                results[custom_id] = html
+                                done_count += 1
+                                if progress_callback:
+                                    progress_callback(
+                                        done_count, total, custom_id,
+                                        cooling_status=self._scheduler.cooling_status(),
+                                    )
+                            return
+                        except Exception as e:
+                            last_err = e
+                            if _is_rotatable(e):
+                                await self._scheduler.report_failure(key_idx)
+                                continue
+                            async with result_lock:
+                                results[custom_id] = None
+                                done_count += 1
+                                if progress_callback:
+                                    progress_callback(done_count, total, custom_id, error=str(e))
+                            return
+                    # Exhausted max_attempts
+                    async with result_lock:
+                        if custom_id not in results:
+                            results[custom_id] = None
                             done_count += 1
                             if progress_callback:
                                 progress_callback(
                                     done_count, total, custom_id,
-                                    cooling_status=self._scheduler.cooling_status(),
+                                    error=f"Wyczerpano próby: {last_err}",
                                 )
-                        return
-                    except Exception as e:
-                        last_err = e
-                        if _is_rotatable(e):
-                            await self._scheduler.report_failure(key_idx)
-                            continue
-                        # Non-recoverable error — fail immediately
-                        async with result_lock:
+                else:
+                    # Fast mode: try each key once, give up when all exhausted
+                    for idx in range(len(self._keys)):
+                        try:
+                            resp = await self._scheduler.get_client(idx).aio.models.generate_content(
+                                model=MODEL,
+                                config=_make_config(req["system"], json_mode=req.get("json_mode", False)),
+                                contents=req["content"],
+                            )
+                            html = _strip_fences(resp.text)
+                            async with result_lock:
+                                results[custom_id] = html
+                                done_count += 1
+                                if progress_callback:
+                                    progress_callback(done_count, total, custom_id)
+                            return
+                        except Exception as e:
+                            last_err = e
+                            if _is_rotatable(e):
+                                continue
+                            async with result_lock:
+                                results[custom_id] = None
+                                done_count += 1
+                                if progress_callback:
+                                    progress_callback(done_count, total, custom_id, error=str(e))
+                            return
+                    # All keys exhausted
+                    async with result_lock:
+                        if custom_id not in results:
                             results[custom_id] = None
                             done_count += 1
                             if progress_callback:
-                                progress_callback(done_count, total, custom_id, error=str(e))
-                        return
-
-                # Exhausted max_attempts (all keys kept cooling)
-                async with result_lock:
-                    if custom_id not in results:
-                        results[custom_id] = None
-                        done_count += 1
-                        if progress_callback:
-                            progress_callback(
-                                done_count, total, custom_id,
-                                error=f"Wyczerpano {max_attempts} prób: {last_err}",
-                            )
+                                progress_callback(
+                                    done_count, total, custom_id,
+                                    error=f"Wszystkie klucze wyczerpane: {last_err}",
+                                )
 
         await asyncio.gather(*[process_one(r) for r in requests])
         return results
