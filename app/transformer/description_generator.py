@@ -12,7 +12,13 @@ from __future__ import annotations
 from typing import Callable
 
 from app.ai.claude_client import ClaudeClient
-from app.ai.prompts import SYSTEM_PROMPT, build_description_prompt
+from app.ai.prompts import (
+    SYSTEM_PROMPT_JSON,
+    _extract_json,
+    _spec_items,
+    assemble_html_from_json,
+    build_description_prompt_v2,
+)
 from app.cache.sqlite_cache import (
     get_cached_description,
     open_cache,
@@ -47,6 +53,7 @@ def load_cached_descriptions(products: list[Product]) -> int:
 def generate_descriptions(
     products: list[Product],
     progress_callback: Callable[[str], None] | None = None,
+    cancel_check: "Callable[[], bool] | None" = None,
 ) -> tuple[int, int]:
     """Generate descriptions for pending products via Gemini.
 
@@ -67,41 +74,59 @@ def generate_descriptions(
 
     log(f"Cache: {cached_count} | Do wygenerowania: {len(pending)}")
 
-    client = ClaudeClient()
+    def on_key_cooling(key_idx: int, seconds: float):
+        log(f"⏳ Klucz #{key_idx + 1} wchodzi w cooldown {int(seconds)}s — czekam na wolny klucz…")
+
+    client = ClaudeClient(on_key_cooling=on_key_cooling)
 
     requests = []
     for p in pending:
         brand_key = p.brand or "unknown"
         brand_info = brand_data.get(brand_key, {"name": brand_key.upper(), "tagline": ""})
-        user_msg = build_description_prompt(p, brand_info, brand_key)
+        user_msg = build_description_prompt_v2(p, brand_info, brand_key)
         requests.append({
             "custom_id": p.sku,
-            "system": SYSTEM_PROMPT,
+            "system": SYSTEM_PROMPT_JSON,
             "content": user_msg,
+            "json_mode": True,
         })
 
     sku_map = {p.sku: p for p in pending}
     total = len(requests)
     generated = 0
 
-    def on_progress(done: int, total_: int, sku: str, error: str | None = None):
+    def on_progress(done: int, total_: int, sku: str, error: str | None = None, cooling_status: str = ""):
         nonlocal generated
+        suffix = f" | {cooling_status}" if cooling_status else ""
         if error:
-            log(f"[{done}/{total_}] BŁĄD {sku}: {error}")
+            log(f"[{done}/{total_}] BŁĄD {sku}: {error}{suffix}")
         else:
             generated += 1
-            log(f"[{done}/{total_}] ✓ {sku}")
+            log(f"[{done}/{total_}] ✓ {sku}{suffix}")
 
     log(f"Generuję {total} opisów przez Gemini 2.5 Flash...")
     results = client.generate_all(requests, progress_callback=on_progress)
 
     with open_cache() as conn:
-        for sku, html in results.items():
-            if html is None:
+        for sku, raw in results.items():
+            if cancel_check and cancel_check():
+                break
+            if raw is None:
                 continue
+            p = sku_map.get(sku)
+            # v2: parse JSON → assemble HTML
+            data = _extract_json(raw)
+            if data and (data.get("section_1") or data.get("sections")):
+                brand_key = (p.brand if p else None) or "unknown"
+                brand_info = brand_data.get(brand_key, {"name": brand_key.upper()})
+                brand_display = brand_info.get("name", "").upper()
+                spec = _spec_items(p, brand_display) if p else []
+                html = assemble_html_from_json(data, list(p.images) if p else [], spec)
+            else:
+                # Fallback: treat raw as HTML (e.g. if json_mode not supported)
+                html = raw
             score = score_description(html)
-            if sku in sku_map:
-                p = sku_map[sku]
+            if p:
                 p.description = html
                 p.ai_done = True
                 p.quality_score = score
@@ -120,12 +145,20 @@ def generate_single_description(product: Product) -> str:
     brand_data = _load_brand_data()
     brand_key = product.brand or "unknown"
     brand_info = brand_data.get(brand_key, {"name": brand_key.upper(), "tagline": ""})
-    user_msg = build_description_prompt(product, brand_info, brand_key)
+    user_msg = build_description_prompt_v2(product, brand_info, brand_key)
 
     client = ClaudeClient()
-    html = client.call(SYSTEM_PROMPT, user_msg)
-    score = score_description(html)
+    raw = client.call(SYSTEM_PROMPT_JSON, user_msg, json_mode=True)
 
+    data = _extract_json(raw)
+    if data and (data.get("section_1") or data.get("sections")):
+        brand_display = brand_info.get("name", "").upper()
+        spec = _spec_items(product, brand_display)
+        html = assemble_html_from_json(data, list(product.images or []), spec)
+    else:
+        html = raw  # fallback if JSON parse fails
+
+    score = score_description(html)
     with open_cache() as conn:
         save_description(conn, product.sku, html, quality_score=score)
 
