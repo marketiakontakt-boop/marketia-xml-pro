@@ -676,8 +676,9 @@ class App(_BaseApp):
         if not messagebox.askyesno(
             APP_NAME,
             f"Uruchomić unattended generation dla {len(pending)} produktów?\n\n"
-            "Program będzie czekał na cooldown kluczy API i nie można go zatrzymać.\n"
-            "Możesz odejść od komputera — SQLite cache zapisuje postęp na bieżąco.",
+            "Program będzie czekał na cooldown kluczy API.\n"
+            "Możesz odejść od komputera — SQLite cache zapisuje postęp na bieżąco.\n"
+            "Stop zatrzymuje po ukończeniu bieżącej paczki.",
         ):
             return
 
@@ -687,7 +688,6 @@ class App(_BaseApp):
         self.progress.configure(mode="indeterminate")
         self.progress.start()
         self._op_start()
-        self.btn_cancel.configure(state="disabled")   # unattended: no cancel
         threading.Thread(
             target=self._ai_unattended_worker, args=(self.products,), daemon=True
         ).start()
@@ -700,9 +700,12 @@ class App(_BaseApp):
             submitted, cached = generate_descriptions(
                 products,
                 progress_callback=log,
-                cancel_check=None,   # unattended: never cancel
+                cancel_check=lambda: self._cancel_event.is_set(),
             )
-            self.q.put(("ai_done", submitted, cached))
+            if self._cancel_event.is_set():
+                self.q.put(("cancelled", f"Zatrzymano. Zapisano: {submitted} opisów."))
+            else:
+                self.q.put(("ai_done", submitted, cached))
         except Exception as e:
             self.q.put(("error", f"Unattended generation: {e}"))
         finally:
