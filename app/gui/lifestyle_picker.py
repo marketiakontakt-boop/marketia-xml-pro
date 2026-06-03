@@ -1,142 +1,169 @@
-"""Lifestyle Thumbnail Picker — choose lifestyle element per brand, preview, generate."""
+"""Lifestyle AI Thumbnail — brand selector dialog."""
 from __future__ import annotations
 
 import threading
-from pathlib import Path
 
 import customtkinter as ctk
-from PIL import Image
+from tkinter import messagebox
 
-from app.images.lifestyle_composer import list_lifestyle_assets, compose_lifestyle, LIFESTYLE_DIR
-from app.images.thumbnail_generator import THUMB_DIR
+from app.images.lifestyle_composer import generate_lifestyle_thumbnails, _BRAND_SCENES
 from app.gui.brand_colors import get_brand_chip_colors
 from app.parser.normalizer import Product
 
 
 class LifestylePickerWindow(ctk.CTkToplevel):
-    """Non-blocking window to pick lifestyle element per brand and generate composited thumbnails."""
+    """Dialog: pick which brands to generate AI lifestyle thumbnails for."""
 
     def __init__(self, parent, products: list[Product], on_done=None):
         super().__init__(parent)
-        self.title("Lifestyle Thumbnails — wybór elementów")
-        self.geometry("720x540")
-        self.minsize(600, 400)
+        self.title("Lifestyle AI Thumbnails")
+        self.geometry("480x460")
+        self.resizable(False, False)
+        self.grab_set()
+        self.focus_force()
+
         self._products = products
         self._on_done = on_done
 
-        # Collect brands that have lifestyle assets
-        self._brands = sorted({
+        # Brands that have scene prompts defined and have products with images
+        all_brands = sorted({
             p.brand for p in products
-            if p.brand and list_lifestyle_assets(p.brand)
+            if p.brand and getattr(p, "images", [])
         })
+        self._brands = all_brands
 
-        self._selections: dict[str, ctk.StringVar] = {}
-        self._enabled: dict[str, ctk.BooleanVar] = {}
+        self._enabled: dict[str, ctk.BooleanVar] = {
+            b: ctk.BooleanVar(value=b.lower() in _BRAND_SCENES)
+            for b in all_brands
+        }
+        self._force_var = ctk.BooleanVar(value=False)
 
-        self._build_ui()
+        self._build()
 
-    def _build_ui(self):
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(1, weight=1)
+    def _build(self):
+        ctk.CTkLabel(
+            self,
+            text="Lifestyle AI Thumbnails",
+            font=ctk.CTkFont(size=14, weight="bold"),
+        ).pack(pady=(20, 4))
+        ctk.CTkLabel(
+            self,
+            text="Imagen 4 generuje tło z kontekstem (ludzie, ogród, wnętrze).\n"
+                 "rembg wycina produkt z oryginału i nakłada go na scenę.",
+            text_color="#6B7280",
+            font=ctk.CTkFont(size=11),
+            justify="center",
+        ).pack(pady=(0, 12))
 
-        toolbar = ctk.CTkFrame(self, fg_color="transparent")
-        toolbar.grid(row=0, column=0, sticky="ew", padx=12, pady=(12, 4))
-        ctk.CTkLabel(toolbar, text="Wybierz element lifestyle per marka",
-                     font=ctk.CTkFont(weight="bold")).pack(side="left")
-        self._gen_btn = ctk.CTkButton(
-            toolbar, text="Generuj lifestyle thumbnails",
-            fg_color="#0891B2", hover_color="#0e7490",
-            command=self._generate,
-        )
-        self._gen_btn.pack(side="right")
-
-        scroll = ctk.CTkScrollableFrame(self, label_text="")
-        scroll.grid(row=1, column=0, sticky="nsew", padx=12, pady=(0, 12))
-        scroll.grid_columnconfigure(1, weight=1)
+        # Brand list
+        frame = ctk.CTkScrollableFrame(self, fg_color="#F3F4F6", corner_radius=8, height=240)
+        frame.pack(fill="x", padx=20, pady=(0, 8))
 
         if not self._brands:
-            ctk.CTkLabel(scroll, text=(
-                "Brak elementów lifestyle dla żadnej z marek.\n"
-                "Upewnij się że folder data/lifestyle/ zawiera PNG-ki per marka."
-            ), text_color="#6B7280").pack(pady=20)
-            return
+            ctk.CTkLabel(
+                frame,
+                text="Brak produktów ze zdjęciami.",
+                text_color="#9CA3AF",
+            ).pack(pady=20)
+        else:
+            for brand in self._brands:
+                count = sum(1 for p in self._products if p.brand == brand and getattr(p, "images", []))
+                has_scene = brand.lower() in _BRAND_SCENES
+                row = ctk.CTkFrame(frame, fg_color="transparent")
+                row.pack(fill="x", padx=8, pady=4)
 
-        for row_idx, brand in enumerate(self._brands):
-            assets = list_lifestyle_assets(brand)
-            asset_names = [a.stem for a in assets]
+                bg, fg = get_brand_chip_colors(brand)
+                ctk.CTkLabel(
+                    row,
+                    text=brand.upper(),
+                    fg_color=bg,
+                    text_color=fg,
+                    corner_radius=4,
+                    font=ctk.CTkFont(size=11, weight="bold"),
+                    padx=8,
+                ).pack(side="left")
 
-            bg, fg = get_brand_chip_colors(brand)
-            ctk.CTkLabel(scroll, text=brand.upper(),
-                         fg_color=bg, text_color=fg,
-                         corner_radius=4, font=ctk.CTkFont(size=11, weight="bold"),
-                         padx=8).grid(row=row_idx, column=0, sticky="w", padx=8, pady=6)
+                ctk.CTkLabel(
+                    row,
+                    text=f"  {count} prod.",
+                    text_color="#374151",
+                    font=ctk.CTkFont(size=11),
+                ).pack(side="left", padx=4)
 
-            sel_var = ctk.StringVar(value=asset_names[0] if asset_names else "")
-            self._selections[brand] = sel_var
-            ctk.CTkOptionMenu(scroll, variable=sel_var, values=asset_names, width=200).grid(
-                row=row_idx, column=1, sticky="w", padx=8, pady=6)
+                if not has_scene:
+                    ctk.CTkLabel(
+                        row,
+                        text="(domyślna scena)",
+                        text_color="#9CA3AF",
+                        font=ctk.CTkFont(size=10),
+                    ).pack(side="left", padx=4)
 
-            en_var = ctk.BooleanVar(value=True)
-            self._enabled[brand] = en_var
-            ctk.CTkCheckBox(scroll, text="aktywna", variable=en_var).grid(
-                row=row_idx, column=2, padx=8, pady=6)
+                ctk.CTkCheckBox(
+                    row,
+                    text="",
+                    variable=self._enabled[brand],
+                    width=24,
+                ).pack(side="right")
 
-            ctk.CTkButton(scroll, text="Podgląd", width=70,
-                          command=lambda b=brand, sv=sel_var: self._preview(b, sv.get())).grid(
-                row=row_idx, column=3, padx=8, pady=6)
+        # Force checkbox
+        ctk.CTkCheckBox(
+            self,
+            text="Regeneruj nawet jeśli już istnieje",
+            variable=self._force_var,
+            font=ctk.CTkFont(size=11),
+        ).pack(anchor="w", padx=20, pady=(4, 0))
 
-    def _preview(self, brand: str, asset_stem: str):
-        asset_path = LIFESTYLE_DIR / brand / f"{asset_stem}.png"
-        if not asset_path.exists():
-            return
-        sample = next(
-            (p for p in self._products if p.brand == brand
-             and (THUMB_DIR / f"{p.sku}.jpg").exists()), None
+        ctk.CTkLabel(
+            self,
+            text="Uwaga: każde zdjęcie = 1 call Imagen 4 (zużywa kredyty).",
+            text_color="#B45309",
+            font=ctk.CTkFont(size=10),
+        ).pack(pady=(4, 8))
+
+        btn_row = ctk.CTkFrame(self, fg_color="transparent")
+        btn_row.pack(pady=(0, 16))
+
+        self._gen_btn = ctk.CTkButton(
+            btn_row,
+            text="Generuj lifestyle AI",
+            fg_color="#0891B2",
+            hover_color="#0e7490",
+            command=self._start,
         )
-        if not sample:
+        self._gen_btn.pack(side="left", padx=(0, 8))
+        ctk.CTkButton(
+            btn_row,
+            text="Anuluj",
+            fg_color="#374151",
+            hover_color="#1f2937",
+            command=self.destroy,
+        ).pack(side="left")
+
+    def _start(self):
+        selected = [b for b, v in self._enabled.items() if v.get()]
+        if not selected:
+            messagebox.showwarning("Brak wyboru", "Zaznacz co najmniej jedną markę.", parent=self)
             return
-        thumb = Image.open(THUMB_DIR / f"{sample.sku}.jpg")
-        result = compose_lifestyle(thumb, asset_path)
-
-        win = ctk.CTkToplevel(self)
-        win.title(f"Podgląd — {brand} / {asset_stem}")
-        win.geometry("640x340")
-        display_size = (300, 300)
-
-        orig_ctk = ctk.CTkImage(thumb.resize(display_size), size=display_size)
-        result_ctk = ctk.CTkImage(result.resize(display_size), size=display_size)
-
-        ctk.CTkLabel(win, text="Oryginał").grid(row=0, column=0, padx=8, pady=(8, 2))
-        ctk.CTkLabel(win, text="Z lifestyle").grid(row=0, column=1, padx=8, pady=(8, 2))
-        ctk.CTkLabel(win, image=orig_ctk, text="").grid(row=1, column=0, padx=8, pady=4)
-        ctk.CTkLabel(win, image=result_ctk, text="").grid(row=1, column=1, padx=8, pady=4)
-
-    def _generate(self):
         self._gen_btn.configure(state="disabled", text="Generuję…")
-        threading.Thread(target=self._generate_worker, daemon=True).start()
+        threading.Thread(
+            target=self._worker,
+            args=(selected, self._force_var.get()),
+            daemon=True,
+        ).start()
 
-    def _generate_worker(self):
-        count = 0
-        for brand in self._brands:
-            if not self._enabled.get(brand, ctk.BooleanVar(value=False)).get():
-                continue
-            asset_stem = self._selections[brand].get()
-            if not asset_stem:
-                continue
-            asset_path = LIFESTYLE_DIR / brand / f"{asset_stem}.png"
-            if not asset_path.exists():
-                continue
-            for p in self._products:
-                if p.brand != brand:
-                    continue
-                src = THUMB_DIR / f"{p.sku}.jpg"
-                if not src.exists():
-                    continue
-                result = compose_lifestyle(Image.open(src), asset_path)
-                out = THUMB_DIR / f"{p.sku}_lifestyle.jpg"
-                result.save(str(out), "JPEG", quality=95)
-                count += 1
+    def _worker(self, brands: list[str], force: bool):
+        try:
+            done, skipped = generate_lifestyle_thumbnails(
+                self._products,
+                brands=brands,
+                force=force,
+            )
+        except Exception as e:
+            done, skipped = 0, 0
+            self.after(0, lambda: messagebox.showerror(
+                "Błąd", str(e), parent=self
+            ))
 
         if self._on_done:
-            self._on_done(count)
-        self.destroy()
+            self._on_done(done)
+        self.after(0, self.destroy)

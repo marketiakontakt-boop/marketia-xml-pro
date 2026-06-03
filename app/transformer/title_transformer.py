@@ -1,10 +1,11 @@
 """Rules-based title transformer per SPEC §3.
 
-Compose {TYPE/NAME} {BRAND} {MODEL} → UPPERCASE, ≤75 chars.
+Compose {TYPE/NAME} {BRAND} → UPPERCASE, ≤75 chars.
 Strips leading brand prefixes already in the source name (e.g. "VILLAGO ACCESSORIES ..."),
 trims when over budget, pads with a brand-agnostic atut when far below.
 
-No AI here — Phase 1 is deterministic. Phase 2 will optionally route hard cases to Gemini.
+model_name is NOT included in the title — it derives from the product's own name,
+so adding it would create duplicate words in the title.
 """
 from __future__ import annotations
 
@@ -17,7 +18,16 @@ from app.parser.normalizer import Product
 
 MAX_LEN = 75
 PAD_BELOW = 70
-ATUTS = ["PREMIUM", "DESIGN", "JAKOŚĆ", "2W1", "LUX"]
+ATUTS = ["PREMIUM", "DESIGN", "JAKOŚĆ", "2W1", "LUX"]  # fallback for unknown brands
+
+# intex intentionally omitted — it uses an early-return path that never reaches padding
+_BRAND_ATUTS: dict[str, list[str]] = {
+    "villago":       ["DO JADALNI", "DO SALONU", "NOWOCZESNE", "SKANDYNAWSKIE"],
+    "gardenstein":   ["NA TARAS", "DO OGRODU", "NA BALKON", "OGRODOWE"],
+    "hopla_toys":    ["DLA DZIECI", "CERTYFIKAT", "EN 71", "BEZPIECZNA"],
+    "marketia_home": ["DO DOMU", "PREMIUM", "PRAKTYCZNY", "DESIGN"],
+    "zoovera":       ["DLA PSA", "DLA KOTA", "PREMIUM", "TRWAŁY"],
+}
 
 DEFAULT_KEYWORDS_PATH = Path(__file__).resolve().parents[2] / "data" / "brand_keywords.json"
 
@@ -64,13 +74,9 @@ class TitleTransformer:
 
         base = self._strip_leading_brand(base)
         brand_disp = self._brand_display(product.brand)
-        model = (product.model_name or "").upper()
 
-        title = self._compose(base, brand_disp, model)
+        title = self._compose(base, brand_disp)
 
-        if len(title) > MAX_LEN:
-            # Drop model first
-            title = self._compose(base, brand_disp, "")
         if len(title) > MAX_LEN:
             # Trim base to fit remaining budget for brand
             budget = MAX_LEN - (len(brand_disp) + 1 if brand_disp else 0)
@@ -81,7 +87,8 @@ class TitleTransformer:
             title = base[:MAX_LEN].rstrip()
 
         if len(title) < PAD_BELOW:
-            atut = ATUTS[zlib.crc32(product.sku.encode("utf-8")) % len(ATUTS)]
+            brand_atuts = _BRAND_ATUTS.get(product.brand, ATUTS)
+            atut = brand_atuts[zlib.crc32(product.sku.encode("utf-8")) % len(brand_atuts)]
             candidate = self._compose(title, "", atut)
             if len(candidate) <= MAX_LEN:
                 title = candidate

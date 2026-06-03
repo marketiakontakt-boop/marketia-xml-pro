@@ -39,6 +39,13 @@ CREATE TABLE IF NOT EXISTS used_model_names (
 
 CREATE INDEX IF NOT EXISTS idx_used_models_brand ON used_model_names(brand);
 
+CREATE TABLE IF NOT EXISTS sku_model_names (
+    used_for_sku    TEXT PRIMARY KEY,
+    brand           TEXT NOT NULL,
+    model_name      TEXT NOT NULL,
+    assigned_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS descriptions (
     sku             TEXT PRIMARY KEY,
     description_html TEXT NOT NULL,
@@ -198,7 +205,60 @@ def get_pending_batch_id(conn: sqlite3.Connection) -> str | None:
     return row["batch_id"] if row and row["batch_id"] else None
 
 
+# --- sku→model_name helpers (no collision suffixes) ---
+
+def get_sku_model_name(conn: sqlite3.Connection, sku: str) -> str | None:
+    """Look up model_name for sku — new table first, old table as fallback."""
+    row = conn.execute(
+        "SELECT model_name FROM sku_model_names WHERE used_for_sku = ?", (sku,)
+    ).fetchone()
+    if row:
+        return row["model_name"]
+    row = conn.execute(
+        "SELECT model_name FROM used_model_names WHERE used_for_sku = ?", (sku,)
+    ).fetchone()
+    return row["model_name"] if row else None
+
+
+def save_sku_model_name(conn: sqlite3.Connection, sku: str, brand: str, model_name: str) -> None:
+    conn.execute(
+        "INSERT OR REPLACE INTO sku_model_names (used_for_sku, brand, model_name) VALUES (?, ?, ?)",
+        (sku, brand, model_name),
+    )
+
+
 # --- product helpers ---
+
+_CLEARABLE_TABLES = {
+    "descriptions":         "Opisy HTML",
+    "description_versions": "Historia wersji opisów",
+    "products":             "Produkty (metadata)",
+    "used_model_names":     "Nazwy modeli (stara tabela)",
+    "sku_model_names":      "Nazwy modeli (SKU→model)",
+    "batch_state":          "Stan Batch API",
+    "product_snapshots":    "Snapshots (diff)",
+    "thumbnails":           "Miniatury (cache)",
+    "lifestyle_thumbnails": "Lifestyle AI (cache)",
+}
+
+
+def clear_cache(conn: sqlite3.Connection, tables: list[str] | None = None) -> dict[str, int]:
+    """Delete rows from the given tables (default: all clearable tables).
+
+    Returns {table: rows_deleted}.
+    """
+    targets = tables if tables is not None else list(_CLEARABLE_TABLES.keys())
+    result: dict[str, int] = {}
+    for tbl in targets:
+        if tbl not in _CLEARABLE_TABLES:
+            continue
+        try:
+            cur = conn.execute(f"DELETE FROM {tbl}")  # noqa: S608 — table name from controlled list
+            result[tbl] = cur.rowcount
+        except Exception:
+            result[tbl] = 0
+    return result
+
 
 def upsert_product(
     conn: sqlite3.Connection,

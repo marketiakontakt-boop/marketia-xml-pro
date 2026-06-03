@@ -58,3 +58,29 @@ class BrandMapper:
         for p in products:
             brand, _conf = self.detect(p)
             p.brand = brand
+
+    # Attribute keys whose values should be replaced with the own brand display name
+    _PRODUCER_ATTR_KEYS: frozenset[str] = frozenset({
+        "producent", "producer", "manufacturer", "marka producenta",
+        "marka", "brand", "dostawca", "supplier",
+    })
+
+    def sanitize_manufacturer_names(self, products: list[Product]) -> None:
+        """Replace supplier brand names with the user's own brand display name.
+
+        Updates both product.manufacturer_name and any 'Producent'/'Marka'/etc.
+        keys in product.attributes — replacing the value, not removing the key,
+        so exported XML and Allegro parameters show the correct own brand.
+        Products with no assigned brand get manufacturer_name cleared.
+        """
+        for p in products:
+            if p.brand and p.brand != UNKNOWN:
+                display = self.brands.get(p.brand, {}).get("name", p.brand.upper())
+                p.manufacturer_name = display
+                # Replace supplier value in attributes (Producent, Marka, etc.)
+                attrs = getattr(p, "attributes", None) or {}
+                for key in list(attrs.keys()):
+                    if key.lower() in self._PRODUCER_ATTR_KEYS:
+                        attrs[key] = display
+            else:
+                p.manufacturer_name = ""

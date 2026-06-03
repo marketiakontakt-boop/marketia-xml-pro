@@ -78,6 +78,8 @@ class Product:
     thumbnail_url: str = ""   # local path or ImgBB URL after Phase 4
     attributes: dict[str, str] = field(default_factory=dict)
     allegro_category: str = ""   # populated by category_mapper transformer
+    variant_group_id: int = 0    # 0 = not grouped; same positive int = same variant group
+    variant_name: str = ""       # color/size suffix, e.g. "Białe", "XL"
 
 
 def _collect_attributes(elem: Any) -> dict[str, str]:

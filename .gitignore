@@ -6,7 +6,11 @@ __pycache__/
 .env
 .env.save
 cache/*.db
+data/cache.db
+*.db
 output/*.xml
+output/thumbnails/
 dist/
 build/
 *.egg-info/
+.superpowers/

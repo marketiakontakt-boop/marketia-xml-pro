@@ -77,6 +77,7 @@ def upload_thumbnails(
     products,
     thumb_dir: Path,
     progress_callback=None,
+    cancel_check=None,
 ) -> int:
     """Upload all generated thumbnails to ImgBB and set product.thumbnail_url.
 
@@ -90,6 +91,8 @@ def upload_thumbnails(
 
     uploaded = 0
     for i, p in enumerate(products, 1):
+        if cancel_check and cancel_check():
+            break
         path = thumb_dir / f"{p.sku}_lifestyle.jpg"
         if not path.exists():
             path = thumb_dir / f"{p.sku}.jpg"

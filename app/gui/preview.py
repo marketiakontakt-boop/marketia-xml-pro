@@ -1,6 +1,7 @@
-"""HTML preview — renders all descriptions with BaseLinker jumi CSS in system browser."""
+"""HTML preview — renders all descriptions with BaseLinker CSS in system browser."""
 from __future__ import annotations
 
+import re
 import tempfile
 import webbrowser
 from pathlib import Path
@@ -8,7 +9,7 @@ from pathlib import Path
 from app.parser.normalizer import Product
 from app.validator.quality_scorer import score_description, get_label
 
-JUMI_CSS = """
+PREVIEW_CSS = """
 body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
 .product-card { background: white; border: 1px solid #ddd; border-radius: 8px; margin: 24px 0; padding: 24px; }
 .product-header { border-bottom: 2px solid #0a5c99; padding-bottom: 12px; margin-bottom: 16px; }
@@ -16,7 +17,15 @@ body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; paddin
 .product-header .meta { color: #888; font-size: 12px; }
 .score-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; color: white; margin-left: 8px; }
 .no-desc { color: #c0392b; font-style: italic; padding: 20px; }
-/* Jumi / BaseLinker styles */
+/* ── New 6/6 grid format (section.section) ── */
+section.section { display: flex; gap: 20px; align-items: flex-start; margin: 16px 0; border-top: 1px solid #eee; padding-top: 16px; }
+section.section:first-of-type { border-top: none; padding-top: 0; }
+.item-6 { flex: 1; }
+.text-item h2 { font-size: 15px; color: #222; margin: 0 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+.text-item p, .text-item ul, .text-item ol { font-size: 14px; line-height: 1.6; color: #333; margin: 0; }
+.text-item ul { padding-left: 20px; }
+.image-item img { width: 100%; max-width: 280px; height: 200px; object-fit: contain; border: 1px solid #eee; border-radius: 4px; display: block; }
+/* ── Legacy jumi format (div.wiersz) ── */
 .wiersz { display: flex; gap: 20px; align-items: flex-start; margin: 16px 0; border-top: 1px solid #eee; padding-top: 16px; }
 .wiersz:first-child { border-top: none; padding-top: 0; }
 .tekst { flex: 1; }
@@ -26,6 +35,22 @@ body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; paddin
 .img { flex: 0 0 200px; }
 .img img { width: 200px; height: 150px; object-fit: contain; border: 1px solid #eee; border-radius: 4px; }
 """
+
+# Keep old name as alias for any code that imports it directly
+JUMI_CSS = PREVIEW_CSS
+
+
+def _resolve_img_srcs(description: str, images: list[str]) -> str:
+    """Replace src="N" (BaseLinker numbered refs) with actual image URLs for preview."""
+    if not images:
+        return description
+
+    def _replace(m: re.Match) -> str:
+        n = int(m.group(1))
+        idx = max(0, min(n - 1, len(images) - 1))
+        return f'src="{images[idx]}"'
+
+    return re.sub(r'src="(\d+)"', _replace, description)
 
 
 def open_preview(products: list[Product]) -> int:
@@ -44,13 +69,14 @@ def open_preview(products: list[Product]) -> int:
         label, color = get_label(score)
         badge = f'<span class="score-badge" style="background:{color}">{score}/10 {label}</span>'
         ean_warn = "" if p.ean_valid else ' <span style="color:#c0392b;font-weight:bold">⚠ EAN błędny</span>'
+        desc = _resolve_img_srcs(p.description, list(p.images or []))
         rows_html.append(f"""
 <div class="product-card">
   <div class="product-header">
     <h2>{p.title or p.name}{badge}</h2>
     <div class="meta">SKU: {p.sku} | Marka: {p.brand or '—'} | EAN: {p.ean}{ean_warn} | Zdjęcia: {len(p.images)}</div>
   </div>
-  {p.description}
+  {desc}
 </div>""")
 
     html = f"""<!DOCTYPE html>
@@ -58,7 +84,7 @@ def open_preview(products: list[Product]) -> int:
 <head>
 <meta charset="utf-8">
 <title>Marketia XML Pro — Podgląd opisów ({len(with_desc)} prod.)</title>
-<style>{JUMI_CSS}</style>
+<style>{PREVIEW_CSS}</style>
 </head>
 <body>
 <h1 style="color:#0a5c99">Podgląd opisów — {len(with_desc)} produktów</h1>
@@ -82,12 +108,13 @@ def open_single_preview(product: Product) -> None:
     score = product.quality_score if product.quality_score >= 0 else score_description(product.description)
     label, color = get_label(score)
     badge = f'<span class="score-badge" style="background:{color}">{score}/10 {label}</span>'
+    desc = _resolve_img_srcs(product.description, list(product.images or []))
     html = f"""<!DOCTYPE html>
 <html lang="pl">
 <head>
 <meta charset="utf-8">
 <title>{product.sku} — Podgląd opisu</title>
-<style>{JUMI_CSS}</style>
+<style>{PREVIEW_CSS}</style>
 </head>
 <body>
 <div class="product-card">
@@ -95,7 +122,7 @@ def open_single_preview(product: Product) -> None:
     <h2>{product.title or product.name}{badge}</h2>
     <div class="meta">SKU: {product.sku} | Marka: {product.brand or '—'} | EAN: {product.ean or '—'}</div>
   </div>
-  {product.description}
+  {desc}
 </div>
 </body>
 </html>"""

@@ -21,6 +21,7 @@ class ProductDetailWindow(ctk.CTkToplevel):
         all_brands: list[str],
         on_brand_change: Callable[[Product, str], None],
         on_regenerate: Callable[[Product], None],
+        on_model_change: Callable[[Product, str], None] | None = None,
     ):
         super().__init__(parent)
         self.resizable(True, True)
@@ -29,6 +30,7 @@ class ProductDetailWindow(ctk.CTkToplevel):
 
         self._on_brand_change = on_brand_change
         self._on_regenerate = on_regenerate
+        self._on_model_change = on_model_change
         self._all_brands = all_brands
 
         self._tabs = ctk.CTkTabview(self)
@@ -59,11 +61,11 @@ class ProductDetailWindow(ctk.CTkToplevel):
 
     def _build_opis_tab(self, parent: ctk.CTkFrame) -> None:
         parent.grid_columnconfigure(0, weight=1)
-        parent.grid_rowconfigure(1, weight=1)
+        parent.grid_rowconfigure(2, weight=1)
 
-        # toolbar
+        # ── row 0: brand + actions ─────────────────────────────────────────
         toolbar = ctk.CTkFrame(parent, fg_color="transparent")
-        toolbar.grid(row=0, column=0, sticky="ew", pady=(0, 6))
+        toolbar.grid(row=0, column=0, sticky="ew", pady=(0, 2))
 
         ctk.CTkLabel(toolbar, text="Marka:").pack(side="left", padx=(4, 4))
         self._brand_var = ctk.StringVar()
@@ -88,9 +90,31 @@ class ProductDetailWindow(ctk.CTkToplevel):
         )
         self._regen_btn.pack(side="left")
 
-        # HTML textbox
+        # ── row 1: model name ──────────────────────────────────────────────
+        model_bar = ctk.CTkFrame(parent, fg_color="transparent")
+        model_bar.grid(row=1, column=0, sticky="ew", pady=(0, 6))
+
+        ctk.CTkLabel(model_bar, text="Model:", text_color="#6B7280").pack(side="left", padx=(4, 4))
+        self._model_var = ctk.StringVar()
+        self._model_entry = ctk.CTkEntry(
+            model_bar, textvariable=self._model_var, width=220,
+            placeholder_text="np. Bergen, Falcon, Dator…",
+        )
+        self._model_entry.pack(side="left", padx=(0, 6))
+        self._model_entry.bind("<Return>", lambda e: self._save_model())
+        ctk.CTkButton(
+            model_bar, text="Zapisz model", width=110,
+            fg_color="#374151", hover_color="#1F2937",
+            command=self._save_model,
+        ).pack(side="left", padx=(0, 12))
+        self._model_hint = ctk.CTkLabel(
+            model_bar, text="", text_color="#6B7280", font=ctk.CTkFont(size=10)
+        )
+        self._model_hint.pack(side="left")
+
+        # ── row 2: HTML textbox ────────────────────────────────────────────
         self._html_box = ctk.CTkTextbox(parent, wrap="word", font=ctk.CTkFont(family="Courier", size=11))
-        self._html_box.grid(row=1, column=0, sticky="nsew")
+        self._html_box.grid(row=2, column=0, sticky="nsew")
 
     def _build_historia_tab(self, parent: ctk.CTkFrame) -> None:
         parent.grid_columnconfigure(0, weight=1)
@@ -107,6 +131,10 @@ class ProductDetailWindow(ctk.CTkToplevel):
         brands = self._all_brands or ["—"]
         self._brand_menu.configure(values=brands)
         self._brand_var.set(p.brand or "—")
+
+        # model name field
+        self._model_var.set(p.model_name or "")
+        self._model_hint.configure(text="")
 
         # quality score
         score = getattr(p, "quality_score", -1)
@@ -181,6 +209,14 @@ class ProductDetailWindow(ctk.CTkToplevel):
         new_brand = self._brand_var.get()
         if new_brand and new_brand != "—":
             self._on_brand_change(self._product, new_brand)
+
+    def _save_model(self) -> None:
+        new_model = self._model_var.get().strip()
+        if not new_model:
+            return
+        if self._on_model_change:
+            self._on_model_change(self._product, new_model)
+            self._model_hint.configure(text=f"✓ zapisano: {new_model}", text_color="#1f883d")
 
     def _open_browser(self) -> None:
         if getattr(self._product, "description", None):
