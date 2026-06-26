@@ -25,27 +25,66 @@ from app.parser.normalizer import Product
 DEFAULT_POOL_PATH = Path(__file__).resolve().parents[2] / "data" / "model_names.json"
 
 # Brands where model names are NOT replaced — original name from supplier XML is kept.
-SKIP_MODEL_RENAME_BRANDS: frozenset[str] = frozenset({"intex"})
+# Brands that do NOT use real collection names — pool names are internal grouping only.
+# For these brands: product.name is preserved as-is from the supplier (no pool_name substitution),
+# and model_name stays empty so titles are built purely from the supplier description.
+SKIP_MODEL_RENAME_BRANDS: frozenset[str] = frozenset({
+    "intex",
+    "hopla_toys",
+    "marketia_home",
+    "lifekraft",
+    "zoovera",
+})
 
 _CONS = list("bdfgklmnprst")   # no v/z/x — softer, more name-friendly in Polish
 _VOWELS = list("aeiou")
 _CODAS = ["", "l", "n", "r"]    # short coda, no "s" at end (feels like abbreviation)
 
 
+_PRONOUNCEABLE_BLOCKLIST: frozenset[str] = frozenset({
+    "dupa", "pupa", "kupa", "suka", "baba", "pipa", "wino", "bida",
+})
+
+
 def _random_pronounceable() -> str:
     """Generate a 4-5 letter name using CV syllable patterns.
 
     Produces names like: Balon, Kenis, Toral, Mesin, Delos — easy to read aloud in Polish.
-    Avoids double letters and harsh consonant clusters.
+    Avoids double letters, harsh consonant clusters, and Polish profanity.
     """
-    c1 = random.choice(_CONS).upper()
-    v1 = random.choice(_VOWELS)
-    # second consonant different from first
-    c2 = random.choice([c for c in _CONS if c != c1.lower()])
-    # second vowel different from first (avoids "aa", "ee" etc.)
-    v2 = random.choice([v for v in _VOWELS if v != v1])
-    coda = random.choice(_CODAS)
-    return c1 + v1 + c2 + v2 + coda
+    while True:
+        c1 = random.choice(_CONS).upper()
+        v1 = random.choice(_VOWELS)
+        c2 = random.choice([c for c in _CONS if c != c1.lower()])
+        v2 = random.choice([v for v in _VOWELS if v != v1])
+        coda = random.choice(_CODAS)
+        name = c1 + v1 + c2 + v2 + coda
+        if name.lower() not in _PRONOUNCEABLE_BLOCKLIST:
+            return name
+
+# Words indicating material/fabric — excluded from series key selection.
+# Present in many products but describe variant, not the collection.
+_MATERIAL_WORDS: frozenset[str] = frozenset({
+    "ekoskóra", "welur", "aksamit", "velvet", "tkanina", "skóra",
+    "rattan", "technorattan", "aluminium", "metal", "plastik",
+    "drewno", "bambus", "bambusz", "mikrofibra", "poliester",
+    "nylon", "bawełna", "len", "sztuczna",
+})
+
+# Common functional adjectives in furniture names — not model identifiers.
+_STYLE_ADJECTIVES: frozenset[str] = frozenset({
+    "obrotowe", "obrotowy", "obrotowa",
+    "regulowane", "regulowany", "regulowana",
+    "pikowane", "pikowany", "pikowana",
+    "składane", "składany", "składana",
+    "rozkładane", "rozkładany", "rozkładana",
+    "barowe", "barowy", "barowa",
+    "biurowe", "biurowy", "biurowa",
+    "ogrodowe", "ogrodowy", "ogrodowa",
+    "dziecięce", "dziecięcy", "dziecięca",
+    "nowoczesne", "nowoczesny", "nowoczesna",
+    "skandynawskie", "skandynawski", "skandynawska",
+})
 
 # Words that indicate a color or size variant
 _VARIANT_WORDS: frozenset[str] = frozenset({
@@ -66,13 +105,47 @@ _VARIANT_WORDS: frozenset[str] = frozenset({
     "różowy", "różowe", "różowa",
     "kremowy", "kremowe", "kremowa",
     "bordowy", "bordowe", "bordowa",
-    "turkusowy", "turkusowe",
+    "turkusowy", "turkusowe", "turkusowa",
     "ciemny", "ciemne", "ciemna",
     "jasny", "jasne", "jasna",
     "khaki", "beige", "ecru",
+    # Brakujące kolory mebli (XML dropshipping)
+    "musztardowy", "musztardowe", "musztardowa",
+    "kawowy", "kawowe", "kawowa",
+    "naturalny", "naturalne", "naturalna",
+    "oliwkowy", "oliwkowe", "oliwkowa",
+    "miętowy", "miętowe", "miętowa",
+    "miodowy", "miodowe", "miodowa",
+    "piaskowy", "piaskowe", "piaskowa",
+    "antracytowy", "antracytowe", "antracytowa", "antracyt",
+    "grafitowy", "grafitowe", "grafitowa", "grafit",
+    "błękitny", "błękitne", "błękitna",
+    "dębowy", "dębowe", "dębowa", "dąb",
+    "bukowy", "bukowe", "bukowa", "buk",
+    "orzechowy", "orzechowe", "orzechowa", "orzech",
+    "sosnowy", "sosnowe", "sosnowa", "sosna",
+    "cappuccino", "espresso", "mocca",
+    "drewno", "drewniany", "drewniane", "drewniana",
+    "transparent", "transparentny", "przezroczysty", "przezroczyste",
+    # Adverbial compound forms — used in "biało/czarne", "czarno-szare", "srebrno-złote"
+    "biało", "czarno", "szaro", "brązowo", "beżowo", "granatowo", "niebiesko",
+    "czerwono", "zielono", "żółto", "różowo", "srebrno", "złoto", "kremowo",
+    "fioletowo", "bordowo", "ciemno", "jasno",
+    # Compound Polish colors (ciemno/jasno + color — single word without hyphen)
+    "ciemnoszary", "ciemnoszare", "ciemnoszara",
+    "ciemnobrązowy", "ciemnobrązowe", "ciemnobrązowa",
+    "ciemnoniebieskie", "ciemnoniebieska", "ciemnoniebieski",
+    "ciemnozielony", "ciemnozielone", "ciemnozielona",
+    "ciemnogranatowy", "ciemnogranatowe",
+    "jasnoszary", "jasnoszare", "jasnoszara",
+    "jasnobrzązowy", "jasnobrzązowe",
+    "jasnoniebieskie", "jasnoniebieska",
+    "jasnozielony", "jasnozielone",
+    "jasnobezowy", "jasnobezowe",
     # English colors
     "black", "white", "grey", "gray", "dark", "light",
     "brown", "green", "blue", "red", "yellow", "silver", "gold", "pink",
+    "navy", "mint", "mustard", "cream", "natural", "oak", "walnut", "beech",
     # Size letters intentionally excluded: m, l, s, xl, xxl, xs etc.
     # This catalog (furniture, toys, pools) uses M/L/XL/XXL as measurement units
     # ("3X3 M", "1.8 L", "kuchnia XXL"), not clothing size variants.
@@ -80,35 +153,133 @@ _VARIANT_WORDS: frozenset[str] = frozenset({
     # making all color variants collapse to the same model name ("Bari M").
 })
 
+# Tokens treated as noise — stripped before variant detection.
+# Supplier names sometimes carry channel tags like "(ikeabox)" or "(allegro)"
+# which would otherwise be glued to the series name and break grouping.
+_NOISE_PAREN_RE = re.compile(r"\s*\([^)]*\)\s*")
+
+# Hurtmeblowy SKU pattern: model_NNNNN_V-MODELNAME-CODE
+# e.g. "model_3544_1-AVOLA-DORY21" → "avola"
+_HM_SKU_RE = re.compile(r"^model_\d+_\d+-([A-Za-z]{3,})-", re.IGNORECASE)
+
+
+def _series_from_sku(sku: str) -> str | None:
+    """Extract supplier model name from hurtmeblowy SKU. Returns lowercase or None."""
+    m = _HM_SKU_RE.match(sku)
+    return m.group(1).lower() if m else None
+
+
+def _is_compound_color(token: str) -> bool:
+    """True if `token` is a slash/dash-joined compound where every part is a known color.
+
+    Examples that should match:
+        'biało/czarne', 'czarno-szare', 'czarne/czarne', 'biało-czarne'
+    Mixed-case is normalised. Single-color tokens are NOT compounds — caller already
+    checks `_VARIANT_WORDS` directly for those.
+    """
+    parts = re.split(r"[-/]", token.strip().lower())
+    parts = [p for p in parts if p]
+    if len(parts) < 2:
+        return False
+    return all(p in _VARIANT_WORDS for p in parts)
+
+
+def _is_variant(token: str) -> bool:
+    """Treat a token as a colour/size variant if it's in the set OR a compound colour."""
+    low = token.strip().lower()
+    return low in _VARIANT_WORDS or _is_compound_color(low)
+
 # Generic furniture / category words stripped when finding the clean series name
 _FURNITURE_WORDS: frozenset[str] = frozenset({
-    "krzesło", "krzesła", "fotel", "fotele", "sofa", "sofą", "kanapa", "kanapy",
-    "stół", "stolik", "ława", "łóżko", "regał", "komoda", "szafka", "szafki",
-    "leżak", "huśtawka", "altana", "pergola", "ławka", "biurko",
+    # Meble
+    "krzesło", "krzesła", "krzeseł", "fotel", "fotele", "foteli",
+    "sofa", "sofą", "sofy", "kanapa", "kanapy", "stół", "stolik", "stolika",
+    "ława", "ławka", "ławki", "łóżko", "regał", "komoda", "szafka", "szafki",
+    "szafa", "leżak", "huśtawka", "altana", "pergola", "biurko",
     "zestaw", "meble", "mebel", "mebli", "narożnik", "narożna",
-    "hoker", "taboret", "bujak", "szezlong",
+    "hoker", "taboret", "bujak", "szezlong", "wieszak", "pufa",
+    # Ogród / outdoor
+    "trampolina", "trampoliny", "trampolinek", "trampolinka",
+    "parasol", "altanka", "donica", "doniczka", "hamak", "hamaki",
+    "basen", "baseny", "leżaki", "taczka", "kosiarka",
+    # Zabawki / dzieci
+    "hulajnoga", "hulajnogi", "hulajnóg",
+    "rower", "rowery", "rowerek", "rowerki",
+    "zabawka", "zabawki", "lalka", "lalki",
+    "klocki", "puzzle", "namiot", "namioty",
+    "piłka", "piłki", "domek", "domki",
+    "drabinka", "drabinki", "zjeżdżalnia", "zjeżdżalnie",
+    "karuzela", "karuzelka", "jeździk", "chodzik", "pchacz",
+    "skakanka", "grzyb", "piaskownica",
+    # Dom / home
+    "lampa", "lampka", "kinkiet", "żyrandol",
+    "lustro", "lustra", "dywan", "dywany", "chodnik",
+    "organizer", "dozownik", "pojemnik", "kosz", "koszyk",
+    "wieszaki", "haczyk", "haczyki", "dekoracja",
+    # Kuchnia
+    "czajnik", "garnek", "garnki", "patelnia", "patelnie",
+    "blender", "toster", "ekspres", "mikser", "sokowirówka", "frytkownica",
+    # Elektro
+    "odkurzacz", "wentylator", "oczyszczacz", "nawilżacz", "grzejnik",
+    "żelazko", "lokówka", "prostownica",
+    # Zwierzęta
+    "legowisko", "klatka", "transporter", "miska", "miski",
+    "drapak", "budka", "obroża", "smycz",
+    # Inne typy produktów
+    "wózek", "hulajnogi", "mata", "pojemniki", "komplet",
 })
 
 
+def _strip_noise(name: str) -> str:
+    """Remove channel tags in parens ('(ikeabox)', '(allegro)') so they don't pollute the series key."""
+    return _NOISE_PAREN_RE.sub(" ", name).strip()
+
+
 def _strip_variant_words(name: str) -> str:
-    """Remove ALL color/size words from name; result is the series key."""
-    words = name.strip().lower().split()
-    return " ".join(w for w in words if w not in _VARIANT_WORDS)
+    """Remove ALL color/size words (including compound slash/dash colors) from name."""
+    cleaned = _strip_noise(name)
+    words = cleaned.strip().lower().split()
+    return " ".join(w for w in words if not _is_variant(w))
+
+
+def _strip_series_noise(name: str) -> str:
+    """Remove colors, materials, and style adjectives — leaves series-candidate words."""
+    cleaned = _strip_noise(name)
+    words = cleaned.strip().lower().split()
+    return " ".join(
+        w for w in words
+        if not _is_variant(w)
+        and w not in _MATERIAL_WORDS
+        and w not in _STYLE_ADJECTIVES
+    )
 
 
 def _extract_variant_suffix(name: str) -> str:
-    """Return color/size words starting from the first color found (Title Case)."""
-    words = name.strip().split()
-    first_idx = next((i for i, w in enumerate(words) if w.lower() in _VARIANT_WORDS), -1)
+    """Return color/size words starting from the first color/compound found (Title Case)."""
+    cleaned = _strip_noise(name)
+    words = cleaned.strip().split()
+    first_idx = next((i for i, w in enumerate(words) if _is_variant(w)), -1)
     if first_idx == -1:
         return ""
     suffix: list[str] = []
     for word in words[first_idx:]:
-        if word.lower() in _VARIANT_WORDS:
+        if _is_variant(word):
             suffix.append(word.capitalize())
         else:
             break
     return " ".join(suffix)
+
+
+def _pick_series_word(words: list[str], brand_freq: dict[str, int]) -> str | None:
+    """Pick the most frequent non-furniture, non-noise word as the series identifier.
+
+    Most frequent = appears in most products of the same brand = collection name.
+    Ties broken alphabetically for determinism.
+    """
+    candidates = [w for w in words if w not in _FURNITURE_WORDS and len(w) >= 3 and w.isalpha()]
+    if not candidates:
+        return None
+    return max(candidates, key=lambda w: (brand_freq.get(w, 0), w))
 
 
 def _series_from_stripped(stripped_lower: str, first_word_only: bool = True) -> str:
@@ -144,6 +315,18 @@ def _replace_series_in_name(product: Product, old_series: str, new_series: str) 
     )
     if product.name:
         product.name = pat.sub(new_series, product.name)
+
+
+def _remove_descriptor_from_name(product: Product, word: str) -> None:
+    """Remove a descriptor word (sub-model code like 'LERA', 'TAMU') from product.name."""
+    if not word or not product.name:
+        return
+    pat = re.compile(
+        _WORD_BOUNDARY + re.escape(word) + r'(?![A-Za-zÀ-ɏ0-9])',
+        re.IGNORECASE,
+    )
+    if pat.search(product.name):
+        product.name = re.sub(r'  +', ' ', pat.sub('', product.name)).strip()
 
 
 def _used_base_names_for_brand(conn: sqlite3.Connection, brand: str) -> set[str]:
@@ -213,26 +396,62 @@ class ModelNameGenerator:
         if (product.brand or "").lower() in SKIP_MODEL_RENAME_BRANDS:
             return product.model_name or ""
 
+        sku_series = _series_from_sku(product.sku)
         raw = product.name or product.title or product.sku
-        stripped = _strip_variant_words(raw)
-        original_series = _series_from_stripped(stripped.lower())
+        stripped_noise = _strip_series_noise(raw)
+        words = [
+            w for w in stripped_noise.lower().split()
+            if w not in _FURNITURE_WORDS and len(w) >= 3 and w.isalpha()
+        ]
+        # SKU encodes the series directly — no frequency analysis needed
+        if sku_series:
+            original_series = sku_series
+        else:
+            original_series = words[0] if words else _series_from_stripped(stripped_noise.lower())
 
         prior = get_sku_model_name(self.conn, product.sku)
         if prior:
             product.model_name = prior
             prior_base = prior.split()[0]
-            _replace_series_in_name(product, original_series, prior_base)
+            for w in words:
+                if w == prior_base.lower():
+                    continue
+                if sku_series:
+                    # Replace the known series word; remove everything else
+                    if w == sku_series:
+                        _replace_series_in_name(product, w, prior_base)
+                    else:
+                        _remove_descriptor_from_name(product, w)
+                else:
+                    replaced = False
+                    if not replaced:
+                        _replace_series_in_name(product, w, prior_base)
+                        replaced = True
+                    else:
+                        _remove_descriptor_from_name(product, w)
             return prior
 
         series = self._pick_pool_name(product.brand or "")
         if not series:
             series = original_series or raw.split()[0].capitalize()
 
-        suffix = _extract_variant_suffix(raw)
-        full_model = f"{series} {suffix}".strip() if suffix else series
+        full_model = series  # single-word — color lives in product.name/title, not model_name
         self._save(product.brand or "", full_model, product.sku)
         product.model_name = full_model
-        _replace_series_in_name(product, original_series, series)
+        if sku_series:
+            for w in words:
+                if w == sku_series:
+                    _replace_series_in_name(product, w, series)
+                else:
+                    _remove_descriptor_from_name(product, w)
+        else:
+            replaced = False
+            for w in words:
+                if not replaced:
+                    _replace_series_in_name(product, w, series)
+                    replaced = True
+                else:
+                    _remove_descriptor_from_name(product, w)
         return full_model
 
     # ------------------------------------------------------------------
@@ -247,41 +466,94 @@ class ModelNameGenerator:
             prior = get_sku_model_name(self.conn, p.sku)
             if prior:
                 p.model_name = prior
-                # Replace original series name even on cache hit (XML-fresh name each run).
-                # Use only the base word (first token) for substitution so the color suffix
-                # in product.name is not duplicated.
-                raw = p.name or p.title or p.sku
-                original_series = _series_from_stripped(_strip_variant_words(raw).lower())
                 prior_base = prior.split()[0]
-                _replace_series_in_name(p, original_series, prior_base)
+                sku_series = _series_from_sku(p.sku)
+                raw = p.name or p.title or p.sku
+                stripped_noise = _strip_series_noise(raw)
+                desc_words = [
+                    w for w in stripped_noise.lower().split()
+                    if w not in _FURNITURE_WORDS and len(w) >= 3 and w.isalpha()
+                ]
+                replaced = False
+                for w in desc_words:
+                    if w == prior_base.lower():
+                        continue
+                    if sku_series:
+                        if w == sku_series:
+                            _replace_series_in_name(p, w, prior_base)
+                        else:
+                            _remove_descriptor_from_name(p, w)
+                    else:
+                        if not replaced:
+                            _replace_series_in_name(p, w, prior_base)
+                            replaced = True
+                        else:
+                            _remove_descriptor_from_name(p, w)
             else:
                 to_assign.append(p)
 
         if not to_assign:
             return
 
-        # Pass 2: group by (brand, stripped_series_key)
-        # Products sharing the same non-color base → same series group → same pool name.
-        # Products without a color suffix each get their own key (standalone).
-        groups: dict[tuple[str, str], list[tuple[Product, str]]] = defaultdict(list)
+        # Pass 2a: compute per-brand word frequency for series detection.
+        # Count how many products (not yet cached) contain each descriptor word.
+        # The word appearing in MOST products of a brand = collection name (e.g., "NOTO").
+        brand_word_freq: dict[str, dict[str, int]] = defaultdict(lambda: defaultdict(int))
+        product_meta: list[tuple[Product, str, list[str], str | None]] = []  # (product, suffix, words, series_word)
+
         for p in to_assign:
             brand = p.brand or ""
             raw = p.name or p.title or p.sku
             suffix = _extract_variant_suffix(raw)
-            stripped = _strip_variant_words(raw)
-            series_key = (brand, stripped) if suffix else (brand, p.sku)
-            groups[series_key].append((p, suffix))
+            stripped_noise = _strip_series_noise(raw)
+            words = [
+                w for w in stripped_noise.lower().split()
+                if w not in _FURNITURE_WORDS and len(w) >= 3 and w.isalpha()
+            ]
+            product_meta.append((p, suffix, words, None))  # series_word filled in Pass 2b
+            for w in set(words):  # set: count each word once per product
+                brand_word_freq[brand][w] += 1
+
+        # Pass 2b: build groups.
+        # SKU-encoded model name (hurtmeblowy pattern) takes precedence over frequency analysis.
+        # Fallback: frequency-based detection from product names.
+        groups: dict[tuple[str, str], list[tuple[Product, str, str | None]]] = defaultdict(list)
+        for p, suffix, words, _ in product_meta:
+            brand = p.brand or ""
+            sku_series = _series_from_sku(p.sku)
+            if sku_series:
+                series_word = sku_series
+            else:
+                freq = brand_word_freq[brand]
+                series_word = _pick_series_word(words, freq)
+            series_key = (brand, series_word) if series_word else (brand, p.sku)
+            groups[series_key].append((p, suffix, series_word))
 
         # Pass 3: assign one pool name per group (shared base across color variants).
         # model_name = "<PoolBase> <ColorSuffix>" so variants are distinct yet share the base.
         # The series base (not the full model_name) is substituted into product.name so the
         # color word in the original name is not duplicated.
-        for (brand, stripped_key), items in groups.items():
+        for (brand, _group_key), items in groups.items():
             series = self._pick_pool_name(brand)
-            original_series = _series_from_stripped(stripped_key)
+            first_series_word = items[0][2]  # frequency-picked word (e.g. "noto") or None
 
-            for p, suffix in items:
-                full_model = f"{series} {suffix}".strip() if suffix else series
+            for p, suffix, _sw in items:
+                full_model = series  # single-word — color lives in product.name/title
                 self._save(brand, full_model, p.sku)
                 p.model_name = full_model
-                _replace_series_in_name(p, original_series, series)
+                # All descriptor words for this product (computed before any substitution)
+                raw = p.name or p.title or p.sku
+                stripped_noise = _strip_series_noise(raw)
+                desc_words = [
+                    w for w in stripped_noise.lower().split()
+                    if w not in _FURNITURE_WORDS and len(w) >= 3 and w.isalpha()
+                ]
+                # Replace the series word first (e.g. NOTO → Bari), then remove others (LERA, TAMU)
+                replaced = False
+                for w in desc_words:
+                    target = first_series_word if first_series_word else w
+                    if w == target:
+                        _replace_series_in_name(p, w, series)
+                        replaced = True
+                    elif replaced or w != target:
+                        _remove_descriptor_from_name(p, w)

@@ -55,10 +55,10 @@ def generate_descriptions(
     progress_callback: Callable[[str], None] | None = None,
     cancel_check: "Callable[[], bool] | None" = None,
     wait_on_cooldown: bool = False,
-) -> tuple[int, int]:
+) -> tuple[int, int, float]:
     """Generate descriptions for pending products via Gemini.
 
-    Returns (generated_count, cached_count).
+    Returns (generated_count, cached_count, cost_usd).
     """
     def log(msg: str):
         if progress_callback:
@@ -71,7 +71,7 @@ def generate_descriptions(
 
     if not pending:
         log(f"Wszystkie {cached_count} opisy z cache — nic do generowania.")
-        return 0, cached_count
+        return 0, cached_count, 0.0
 
     log(f"Cache: {cached_count} | Do wygenerowania: {len(pending)}")
 
@@ -99,14 +99,20 @@ def generate_descriptions(
     def on_progress(done: int, total_: int, sku: str, error: str | None = None, cooling_status: str = ""):
         nonlocal generated
         suffix = f" | {cooling_status}" if cooling_status else ""
+        cost_str = f" | ${client.cost_usd:.4f}" if client.cost_usd > 0 else ""
         if error:
             log(f"[{done}/{total_}] BŁĄD {sku}: {error}{suffix}")
         else:
             generated += 1
-            log(f"[{done}/{total_}] ✓ {sku}{suffix}")
+            log(f"[{done}/{total_}] ✓ {sku}{cost_str}{suffix}")
 
     log(f"Generuję {total} opisów przez Gemini 2.5 Flash...")
-    results = client.generate_all(requests, progress_callback=on_progress, wait_on_cooldown=wait_on_cooldown)
+    results = client.generate_all(
+        requests,
+        progress_callback=on_progress,
+        wait_on_cooldown=wait_on_cooldown,
+        cancel_check=cancel_check,
+    )
 
     with open_cache() as conn:
         for sku, raw in results.items():
@@ -134,8 +140,10 @@ def generate_descriptions(
             save_description(conn, sku, html, quality_score=score)
 
     errors = sum(1 for v in results.values() if v is None)
-    log(f"Gotowe: {generated} wygenerowanych | {errors} błędów | {cached_count} z cache")
-    return generated, cached_count
+    cost_usd = client.cost_usd
+    cost_str = f" | Koszt: ${cost_usd:.4f} ({client.usage_summary()})" if cost_usd > 0 else ""
+    log(f"Gotowe: {generated} wygenerowanych | {errors} błędów | {cached_count} z cache{cost_str}")
+    return generated, cached_count, cost_usd
 
 
 def generate_single_description(product: Product) -> str:

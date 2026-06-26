@@ -70,6 +70,13 @@ CREATE TABLE IF NOT EXISTS description_versions (
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_desc_ver_sku_ver
     ON description_versions(sku, version);
+
+CREATE TABLE IF NOT EXISTS ai_titles (
+    sku             TEXT PRIMARY KEY,
+    title           TEXT NOT NULL,
+    prompt_version  TEXT NOT NULL,
+    generated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 """
 
 
@@ -227,6 +234,42 @@ def save_sku_model_name(conn: sqlite3.Connection, sku: str, brand: str, model_na
     )
 
 
+# --- AI title helpers ---
+
+def get_ai_title(conn: sqlite3.Connection, sku: str) -> str | None:
+    row = conn.execute(
+        "SELECT title FROM ai_titles WHERE sku = ?", (sku,)
+    ).fetchone()
+    return row["title"] if row else None
+
+
+def save_ai_title(
+    conn: sqlite3.Connection, sku: str, title: str, prompt_version: str = "v1"
+) -> None:
+    conn.execute(
+        """INSERT INTO ai_titles (sku, title, prompt_version)
+           VALUES (?, ?, ?)
+           ON CONFLICT(sku) DO UPDATE SET
+               title          = excluded.title,
+               prompt_version = excluded.prompt_version,
+               generated_at   = CURRENT_TIMESTAMP""",
+        (sku, title, prompt_version),
+    )
+
+
+def clear_ai_titles(conn: sqlite3.Connection, skus: list[str] | None = None) -> int:
+    if skus is None:
+        cur = conn.execute("DELETE FROM ai_titles")
+        return cur.rowcount
+    if not skus:
+        return 0
+    placeholders = ",".join("?" * len(skus))
+    cur = conn.execute(
+        f"DELETE FROM ai_titles WHERE sku IN ({placeholders})", skus  # noqa: S608
+    )
+    return cur.rowcount
+
+
 # --- product helpers ---
 
 _CLEARABLE_TABLES = {
@@ -239,6 +282,7 @@ _CLEARABLE_TABLES = {
     "product_snapshots":    "Snapshots (diff)",
     "thumbnails":           "Miniatury (cache)",
     "lifestyle_thumbnails": "Lifestyle AI (cache)",
+    "ai_titles":            "Tytuły AI (cache)",
 }
 
 

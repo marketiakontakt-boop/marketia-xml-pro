@@ -6,3 +6,4 @@ httpx>=0.27.0
 rembg[cpu]>=2.0.50
 Pillow>=10.0.0
 aiohttp>=3.9.0
+fal-client>=1.0.0

@@ -3,12 +3,12 @@
 Pipeline per product:
   1. Download original image (or use cached thumbnail)
   2. rembg — remove background → RGBA cutout
-  3. Imagen 4 — generate scene background matching brand / product type
+  3. Flux Pro (fal.ai) — generate scene background matching brand / product type
   4. Composite product cutout onto AI background at natural floor position
   5. Save as output/thumbnails/{sku}_lifestyle.jpg
 
-Background scenes include people and contextual elements so the product
-looks naturally placed in a real-world setting.
+Background scenes include contextual elements so the product looks naturally
+placed in a real-world setting. No persons in thumbnails — Allegro regulation.
 """
 from __future__ import annotations
 
@@ -37,45 +37,47 @@ CACHE_DB = Path(__file__).resolve().parents[2] / "cache" / "marketia.db"
 _BRAND_SCENES: dict[str, list[str]] = {
     "villago": [
         (
-            "Modern Scandinavian dining room interior. Warm wooden parquet floor, white walls, "
-            "large windows with soft natural daylight. A smiling woman in casual clothes is "
-            "sitting at the far edge of frame. Center floor area is empty — space for furniture. "
-            "No chairs or tables in the center. Photorealistic, interior design editorial style."
+            "Modern Scandinavian dining room interior. Warm light oak parquet floor, "
+            "white walls, large window with soft afternoon daylight. Potted monstera "
+            "plant in the corner, minimalist decor. Center floor area completely empty "
+            "— space for furniture. No chairs or tables in center. "
+            "Photorealistic, interior design editorial, clean and bright."
         ),
         (
-            "Contemporary Nordic living room. Light oak floor, sage-green accent wall, potted "
-            "monstera plant in corner. A young couple relaxing in background, laughing softly. "
-            "Clear empty space in the center of the frame at floor level. "
-            "No furniture in center. Warm afternoon light. Professional lifestyle photography."
+            "Contemporary Nordic living room. Sage-green accent wall, light oak floor, "
+            "thin-framed abstract art print. A small side table with a candle at the edge. "
+            "Wide empty space in the center of the frame at floor level. No furniture in center. "
+            "Warm afternoon light, professional interior lifestyle photography."
         ),
     ],
     "gardenstein": [
         (
-            "Lush sunny garden terrace, late afternoon golden hour. Green manicured lawn, "
-            "colorful flower beds, wooden decking. A woman in a summer dress holds an iced drink "
-            "and smiles in the background. Center of the terrace is clear — space for outdoor "
-            "furniture. No chairs or tables in center. Photorealistic, bright and cheerful."
+            "Elegant garden terrace, late afternoon golden hour. Wooden decking floor, "
+            "lush green manicured lawn in background with blurred bokeh. "
+            "Two decorative cushions and a cup of coffee on a small side table at the edge. "
+            "Wide center area on the decking is completely clear — space for outdoor furniture. "
+            "No chairs or sofas in center. Photorealistic, warm sunlight, premium outdoor lifestyle."
         ),
         (
-            "Elegant outdoor patio with stone tiles and pergola covered in climbing roses. "
-            "Blue sky, Mediterranean atmosphere. A man and a child play in the background. "
-            "Empty center area on the tiles ready for garden furniture. "
-            "No products in center. Sharp, vibrant, lifestyle editorial."
+            "Stylish outdoor patio with smooth stone tiles and wooden pergola. "
+            "Climbing roses on the pergola, blue sky, Mediterranean summer atmosphere. "
+            "Terracotta flower pot and a bottle of wine at the side. "
+            "Empty center area on the stone tiles ready for garden furniture placement. "
+            "No products in center. Sharp, vibrant, high-end outdoor lifestyle editorial."
         ),
     ],
     "intex": [
         (
-            "Large green suburban backyard on a sunny summer day. Blue sky, lush lawn. "
-            "Two children in bright swimwear are laughing and running on the grass nearby. "
-            "Parents are watching from a shaded area. Large clear space in the center of "
-            "the yard — area where an inflatable pool will be placed. No pool present. "
-            "Photorealistic, cheerful family atmosphere."
+            "Large suburban backyard on a sunny summer day. Blue sky, lush green lawn. "
+            "Colorful pool toys and towels visible at the edges of the frame. "
+            "Large completely empty green lawn space in the center of the frame. "
+            "No pool in the center. Photorealistic, bright, cheerful summer atmosphere."
         ),
         (
-            "Backyard garden party, summer afternoon. Families relaxing, cold drinks on a "
-            "side table, colorful towels on the grass. Bright sunshine. Wide open grassy "
-            "space in the center of the frame, no objects there. "
-            "Photorealistic, warm and inviting, high resolution."
+            "Bright garden with green grass and white fence in the background. "
+            "Summer afternoon sunshine, pool accessories at the edge. "
+            "Wide open grassy center area — no objects there. "
+            "Photorealistic, warm and inviting, high resolution family garden."
         ),
     ],
     "zoovera": [
@@ -94,24 +96,32 @@ _BRAND_SCENES: dict[str, list[str]] = {
     ],
     "hopla_toys": [
         (
-            "Bright children's bedroom, pastel blue walls, soft colorful rug on the floor. "
-            "Two children aged 4-6 are playing in the background, laughing. Wooden toy "
-            "shelves visible on the side. Clear open space in center of room on the rug. "
-            "No toys in center. Soft natural light. Photorealistic, playful and safe."
-        ),
-        (
-            "Cheerful playroom, yellow and white walls, wooden floor with a colorful mat. "
-            "A child in overalls is drawing at a table in the background. "
-            "Open empty space in the center of the frame on the floor. "
-            "Photorealistic, warm, family-friendly, lifestyle photography."
+            "Bright white studio background, pure white seamless backdrop, "
+            "soft even lighting with gentle shadow underneath. "
+            "Professional product photography, no people, no props. "
+            "Clean, minimal, white RGB 255 255 255 background. Photo studio."
         ),
     ],
     "marketia_home": [
         (
-            "Minimalist modern home interior. White walls, light oak parquet floor, "
-            "subtle shelf with plants and books on the side. A woman reads a book on "
-            "a sofa in the background. Empty center floor space. "
-            "Clean, contemporary, no clutter in center. Professional lifestyle photography."
+            "Minimalist Scandinavian home interior. White walls, light oak parquet floor, "
+            "small potted plant and a stack of books on a shelf to the side. "
+            "Empty center floor space, no clutter in center. "
+            "Clean, contemporary, soft natural light. Professional lifestyle photography."
+        ),
+    ],
+    "lifekraft": [
+        (
+            "Minimalist modern home office desk. Light marble surface, white walls, "
+            "small succulent plant to the side, a notebook and pen at the edge. "
+            "Clear empty center of the desk — space for a desk organizer product. "
+            "Warm white light, clean Scandinavian aesthetic. Photorealistic product lifestyle."
+        ),
+        (
+            "Bright modern bathroom with white ceramic tiles and wood accent shelf. "
+            "Folded white towels and a small candle to the side. "
+            "Empty center wall and counter space — spot for a bathroom organizer. "
+            "Clean, minimalist, spa-like atmosphere. Photorealistic interior lifestyle."
         ),
     ],
 }
@@ -159,42 +169,39 @@ def _alpha_trim(rgba: Image.Image) -> Image.Image:
 
 
 # ---------------------------------------------------------------------------
-# Imagen 4 background generation
+# Flux Pro (fal.ai) background generation
 # ---------------------------------------------------------------------------
 
 def _generate_background(prompt: str) -> Image.Image:
-    import google.genai as genai
-    from google.genai import types
+    import fal_client
 
-    keys = [k.strip() for k in os.getenv("GEMINI_API_KEYS", "").split(",") if k.strip()]
-    if not keys:
-        key = os.getenv("GEMINI_API_KEY", "").strip()
-        if not key:
-            raise RuntimeError("Brak klucza Gemini — ustaw GEMINI_API_KEYS lub GEMINI_API_KEY")
-        keys = [key]
+    api_key = os.getenv("FAL_KEY", "").strip() or os.getenv("FAL_API_KEY", "").strip()
+    if not api_key:
+        raise RuntimeError("Brak klucza fal.ai — ustaw FAL_KEY lub FAL_API_KEY w .env")
 
-    last_err: Exception | None = None
-    for key in keys:
-        try:
-            client = genai.Client(api_key=key)
-            response = client.models.generate_images(
-                model="imagen-4.0-fast-generate-001",
-                prompt=prompt,
-                config=types.GenerateImagesConfig(
-                    number_of_images=1,
-                    aspect_ratio="1:1",
-                    output_mime_type="image/jpeg",
-                ),
-            )
-            data = response.generated_images[0].image.image_bytes
-            return Image.open(io.BytesIO(data)).convert("RGB").resize(
-                (CANVAS, CANVAS), Image.LANCZOS
-            )
-        except Exception as e:
-            last_err = e
-            continue
+    os.environ["FAL_KEY"] = api_key
 
-    raise RuntimeError(f"Imagen 4 failed on all keys: {last_err}")
+    result = fal_client.run(
+        "fal-ai/flux-pro",
+        arguments={
+            "prompt": prompt,
+            "image_size": "square_hd",
+            "num_inference_steps": 28,
+            "guidance_scale": 3.5,
+            "num_images": 1,
+            "safety_tolerance": "2",
+        },
+    )
+    images = result.get("images") or []
+    if not images:
+        raise RuntimeError("Flux Pro nie zwrócił żadnego obrazu")
+
+    import urllib.request
+    with urllib.request.urlopen(images[0]["url"]) as resp:
+        data = resp.read()
+    return Image.open(io.BytesIO(data)).convert("RGB").resize(
+        (CANVAS, CANVAS), Image.LANCZOS
+    )
 
 
 # ---------------------------------------------------------------------------

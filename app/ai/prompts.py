@@ -63,6 +63,15 @@ WSKAZÓWKI ZOOVERA (akcesoria dla zwierząt):
 - Materiał: bezpieczny, łatwy do czyszczenia
 - Wymiary dopasowane do zwierzęcia
 """,
+    "lifekraft": """\
+WSKAZÓWKI LIFEKRAFT (organizery, akcesoria codzienne, drobne lifestyle):
+- Zastosowanie obowiązkowo: "do biura", "do łazienki", "do szafy", "do szuflady", "do podróży", "do kuchni"
+- Materiał konkretnie: bambus / plastik PP / ABS / stal nierdzewna / mikrofibra / silikon spożywczy (wybierz właściwy)
+- Wymiary ZAWSZE: SZ × GŁ × WYS w cm + pojemność jeśli ma sens (przegrody, sloty)
+- Korzyść: "porządek bez wysiłku", "szybki dostęp do drobiazgów", "minimalizm w codzienności", "all-in-one"
+- Skład zestawu / liczba przegród / liczba slotów: konkretnie z liczbami (X przegród, Y slotów na okulary itp.)
+- Klucz. frazy SEO: organizer biurkowy, organizer łazienkowy, akcesoria podróżne, porządek w szufladzie
+""",
 }
 
 _SET_KEYWORDS = frozenset(["zestaw", "komplet", "set", "combo"])
@@ -80,27 +89,48 @@ def _is_set_product(product: Product) -> bool:
 
 SYSTEM_PROMPT_JSON = """\
 Jesteś copywriterem e-commerce specjalizującym się w opisach produktów na Allegro i BaseLinker.
-Styl: benefit-selling — każda cecha = konkretna korzyść dla kupującego.
+Styl: wzoruj się na najlepszych polskich sprzedawcach Allegro (liderzy kategorii, Super Sprzedawcy) — \
+angażujący, ciepły, buyer-first styl, bezpośrednie "Ty", naturalny język, silne emotional hooks. \
+Każda cecha = konkretna korzyść, ale opowiedz ją jak polecenie od znajomego, nie jak specyfikację z fabryki.
 
-ZASADY TREŚCI:
+ZASADY TREŚCI (TWARDE WYMOGI — opis jest oceniany 0-10, celuj w 10/10):
 - Cecha → Korzyść: NIGDY "Produkt ma kółka". ZAWSZE "Kółka pozwalają przestawić leżak jedną ręką".
-- Konkretne liczby z opisu oryginalnego (waga, wymiary, materiał, pojemność).
-- <b>...</b> dozwolone wewnątrz text i intro — na kluczowych parametrach i korzyściach.
-- Nagłówki: WIELKIE LITERY, 2-6 słów, opisują KORZYŚĆ kupującego (nie cechę).
+- Sekcja 1 ZAWSZE zaczyna się od emotional hook: "Wyobraź sobie...", "Marzysz o...", "Znasz to uczucie gdy..."
+- <b>...</b> OBOWIĄZKOWO: minimum 2–3 znaczniki <b> w każdym text/intro (łącznie ≥16 w całym opisie).
+  <b> na: każdym parametrze liczbowym, każdym materiale, każdej nazwie marki, każdej kluczowej korzyści, certyfikatach.
+  Zasada: jeśli zdanie zawiera liczbę lub materiał — musi mieć <b>. Skąpe boldowanie = utracone punkty jakości Allegro.
+- LICZBY: łącznie ≥8 konkretnych wartości liczbowych w opisie (cm, kg, l, mm, W, V, °C, lat, %, szt.).
+  Czerp z opisu oryginalnego i atrybutów. Brakujące liczby = utracone punkty.
+- DŁUGOŚĆ: text 4-5 zdań każdy (nie 2-3), żeby łącznie HTML > 4000 znaków.
+- Nagłówki: WIELKIE LITERY, 2-6 słów, opisują KORZYŚĆ kupującego (nie cechę). BEZ emoji — dodaje je asembler.
 - Polskie znaki i ortografia.
 
 FORMAT ODPOWIEDZI — WYŁĄCZNIE JSON, bez żadnego tekstu poza JSON:
 {
-  "section_1": {"heading": "NAGŁÓWEK CAPS", "text": "akapit 3-4 zdania"},
-  "section_2": {"heading": "NAGŁÓWEK CAPS", "text": "akapit 2-3 zdania"},
-  "section_3": {"heading": "NAGŁÓWEK CAPS", "text": "akapit 2-3 zdania"},
-  "section_4": {"heading": "NAGŁÓWEK CAPS", "text": "akapit 2-3 zdania"},
-  "section_5": {"heading": "NAGŁÓWEK CAPS", "text": "akapit 2-3 zdania"},
-  "section_6": {"heading": "NAGŁÓWEK CAPS", "text": "akapit 2-3 zdania"},
-  "section_7": {"heading": "NAGŁÓWEK CAPS", "intro": "jedno zdanie zachęty", "spec_rows": [["Parametr", "Wartość"], ...]}
+  "section_1": {"heading": "NAGŁÓWEK CAPS", "text": "akapit 4-5 zdań z ≥1 <b>, zaczyna od emotional hook"},
+  "section_2": {"heading": "NAGŁÓWEK CAPS", "text": "akapit 4-5 zdań z ≥1 <b>"},
+  "section_3": {"heading": "NAGŁÓWEK CAPS", "text": "akapit 4-5 zdań z ≥1 <b>"},
+  "section_4": {"heading": "NAGŁÓWEK CAPS", "text": "akapit 4-5 zdań z ≥1 <b>"},
+  "section_5": {"heading": "NAGŁÓWEK CAPS", "text": "akapit 4-5 zdań z ≥1 <b>"},
+  "section_6": {"heading": "NAGŁÓWEK CAPS", "text": "akapit 4-5 zdań z ≥1 <b>"},
+  "section_7": {"heading": "NAGŁÓWEK CAPS", "intro": "jedno zdanie z <b>", "spec_rows": [["Parametr", "Wartość"], ...min. 8 wierszy]},
+  "section_8": {"heading": "NAJCZĘŚCIEJ ZADAWANE PYTANIA", "faq": [{"q": "Pytanie?", "a": "Odpowiedź 1-2 zdania."}, ...5-6 par]}
 }
 
-Zawsze dokładnie 7 kluczy: section_1 … section_7. Bez żadnych innych kluczy ani tekstu.
+WSKAZÓWKI DO section_8 (FAQ):
+- Pytania muszą być REALNE — te, które kupujący wpisuje w komentarzach lub zadaje przed zakupem.
+- Mix: 2-3 pytania techniczne (wymiary, materiał, montaż) + 1-2 praktyczne (czyszczenie, zima, gwarancja) + 1 o dostawie.
+- Odpowiedzi konkretne, 1-2 zdania. Używaj <b> na kluczowych słowach.
+- BEZ pytania o cenę.
+
+SELF-CHECK PRZED ZWROTEM JSON (jeśli któreś niespełnione — uzupełnij i wzbogać):
+1. Czy każda sekcja text/intro ma ≥2 znaczniki <b>? (cel: ≥16 łącznie — skąpe boldowanie = niski score Allegro)
+2. Czy łącznie jest ≥8 wartości liczbowych z jednostkami (cm/kg/l/mm/W/V/lat/szt.)?
+3. Czy każdy text ma 4-5 zdań?
+4. Czy spec_rows ma ≥8 par parametr/wartość?
+5. Czy section_8 ma 5-6 par faq z realnymi pytaniami kupujących?
+
+Zawsze dokładnie 8 kluczy: section_1 … section_8. Bez żadnych innych kluczy ani tekstu.
 """
 
 
@@ -119,6 +149,19 @@ _SUPPLIER_ATTR_KEYS: frozenset[str] = frozenset({
     "model producenta", "part number", "mpn", "numer katalogowy producenta",
     "import",
 })
+
+# Emoji injected deterministically into h2 headings (1 per section, assembler only — never by LLM).
+# BMP codepoints verified to render on Allegro without "?" substitution.
+ALLEGRO_SAFE_EMOJI: dict[int, str] = {
+    1: "✨",  # intro/hook       U+2728 BMP ✓
+    2: "★",  # material          U+2605 BMP ✓
+    3: "✔",  # functionality     U+2714 BMP ✓
+    4: "◆",  # durability        U+25C6 BMP ✓
+    5: "♦",  # comfort           U+2666 BMP ✓
+    6: "►",  # assembly          U+25BA BMP ✓
+    7: "≡",  # spec              U+2261 BMP ✓
+    8: "?",  # FAQ               ASCII
+}
 
 
 def _filter_supplier_attrs(attributes: dict) -> dict:
@@ -190,32 +233,41 @@ def build_description_prompt_v2(
 
     tagline_part = f' i tagline "{tagline}"' if tagline else ""
     guide = (
-        "WYMAGANE 7 SEKCJI — dokładnie te klucze JSON:\n\n"
+        "WYMAGANE 7 SEKCJI — dokladnie te klucze JSON. KAZDY text 4-5 zdan z >=1 <b>:\n\n"
         "section_1 — WSTEP + HOOK + TAGLINE MARKI\n"
         "  heading: slogan marketingowy (3-6 slow, CAPS)\n"
-        f"  text: 3-4 zdania. Zacznij od emocjonalnego haka (Wyobraz sobie...). "
-        f"Wspomnij marke {brand_display}{tagline_part}."
-        " <b> na kluczowych pojeciach.\n\n"
+        f"  text: 4-5 zdan. Zacznij od emocjonalnego haka (Wyobraz sobie...). "
+        f"Wspomnij marke <b>{brand_display}</b>{tagline_part}."
+        " Dodaj >=1 konkretna liczbe (wymiar/wiek/lat gwarancji).\n\n"
         "section_2 — MATERIALY I ESTETYKA\n"
         "  heading: cecha materialu jako korzysc (CAPS)\n"
-        "  text: 2-3 zdania. Material, kolor, estetyka, odpornosc. <b> na materiale i kolorze.\n\n"
+        "  text: 4-5 zdan. <b> na materiale i kolorze. Konkretne grubosci/gestosci/dlugosci wlosia (mm/cm/g/m^2).\n\n"
         "section_3 — FUNKCJONALNOSC I WIELOFUNKCYJNOSC\n"
         "  heading: co produkt umozliwia (CAPS)\n"
-        "  text: 2-3 zdania. Sklad zestawu lub zastosowania z liczbami (X elementow, Y osob, Z cm). <b> na liczbach.\n\n"
+        "  text: 4-5 zdan. Sklad zestawu lub zastosowania z liczbami (X elementow, Y osob, Z cm). <b> na liczbach i nazwach.\n\n"
         "section_4 — KONSTRUKCJA I STABILNOSC\n"
         "  heading: trwalosc i solidnosc (CAPS)\n"
-        "  text: 2-3 zdania. Material stelaza, maks. obciazenie, waga. <b> na parametrach technicznych.\n\n"
+        "  text: 4-5 zdan. Material stelaza, maks. obciazenie (kg), waga produktu (kg), klasa odpornosci. <b> na parametrach.\n\n"
         "section_5 — ERGONOMIA I WYGODA\n"
         "  heading: komfort uzytkowania (CAPS)\n"
-        "  text: 2-3 zdania. Poduszki, regulacje, ergonomia, detale uzytkowe. <b> na cechach.\n\n"
+        "  text: 4-5 zdan. Poduszki, regulacje (zakres cm), ergonomia, detale uzytkowe. <b> na cechach.\n\n"
         "section_6 — LOGISTYKA, CZYSZCZENIE I MONTAZ\n"
         "  heading: latwosc obslugi (CAPS)\n"
-        "  text: 2-3 zdania. Czyszczenie, konserwacja, czas montazu, pakowanie. <b> na waznych slowach.\n\n"
+        "  text: 4-5 zdan. Czyszczenie (temp. prania), konserwacja, czas montazu (min.), pakowanie (wymiary). <b> na waznych slowach.\n\n"
         f"section_7 — SPECYFIKACJA TECHNICZNA\n"
         f'  heading: "Dane techniczne {brand_display} [nazwa modelu z tytulu]"\n'
-        f"  intro: jedno zdanie zachety, np. Postaw na jakosc marki {brand_display}.\n"
+        f"  intro: jedno zdanie zachety z <b>, np. Postaw na jakosc marki <b>{brand_display}</b>.\n"
         '  spec_rows: tablica par ["Parametr", "Wartosc"] — wszystkie wymiary, materialy, '
-        "kolory, wagi, obciazenia z opisu oryginalnego (min. 5 wierszy).\n"
+        "kolory, wagi, obciazenia z opisu oryginalnego (MIN. 8 wierszy — celuj w 10-12).\n\n"
+        "section_8 — FAQ (NAJCZESCIEJ ZADAWANE PYTANIA)\n"
+        '  heading: "NAJCZESCIEJ ZADAWANE PYTANIA"\n'
+        "  faq: tablica 5-6 obiektow {q, a} — pytania REALNE, ktore kupujacy zadaje przed zakupem.\n"
+        "  Mix: 2-3 techniczne (wymiary, material, montaz) + 1-2 praktyczne (czyszczenie, zima) + 1 o dostawie.\n"
+        "  Odpowiedzi: 1-2 zdania, konkretne, z <b> na kluczowych slowach. BEZ pytan o cene.\n\n"
+        "WYMOGI GLOBALNE (twarde, dla 10/10):\n"
+        "- Lacznie >=8 znacznikow <b> w opisie (>=1 per sekcja).\n"
+        "- Lacznie >=8 konkretnych wartosci liczbowych z jednostka (cm/kg/l/mm/W/V/°C/lat/szt).\n"
+        "- Lacznie tekst opisowy (sumarycznie z 8 sekcji) >=2500 znakow tekstu surowego.\n"
     )
 
     return (
@@ -256,10 +308,12 @@ def _render_section(
     img_url: str = "",
 ) -> str:
     """Render one section with alternating text/image layout."""
+    emoji = ALLEGRO_SAFE_EMOJI.get(n, "")
+    display_heading = f"{emoji} {heading}" if emoji else heading
     text_block = (
         f'    <div class="item item-6">\n'
         f'        <section class="text-item">\n'
-        f'            <h2>{heading}</h2>\n'
+        f'            <h2>{display_heading}</h2>\n'
         f'            {content_html}\n'
         f'        </section>\n'
         f'    </div>'
@@ -323,6 +377,37 @@ def _img_url(images: list[str], n: int) -> str:
     return images[idx]
 
 
+def _render_faq_section(sec8: dict) -> str:
+    """Render section_8 FAQ as a full-width block with dl/dt/dd grid."""
+    heading = sec8.get("heading", "NAJCZĘŚCIEJ ZADAWANE PYTANIA")
+    emoji = ALLEGRO_SAFE_EMOJI.get(8, "")
+    display_heading = f"{emoji} {heading}" if emoji else heading
+    faq_items = sec8.get("faq", [])
+    items_html = ""
+    for item in faq_items:
+        q = item.get("q", "")
+        a = item.get("a", "")
+        items_html += (
+            f'        <div class="faq-item">\n'
+            f'            <dt>{q}</dt>\n'
+            f'            <dd>{a}</dd>\n'
+            f'        </div>\n'
+        )
+    return (
+        f'<!-- SEKCJA 8: FAQ -->\n'
+        f'<section class="section faq-section">\n'
+        f'    <div class="item item-12">\n'
+        f'        <section class="text-item">\n'
+        f'            <h2>{display_heading}</h2>\n'
+        f'            <dl class="faq-grid">\n'
+        f'{items_html}'
+        f'            </dl>\n'
+        f'        </section>\n'
+        f'    </div>\n'
+        f'</section>'
+    )
+
+
 def _assemble_7section(data: dict, images: list[str], spec_items: list[str]) -> str:
     parts: list[str] = []
 
@@ -343,6 +428,11 @@ def _assemble_7section(data: dict, images: list[str], spec_items: list[str]) -> 
     spec_html = _merge_spec(spec_items, sec7.get("spec_rows", []))
     content7 = (f"<p>{intro7}</p>\n            " if intro7 else "") + spec_html
     parts.append(_render_section(7, _SECTION_COMMENTS[6], heading7, content7, _img_url(images, 7)))
+
+    # Section 8: FAQ (optional — only if AI returned it)
+    sec8 = data.get("section_8")
+    if sec8 and sec8.get("faq"):
+        parts.append(_render_faq_section(sec8))
 
     return "\n\n".join(parts)
 
@@ -607,4 +697,65 @@ Specyfikacja: uzupełnij o parametry z opisu oryginalnego (materiał, kolor, poj
 
 HTML DO WYPEŁNIENIA:
 {skeleton}
+"""
+
+
+# ────────────────────────────────────────────────────────────
+# Title generator (SEO Allegro) — wytrenowany na audycie 120 TOP ofert
+# Kategorie audytu: baseny, krzesła, lalki, trampoliny (avg 67.8 zn / 9.8 słów)
+# ────────────────────────────────────────────────────────────
+
+TITLE_PROMPT_VERSION = "v2"
+
+TITLE_SEO_PROMPT_V1 = """Jesteś ekspertem SEO Allegro.pl. Generujesz tytuły ofert pod polski e-commerce.
+
+REGUŁY:
+1. MAX 75 znaków. Cel: 68-75 znaków (sweet spot TOP ofert).
+2. WIELKIE LITERY (ALL CAPS).
+3. Struktura: [TYP PRODUKTU] [2-3 CECHY] [MARKA] [MODEL/WYMIAR]
+   Wyjątek: marki rozpoznawalne (Bestway, Barbie, Baby Born) — na początku.
+4. TYP PRODUKTU w mianowniku na pierwszej pozycji. Przykłady:
+   "BASEN STELAŻOWY OGRODOWY", "KRZESŁO TAPICEROWANE", "TRAMPOLINA OGRODOWA",
+   "LALKA BOBAS", "FOTEL OGRODOWY", "STÓŁ DO JADALNI", "DOMEK DLA LALEK",
+   "ZESTAW MEBLI", "ROWEREK BIEGOWY", "NAMIOT DLA DZIECI".
+5. CECHY w pierwszej połowie tytułu — bierz je Z DANYCH WEJŚCIOWYCH (atrybuty,
+   nazwa oryginalna, kategoria). Materiał, kolor, rozmiar, funkcja. Nie wymyślaj.
+6. WYMIAR — gdy jest w atrybutach, wstaw bez spacji ("305X76 CM", "40CM").
+7. MARKA + MODEL w drugiej połowie. Marka NASZA (brand_display) — ZAWSZE w tytule.
+8. Separator = pojedyncza spacja. Plus "+" tylko do gratisów. Bez , | —.
+
+TWARDE ZAKAZY (nigdy nie łam):
+- Emoji, krzyżyki *, "HIT!", "OKAZJA", "PROMOCJA".
+- Marki dostawców (z brand_display NIE są zakazane, ale te tak):
+  MULTISTORE, KATHAY, KATHAYHASTER, MODERNHOME, IPLAY, ECOTOYS, BAUERKRAFT,
+  MULTIGARDEN, MOLDEN, MULTIGAMES, MULTISTAR, NOUGAT.
+- Powtórzenia tego samego słowa w jednym tytule.
+- Ucinanie w środku słowa — zawsze pełne słowa.
+- Wewnętrzne kody SKU jako pierwsze słowo (np. "VICE Z G70" — BŁĄD).
+- Składnia "NA DO", "DO NA", "Z Z", podwójne przyimki obok siebie.
+
+PRIORYTET: Jeśli oryginalny tytuł jest dobry — zostaw go i tylko UPPERCASE +
+ewentualnie dodaj brakujący wymiar/markę. Nie przepisuj na siłę.
+
+DANE WEJŚCIOWE (JSON):
+- name: oryginalny tytuł
+- brand_display: nasza marka (np. "HOPLA TOYS")
+- model_name: kod kolekcji/modelu (może być pusty)
+- category_name: kategoria
+- manufacturer_name: producent (zignoruj jeśli to dostawca z listy zakazów)
+- attributes: dict cech (Wymiary, kolor, materiał, wiek, …)
+
+WYJŚCIE: TYLKO sam tytuł (string). Bez cudzysłowów, bez wyjaśnień, bez JSON.
+UPPERCASE. Max 75 znaków. Cel ≥50 znaków.
+
+PRZYKŁADY DOBRE:
+- "BASEN STELAŻOWY OGRODOWY OKRĄGŁY 305X76 CM INTEX Z POMPĄ I FILTRACJĄ"
+- "KRZESŁO TAPICEROWANE WELUROWE DO JADALNI VILLAGO DEMU CZARNE Z OPARCIEM"
+- "TRAMPOLINA OGRODOWA DLA DZIECI 366CM Z DRABINKĄ I SIATKĄ GARDENSTEIN"
+- "DOMEK DLA LALEK DREWNIANY REZYDENCJA MALIBU ŚWIECĄCE KOŁA HOPLA TOYS"
+
+PRZYKŁADY ZŁE (antywzorce):
+- "VICE Z G70 LIFEKRAFT" (SKU jako pierwsze słowo)
+- "DEMU 60CM CZARNA RAMA VILLAGO DEMU CZARNA" (duplikat słowa)
+- "MODERNHOME VILLAGO LUGANO" (marka dostawcy)
 """

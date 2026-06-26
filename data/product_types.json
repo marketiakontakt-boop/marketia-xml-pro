@@ -1,0 +1,119 @@
+{
+  "_meta": {
+    "description": "Keyword -> product type (PL) dictionary. Used by title_transformer to inject canonical product types into Allegro SEO titles. Keys are in singular nominative.",
+    "version": "1",
+    "match_strategy": "longest-first, case-insensitive, word-boundary match against (name + category_name)"
+  },
+
+  "hopla_toys": {
+    "DOMEK DLA LALEK":        ["domek dla lalek", "dollhouse", "domek lalek", "dom lalek", "rezydencja", "kuchnia lalek"],
+    "DREWNIANA KUCHNIA":      ["drewniana kuchnia", "kuchnia drewniana", "kuchnia zabawkowa", "kuchenka dziecięca"],
+    "ROWEREK BIEGOWY":        ["rowerek biegowy", "balance bike", "rowerek biegacz", "rowerek dla dzieci"],
+    "ROWEREK TRENINGOWY":     ["rowerek treningowy", "mini rower"],
+    "NAMIOT DLA DZIECI":      ["namiot dla dzieci", "namiocik", "domek namiotowy", "namiot wigwam", "namiot zabawowy", "namiot castle"],
+    "MATA EDUKACYJNA":        ["mata edukacyjna", "mata piankowa", "mata sensoryczna"],
+    "KLOCKI EDUKACYJNE":      ["klocki edukacyjne", "klocki konstrukcyjne", "klocki drewniane"],
+    "PCHACZ EDUKACYJNY":      ["pchacz edukacyjny", "pchacz dla dzieci"],
+    "JEŹDZIK":                ["jeździk", "chodzik", "auto pchacz"],
+    "BUJAK DLA DZIECI":       ["bujak dla dzieci", "konik bujak", "bujaczek"],
+    "ZESTAW NARZĘDZIOWY":     ["mini warsztat", "stół narzędziowy", "zestaw konstrukcyjny"],
+    "LALKA BOBAS":            ["lalka bobas", "lalka interaktywna", "lalka mówiąca", "baby born", "barbie"],
+    "PUZZLE EDUKACYJNE":      ["puzzle", "układanka"],
+    "PIASKOWNICA":            ["piaskownica", "piaskownice"],
+    "BASEN KULKOWY":          ["basen kulkowy", "basen z kulkami", "kulki do basenu", "piłeczki kulki"],
+    "ZJEŻDŻALNIA":            ["zjeżdżalnia", "ślizgawka"]
+  },
+
+  "villago": {
+    "KRZESŁO TAPICEROWANE":   ["krzesło tapicerowane", "krzesło welurowe", "krzesło aksamitne"],
+    "KRZESŁO DO JADALNI":     ["krzesło do jadalni", "krzesło do salonu", "krzesło na płozach"],
+    "FOTEL DO SALONU":        ["fotel do salonu", "fotel uszak", "fotel obrotowy", "fotel tapicerowany"],
+    "SOFA DO SALONU":         ["sofa", "kanapa", "sofy do salonu"],
+    "STOLIK KAWOWY":          ["stolik kawowy", "ława do salonu", "coffee table"],
+    "STOLIK POMOCNICZY":      ["stolik pomocniczy", "stolik nocny", "stolik laptopa", "stolik bambus"],
+    "STÓŁ DO JADALNI":        ["stół do jadalni", "stół rozkładany", "stół jadalniany"],
+    "SZAFKA RTV":             ["szafka rtv", "komoda rtv"],
+    "REGAŁ MODUŁOWY":         ["regał modułowy", "regał stojący", "regał półki"],
+    "KOMODA Z SZUFLADAMI":    ["komoda z szufladami", "komoda skandynawska", "komoda nowoczesna"],
+    "SZAFKA NA BUTY":         ["szafka na buty", "schowek na obuwie"],
+    "ŁÓŻKO TAPICEROWANE":     ["łóżko tapicerowane", "łóżko welurowe"],
+    "BIURKO DO PRACY":        ["biurko", "biurko do pracy"],
+    "WIESZAK STOJĄCY":        ["wieszak stojący", "wieszak na ubrania"],
+    "LUSTRO ŚCIENNE":         ["lustro", "lustro ścienne"],
+    "PUFA DEKORACYJNA":       ["pufa", "siedzisko składane", "pufa składana"],
+    "ŁAWKA TAPICEROWANA":     ["ławka tapicerowana", "ławka do garderoby"]
+  },
+
+  "gardenstein": {
+    "ZESTAW MEBLI OGRODOWYCH":["zestaw mebli", "komplet mebli ogrodowych", "meble ogrodowe zestaw", "meble do ogrodu"],
+    "NAROŻNIK OGRODOWY":      ["narożnik ogrodowy", "sofa narożna ogrodowa"],
+    "LEŻAK OGRODOWY":         ["leżak", "leżanka", "fotel leżak"],
+    "HAMAK OGRODOWY":         ["hamak", "huśtawka hamak"],
+    "TRAMPOLINA OGRODOWA":    ["trampolina", "trampolinka"],
+    "PARASOL OGRODOWY":       ["parasol ogrodowy", "parasol tarasowy"],
+    "DONICA OGRODOWA":        ["donica", "donice ogrodowe", "doniczka"],
+    "HUŚTAWKA OGRODOWA":      ["huśtawka ogrodowa", "huśtawka tarasowa"],
+    "ALTANA OGRODOWA":        ["altana", "altanka"],
+    "PERGOLA OGRODOWA":       ["pergola", "pergole"],
+    "TACZKA OGRODOWA":        ["taczka", "taczki"],
+    "STÓŁ OGRODOWY":          ["stół ogrodowy", "stolik ogrodowy", "stolik balkonowy"],
+    "KOSIARKA SPALINOWA":     ["kosiarka", "kosiarki"]
+  },
+
+  "marketia_home": {
+    "WYCIERACZKA WEJŚCIOWA":  ["wycieraczka", "mata wejściowa"],
+    "OCIEKACZ NA NACZYNIA":   ["ociekacz", "suszarka na naczynia"],
+    "KOSZ NA PRANIE":         ["kosz na pranie", "kosz na bieliznę"],
+    "MATA KUCHENNA":          ["mata kuchenna", "podkładka pod naczynia"],
+    "MATA ŁAZIENKOWA":        ["mata łazienkowa", "dywanik łazienkowy"],
+    "ORGANIZER ŁAZIENKOWY":   ["organizer łazienkowy", "uchwyt łazienkowy"],
+    "ORGANIZER SZUFLADOWY":   ["organizer szufladowy", "wkład do szuflady"],
+    "ORGANIZER BIURKOWY":     ["organizer biurkowy", "organizer na biurko"],
+    "SKRZYNKA NA LISTY":      ["skrzynka na listy", "skrzynka pocztowa"],
+    "LAMPKA NOCNA":           ["lampka nocna", "lampka dla dzieci", "projektor gwiazd", "lampka projektor"],
+    "DOZOWNIK MYDŁA":         ["dozownik mydła", "dozownik na mydło"],
+    "DESKA DO PRASOWANIA":    ["deska do prasowania", "deska prasowalnicza"],
+    "SUSZARKA NA PRANIE":     ["suszarka na pranie", "suszarka ubrań"]
+  },
+
+  "lifekraft": {
+    "BIŻUTERIA ŚLUBNA":       ["biżuteria ślubna", "biżuteria weselna", "biżuteria do ślubu"],
+    "BRANSOLETKA DAMSKA":     ["bransoletka", "bransoleta"],
+    "NASZYJNIK Z ZAWIESZKĄ":  ["naszyjnik", "wisior", "wisiorek"],
+    "KOLCZYKI DAMSKIE":       ["kolczyki", "kolczyk"],
+    "PIERŚCIONEK DAMSKI":     ["pierścionek", "obrączka"],
+    "ZESTAW BIŻUTERII":       ["zestaw biżuterii", "komplet biżuterii"],
+    "SZAL DAMSKI":            ["szal", "szalik"],
+    "CHUSTA DAMSKA":          ["chusta", "chusty"],
+    "TOP DAMSKI":              ["top damski", "body damskie", "topy & body", "topy body"],
+    "TORBA DAMSKA":           ["torba", "torebka"],
+    "PORTFEL SKÓRZANY":       ["portfel", "portmonetka"]
+  },
+
+  "zoovera": {
+    "DRAPAK DLA KOTA":        ["drapak", "drapak wieża", "scratcher"],
+    "LEGOWISKO DLA PSA":      ["legowisko", "posłanie dla psa"],
+    "TRANSPORTER DLA ZWIERZĄT":["transporter", "klatka transportowa"],
+    "KLATKA DLA GRYZONIA":    ["klatka", "klatki"],
+    "MISKA DLA PSA":          ["miska dla psa", "miska dla kota", "miska na karmę", "podwójna miska"],
+    "SMYCZ DLA PSA":          ["smycz", "smyczka"],
+    "OBROŻA DLA PSA":         ["obroża", "obroże"],
+    "ZABAWKA DLA PSA":        ["zabawka dla psa", "zabawka dla kota", "piłka dla psa"],
+    "MATA DLA PSA":           ["mata dla psa", "kocyk dla psa"],
+    "BUDKA DLA PSA":          ["buda dla psa", "domek dla psa", "domek dla kota"]
+  },
+
+  "intex": {
+    "BASEN OGRODOWY":         ["basen ogrodowy", "basen rodzinny"],
+    "BASEN STELAŻOWY":        ["basen stelażowy", "basen prism frame", "basen ultra frame"],
+    "BASEN DMUCHANY":         ["basen dmuchany", "basen pompowany", "basen brodzik"],
+    "WODNY PLAC ZABAW":       ["wodny plac zabaw", "plac zabaw wodny", "tor wodny"],
+    "DMUCHANY FOTEL":         ["dmuchany fotel", "fotel dmuchany", "lounge"],
+    "POMPKA TŁOKOWA":         ["pompka tłokowa", "pompka ręczna", "pompka elektryczna"],
+    "FILTR BASENOWY":         ["filtr basenowy", "filtr piaskowy", "wkład filtrujący"],
+    "POKRYWA NA BASEN":       ["pokrywa basenowa", "plandeka na basen", "osłona basenu"],
+    "RĘKAWKI DO PŁYWANIA":    ["rękawki", "rękawki pływackie"],
+    "FOTELIK DO PŁYWANIA":    ["fotelik do pływania", "kółko do pływania"],
+    "ODKURZACZ WODNY":        ["odkurzacz wodny", "zestaw do czyszczenia basenu"]
+  }
+}

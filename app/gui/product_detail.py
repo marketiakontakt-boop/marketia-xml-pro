@@ -106,6 +106,11 @@ class ProductDetailWindow(ctk.CTkToplevel):
             model_bar, text="Zapisz model", width=110,
             fg_color="#374151", hover_color="#1F2937",
             command=self._save_model,
+        ).pack(side="left", padx=(0, 4))
+        ctk.CTkButton(
+            model_bar, text="Usuń model", width=90,
+            fg_color="#7f1d1d", hover_color="#991b1b",
+            command=self._clear_model,
         ).pack(side="left", padx=(0, 12))
         self._model_hint = ctk.CTkLabel(
             model_bar, text="", text_color="#6B7280", font=ctk.CTkFont(size=10)
@@ -217,6 +222,12 @@ class ProductDetailWindow(ctk.CTkToplevel):
         if self._on_model_change:
             self._on_model_change(self._product, new_model)
             self._model_hint.configure(text=f"✓ zapisano: {new_model}", text_color="#1f883d")
+
+    def _clear_model(self) -> None:
+        if self._on_model_change:
+            self._on_model_change(self._product, "")
+            self._model_var.set("")
+            self._model_hint.configure(text="✓ model usunięty", text_color="#6B7280")
 
     def _open_browser(self) -> None:
         if getattr(self._product, "description", None):

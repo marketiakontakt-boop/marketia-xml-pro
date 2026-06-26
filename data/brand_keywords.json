@@ -42,12 +42,30 @@
     "name": "MARKETIA HOME",
     "tagline": "Inteligentne rozwiązania dla Twojego domu",
     "keywords": [
-      "wycieraczka", "tacka", "ociekacz", "organizer",
-      "kosz na pranie", "akcesoria łazienkowe", "akcesoria kuchenne",
-      "mata", "podstawka", "uchwyt", "dozownik",
-      "skrzynka na listy", "skrzynka pocztowa", "wieszak", "suszarka",
+      "wycieraczka", "ociekacz", "kosz na pranie",
+      "mata", "skrzynka na listy", "skrzynka pocztowa", "suszarka",
       "hantle", "ławeczka", "ławka do ćwiczeń", "sztanga",
       "dla domu", "modernhome", "multistore"
+    ]
+  },
+  "lifekraft": {
+    "name": "LIFEKRAFT",
+    "tagline": "Codziennie pod ręką",
+    "keywords": [
+      "organizer", "organizery", "organizer biurkowy", "organizer szufladowy",
+      "organizer łazienkowy", "organizer kuchenny", "organizer kosmetyczny",
+      "obcinaczki", "obcinacz do paznokci", "pilnik", "pęseta", "nożyczki",
+      "lusterko", "lusterko kosmetyczne", "lusterko podręczne",
+      "kosmetyczka", "etui", "etui kosmetyczne", "etui podróżne",
+      "brelok", "breloki", "kluczykownica",
+      "akcesoria łazienkowe", "akcesoria kuchenne", "akcesoria do golenia",
+      "akcesoria podróżne", "akcesoria biurkowe",
+      "kuferek", "pudełko na biżuterię", "kuferek na biżuterię",
+      "podstawka", "uchwyt", "dozownik", "tacka",
+      "wieszak na klucze", "wieszak biurowy",
+      "porządek w szufladzie", "porządek na biurku",
+      "do biura", "do łazienki", "do szafy", "do szuflady", "do podróży",
+      "lifestyle", "codzienny"
     ]
   },
   "zoovera": {

@@ -69,8 +69,8 @@ def _apply_rename(
             p.model_name = new_base.capitalize() + (" " + suffix if suffix else "")
         else:
             p.model_name = new_base + (" " + suffix if suffix else "")
-        # Replace old name in all description fields
-        for field in ("description", "description_extra_1", "description_extra_2"):
+        # Replace old name in title and all description fields
+        for field in ("title", "description", "description_extra_1", "description_extra_2"):
             val = getattr(p, field, "") or ""
             if val:
                 setattr(p, field, pattern.sub(new_base, val))
@@ -111,6 +111,9 @@ class ModelRenameWindow(ctk.CTkToplevel):
         self._selected_base: str | None = None
 
         self._build()
+        # Auto-select when there's only one series (e.g. user pre-selected products)
+        if len(self._series_map) == 1:
+            self._select_series(next(iter(self._series_map)))
 
     # ------------------------------------------------------------------
 
@@ -309,11 +312,9 @@ class ModelRenameWindow(ctk.CTkToplevel):
         self._new_name_var.set("")
         self._refresh_preview()
 
-        messagebox.showinfo(
-            "Gotowe",
-            f"Zmieniono nazwy {len(affected)} produktów:\n"
-            f"{new_base} ← stare: {self._series_map.get(new_base.upper(), [])}",
-            parent=self,
+        self._selected_label.configure(
+            text=f"Zmieniono {len(affected)} produktów ✓",
+            text_color="#15803D",
         )
 
         if self._on_done:

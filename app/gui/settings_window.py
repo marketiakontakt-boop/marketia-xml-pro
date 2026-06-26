@@ -52,13 +52,34 @@ def _save_imgbb_key(key: str) -> None:
     os.environ["IMGBB_API_KEY"] = key
 
 
+def _load_fal_key() -> str:
+    return os.getenv("FAL_KEY", "").strip()
+
+
+def _save_fal_key(key: str) -> None:
+    _ENV_PATH.touch(exist_ok=True)
+    set_key(str(_ENV_PATH), "FAL_KEY", key)
+    os.environ["FAL_KEY"] = key
+
+
+def _load_paid_keys() -> str:
+    load_dotenv(_ENV_PATH, override=True)
+    return os.getenv("GEMINI_PAID_KEYS", "").strip()
+
+
+def _save_paid_keys(value: str) -> None:
+    _ENV_PATH.touch(exist_ok=True)
+    set_key(str(_ENV_PATH), "GEMINI_PAID_KEYS", value)
+    os.environ["GEMINI_PAID_KEYS"] = value
+
+
 class SettingsWindow(ctk.CTkToplevel):
     """Modal settings window for managing API keys."""
 
     def __init__(self, parent: ctk.CTk):
         super().__init__(parent)
         self.title("Ustawienia — klucze API")
-        self.geometry("540x560")
+        self.geometry("540x760")
         self.resizable(False, False)
         self.grab_set()
         self.focus_force()
@@ -135,6 +156,59 @@ class SettingsWindow(ctk.CTkToplevel):
             self,
             text="Zdobądź klucz za darmo na imgbb.com — konto → API.",
             text_color="#6B7280", font=ctk.CTkFont(size=11),
+        ).pack(anchor="w", padx=20, pady=(0, 12))
+
+        # ---- Flux Pro (FAL) section ----
+        ctk.CTkLabel(
+            self, text="Flux Pro (FAL) — generowanie miniatur AI",
+            font=ctk.CTkFont(size=13, weight="bold"),
+        ).pack(anchor="w", padx=20, pady=(8, 4))
+
+        fal_row = ctk.CTkFrame(self, fg_color="transparent")
+        fal_row.pack(fill="x", padx=20, pady=(0, 4))
+        self._fal_var = ctk.StringVar(value=_load_fal_key())
+        ctk.CTkEntry(
+            fal_row, textvariable=self._fal_var,
+            placeholder_text="Klucz FAL (fal.ai)",
+            width=360, show="•",
+        ).pack(side="left", padx=(0, 8))
+        ctk.CTkButton(
+            fal_row, text="Pokaż", width=80,
+            fg_color="#374151", hover_color="#1f2937",
+            command=lambda: self._toggle_entry_show(fal_row),
+        ).pack(side="left")
+
+        ctk.CTkLabel(
+            self,
+            text="Zdobądź klucz na fal.ai — dashboard → API keys.",
+            text_color="#6B7280", font=ctk.CTkFont(size=11),
+        ).pack(anchor="w", padx=20, pady=(0, 12))
+
+        # ---- Gemini Paid Keys section ----
+        ctk.CTkLabel(
+            self, text="Gemini Paid Keys — klucze bez cooldownu",
+            font=ctk.CTkFont(size=13, weight="bold"),
+        ).pack(anchor="w", padx=20, pady=(8, 4))
+
+        paid_row = ctk.CTkFrame(self, fg_color="transparent")
+        paid_row.pack(fill="x", padx=20, pady=(0, 4))
+        self._paid_var = ctk.StringVar(value=_load_paid_keys())
+        ctk.CTkEntry(
+            paid_row, textvariable=self._paid_var,
+            placeholder_text="klucz1,klucz2 (przecinkiem)",
+            width=360, show="•",
+        ).pack(side="left", padx=(0, 8))
+        ctk.CTkButton(
+            paid_row, text="Pokaż", width=80,
+            fg_color="#374151", hover_color="#1f2937",
+            command=lambda: self._toggle_entry_show(paid_row),
+        ).pack(side="left")
+
+        ctk.CTkLabel(
+            self,
+            text="Klucze płatne — używane jako pierwsze, nigdy nie wchodzą w cooldown.",
+            text_color="#6B7280", font=ctk.CTkFont(size=11),
+            wraplength=500,
         ).pack(anchor="w", padx=20, pady=(0, 12))
 
         # ---- Save button ----
@@ -244,6 +318,13 @@ class SettingsWindow(ctk.CTkToplevel):
         imgbb = self._imgbb_var.get().strip()
         if imgbb:
             _save_imgbb_key(imgbb)
+
+        fal = self._fal_var.get().strip()
+        if fal:
+            _save_fal_key(fal)
+
+        paid = self._paid_var.get().strip()
+        _save_paid_keys(paid)
 
         import tkinter.messagebox as mb
         mb.showinfo(

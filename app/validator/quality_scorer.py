@@ -1,9 +1,13 @@
 """Description quality scorer — 0-10 scale.
 
+Counts sections under both layouts:
+  - legacy v1: <div class="wiersz">
+  - v2 7-section: <section class="section">
+
 Criteria (10 pts total):
-  3 pts — sections:   7+ wiersz = 3 | 5-6 = 2 | 3-4 = 1 | <3 = 0
+  3 pts — sections:   7+ = 3 | 5-6 = 2 | 3-4 = 1 | <3 = 0
   2 pts — length:     >4000 chars = 2 | >2500 = 1 | else 0
-  1 pt  — spec:       SPECYFIKACJA section present
+  1 pt  — spec:       SPECYFIKACJA / DANE TECHNICZNE section present
   2 pts — numbers:    >6 numeric values = 2 | >2 = 1 | else 0
   1 pt  — bold:       ≥4 <b> tags
   1 pt  — h2 headers: ≥5 h2 tags
@@ -26,7 +30,10 @@ def score_description(html: str) -> int:
 
     score = 0
 
+    # v1 wiersz blocks OR v2 section.section blocks
     sections = len(re.findall(r'class=["\']wiersz["\']', html))
+    if sections == 0:
+        sections = len(re.findall(r'<section\s+class=["\']section["\']', html, re.IGNORECASE))
     if sections >= 7:
         score += 3
     elif sections >= 5:
@@ -40,7 +47,8 @@ def score_description(html: str) -> int:
     elif length > 2500:
         score += 1
 
-    if "SPECYFIKACJA" in html.upper():
+    html_upper = html.upper()
+    if "SPECYFIKACJA" in html_upper or "DANE TECHNICZNE" in html_upper:
         score += 1
 
     numbers = len(re.findall(r'\b\d+(?:[.,]\d+)?\s*(?:cm|kg|l|ltr|m|szt|pcs|mb|mm|w|v|rpm)?\b', html, re.IGNORECASE))

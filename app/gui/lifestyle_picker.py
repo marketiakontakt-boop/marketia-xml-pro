@@ -48,7 +48,7 @@ class LifestylePickerWindow(ctk.CTkToplevel):
         ).pack(pady=(20, 4))
         ctk.CTkLabel(
             self,
-            text="Imagen 4 generuje tło z kontekstem (ludzie, ogród, wnętrze).\n"
+            text="Flux Pro generuje tło lifestyle (ogród, wnętrze, taras).\n"
                  "rembg wycina produkt z oryginału i nakłada go na scenę.",
             text_color="#6B7280",
             font=ctk.CTkFont(size=11),
@@ -115,7 +115,7 @@ class LifestylePickerWindow(ctk.CTkToplevel):
 
         ctk.CTkLabel(
             self,
-            text="Uwaga: każde zdjęcie = 1 call Imagen 4 (zużywa kredyty).",
+            text="Uwaga: każde zdjęcie = 1 call Flux Pro (~$0.04). Wymaga FAL_KEY w .env.",
             text_color="#B45309",
             font=ctk.CTkFont(size=10),
         ).pack(pady=(4, 8))

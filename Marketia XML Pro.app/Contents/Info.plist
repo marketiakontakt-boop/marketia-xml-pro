@@ -22,5 +22,9 @@
   <string>11.0</string>
   <key>NSHighResolutionCapable</key>
   <true/>
+  <key>NSDocumentsFolderUsageDescription</key>
+  <string>Marketia XML Pro przechowuje pliki XML, bazy danych i eksporty w folderze Dokumenty.</string>
+  <key>NSAppleEventsUsageDescription</key>
+  <string>Marketia XML Pro używa Terminal.app do uruchomienia środowiska Python.</string>
 </dict>
 </plist>

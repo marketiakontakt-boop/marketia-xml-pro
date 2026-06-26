@@ -5,6 +5,7 @@ from app.transformer.model_generator import (
     ModelNameGenerator,
     _strip_variant_words,
     _extract_variant_suffix,
+    _series_from_sku,
 )
 from app.parser.normalizer import Product
 
@@ -59,18 +60,59 @@ def test_strip_keeps_measurement_m():
     """Measurement 'M' must stay in stripped series key (it's not a color word)."""
     assert "m" in _strip_variant_words("namiot pawilon 3x3 m rozkładany biały")
 
+
+# --- compound colors (slash / dash) ---
+
+def test_strip_compound_slash_color():
+    """'biało/czarne' = compound color, should be stripped → same series key as 'białe'."""
+    assert _strip_variant_words("krzesło iger biało/czarne") == "krzesło iger"
+
+def test_strip_compound_dash_color():
+    """'czarno-szare' = compound color, should be stripped."""
+    assert _strip_variant_words("krzesło joy czarno-szare") == "krzesło joy"
+
+def test_extract_suffix_compound_slash():
+    assert _extract_variant_suffix("KRZESŁO IGER biało/czarne") == "Biało/czarne"
+
+def test_extract_suffix_compound_dash():
+    assert _extract_variant_suffix("KRZESŁO JOY czarno-szare") == "Czarno-szare"
+
+def test_strip_doesnt_break_random_dashes():
+    """Non-color compounds (e.g. measurement '3x3-pawilon') must NOT be treated as variants."""
+    assert "3x3-pawilon" in _strip_variant_words("namiot 3x3-pawilon biały")
+
+
+# --- noise tokens (channel tags in parens) ---
+
+def test_strip_noise_paren_tag():
+    """'(ikeabox)' is a channel tag, not part of the series — strip it."""
+    assert _strip_variant_words("Krzesło EVA szare (ikeabox)") == "krzesło eva"
+
+def test_extract_suffix_ignores_paren_tag():
+    assert _extract_variant_suffix("Krzesło EVA szare (ikeabox)") == "Szare"
+
+
+# --- new colors from real XML ---
+
+def test_strip_musztardowe():
+    """'musztardowe' was missing from VARIANT_WORDS — caused Otranto-musztardowe singletons."""
+    assert _strip_variant_words("krzesło otranto musztardowe") == "krzesło otranto"
+
+def test_strip_kawowe():
+    assert _strip_variant_words("sofa lounge kawowa") == "sofa lounge"
+
+def test_strip_naturalny_drewno():
+    """Wood-finish colors common in furniture catalog."""
+    assert _strip_variant_words("stolik nico naturalny") == "stolik nico"
+    assert _strip_variant_words("regał loft dębowy") == "regał loft"
+
 def test_variants_with_measurement_m_share_base(gen):
     """NAMIOT 3X3 M BIAŁY and NAMIOT 3X3 M SZARY must share same base model."""
-    p1 = _p("N1", "gardenstein", "NAMIOT PAWILON 3X3 M ROZKŁADANY AUTOMATYCZNIE BIAŁY MULTIGARDEN")
-    p2 = _p("N2", "gardenstein", "NAMIOT PAWILON 3X3 M ROZKŁADANY AUTOMATYCZNIE SZARY MULTIGARDEN")
+    p1 = _p("N1", "gardenstein", "NAMIOT PAWILON 3X3 M ROZKŁADANY AUTOMATYCZNIE BIAŁY")
+    p2 = _p("N2", "gardenstein", "NAMIOT PAWILON 3X3 M ROZKŁADANY AUTOMATYCZNIE SZARY")
     gen.assign_all([p1, p2])
 
-    base1 = p1.model_name.split()[0].upper()
-    base2 = p2.model_name.split()[0].upper()
-    assert base1 == base2, f"Expected same base, got {p1.model_name!r} and {p2.model_name!r}"
-    assert p1.model_name != p2.model_name, "Full model names must differ by color"
-    assert "Biały" in p1.model_name or "biały" in p1.model_name.lower()
-    assert "Szary" in p2.model_name or "szary" in p2.model_name.lower()
+    assert p1.model_name == p2.model_name, f"Variants must share single-word model_name, got {p1.model_name!r} and {p2.model_name!r}"
 
 def test_extract_suffix_multi():
     # "ciemne szare" → both are variant words
@@ -81,15 +123,13 @@ def test_extract_suffix_multi():
 # --- integration tests ---
 
 def test_color_variants_share_base(gen):
-    """PIADO Granatowe + PIADO Czarne must share the same Nordic base."""
+    """PIADO Granatowe + PIADO Czarne must share the same single-word model name."""
     p1 = _p("SKU-001", "gardenstein", "KRZESŁO PIADO GRANATOWE")
     p2 = _p("SKU-002", "gardenstein", "KRZESŁO PIADO CZARNE")
     gen.assign_all([p1, p2])
 
-    base1 = p1.model_name.split()[0].upper()
-    base2 = p2.model_name.split()[0].upper()
-    assert base1 == base2, f"Expected same base, got {p1.model_name!r} and {p2.model_name!r}"
-    assert p1.model_name != p2.model_name, "Full model names must differ (different colors)"
+    assert p1.model_name == p2.model_name, f"Variants must share model_name, got {p1.model_name!r} and {p2.model_name!r}"
+    assert " " not in p1.model_name, f"Model name must be single-word, got {p1.model_name!r}"
 
 
 def test_standalone_products_get_unique_bases(gen):
@@ -111,8 +151,9 @@ def test_three_variants_same_base(gen):
 
     bases = {x.model_name.split()[0].upper() for x in [p1, p2, p3]}
     assert len(bases) == 1, f"All three should share one base, got {bases}"
+    # Single-word model: all three share identical model_name
     models = {x.model_name for x in [p1, p2, p3]}
-    assert len(models) == 3, "Full model names must be distinct"
+    assert len(models) == 1, f"Single-word model_name must be identical for all variants, got {models}"
 
 
 def test_two_different_series_get_different_bases(gen):
@@ -141,6 +182,52 @@ def test_rerun_is_idempotent(gen):
     gen.assign_all([p1, p2])
     assert p1.model_name == name1_first
     assert p2.model_name == name2_first
+
+
+# --- SKU-encoded series (hurtmeblowy pattern) ---
+
+def test_series_from_sku_extracts_model():
+    assert _series_from_sku("model_3544_1-AVOLA-DORY21") == "avola"
+    assert _series_from_sku("model_3329_1-ALBA-FEMY24") == "alba"
+    assert _series_from_sku("model_3328_1-ADRIA-TRX12080") == "adria"
+
+def test_series_from_sku_none_without_suffix():
+    assert _series_from_sku("model_3671_1") is None
+    assert _series_from_sku("LDFDCN4Y16") is None
+
+def test_sku_series_groups_variants_together(gen):
+    """Products with same model in SKU must share one pool name regardless of name analysis."""
+    p1 = _p("model_3544_1-AVOLA-DORY21", "villago", "KRZESŁO BOKU AVOLA - CZARNE")
+    p2 = _p("model_3545_1-AVOLA-DORY21", "villago", "KRZESŁO BOKU AVOLA - SZARE")
+    p3 = _p("model_3543_1-AVOLA-DORY21", "villago", "KRZESŁO BOKU AVOLA - SZARO-BIAŁE")
+    gen.assign_all([p1, p2, p3])
+
+    assert p1.model_name == p2.model_name == p3.model_name, (
+        f"SKU-based series must share model_name, got {p1.model_name!r}, {p2.model_name!r}, {p3.model_name!r}"
+    )
+
+def test_sku_series_different_models_get_different_pools(gen):
+    """AVOLA and ALBA are different series — must get different pool names."""
+    avola1 = _p("model_3544_1-AVOLA-DORY21", "villago", "KRZESŁO BOKU AVOLA - CZARNE")
+    avola2 = _p("model_3545_1-AVOLA-DORY21", "villago", "KRZESŁO BOKU AVOLA - SZARE")
+    alba1 = _p("model_3329_1-ALBA-FEMY24", "villago", "KRZESŁO KONUN ALBA - BIAŁE")
+    alba2 = _p("model_3330_1-ALBA-FEMY24", "villago", "KRZESŁO KONUN ALBA - CZARNE")
+    gen.assign_all([avola1, avola2, alba1, alba2])
+
+    assert avola1.model_name == avola2.model_name
+    assert alba1.model_name == alba2.model_name
+    assert avola1.model_name != alba1.model_name, (
+        f"AVOLA and ALBA must get different pools, both got {avola1.model_name!r}"
+    )
+
+def test_sku_series_replaces_supplier_word_in_name(gen):
+    """AVOLA must be replaced by pool name in product.name."""
+    p = _p("model_3544_1-AVOLA-DORY21", "villago", "KRZESŁO BOKU AVOLA - CZARNE")
+    gen.assign_all([p])
+
+    pool = p.model_name
+    assert "AVOLA" not in p.name.upper(), f"AVOLA should be replaced, got {p.name!r}"
+    assert pool.upper() in p.name.upper(), f"Pool name {pool!r} not found in {p.name!r}"
 
 
 def test_model_rename_updates_description():

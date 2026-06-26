@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import os
 import queue
+import re
 import threading
 from pathlib import Path
 import tkinter as tk
@@ -30,6 +31,7 @@ from app.transformer.description_generator import (
     generate_descriptions,
     load_cached_descriptions,
 )
+from app.cache.sqlite_cache import save_description
 from app.transformer.attribute_extractor import enrich_product_attributes
 from app.transformer.description_cleaner import strip_jumi_descriptions
 from app.transformer.category_mapper import load_category_map, map_all_products
@@ -42,13 +44,13 @@ from app.gui.audit_preview import open_audit_preview
 from app.gui.product_detail import ProductDetailWindow
 from app.gui.brand_colors import get_brand_chip_colors
 from app.gui.category_mapper_window import CategoryMapperWindow
-from app.gui.lifestyle_picker import LifestylePickerWindow
 from app.gui.settings_window import SettingsWindow
 from app.gui.model_rename_window import ModelRenameWindow
 from app.gui.seo_keyword_window import SeoKeywordWindow
 from app.gui.variant_view import VariantViewWindow
+from app.gui.model_audit_window import ModelAuditWindow
+from app.gui.title_edit_dialog import TitleEditDialog
 from app.gui.tooltip import Tooltip
-from app.transformer.description_generator import generate_single_description
 from app.validator import validate_ean, get_label
 
 ctk.set_appearance_mode("light")
@@ -61,11 +63,11 @@ _BRAND_KEYWORDS_PATH = Path(__file__).resolve().parents[2] / "data" / "brand_key
 
 
 def _all_known_brands() -> list[str]:
-    """Return sorted list of all brand keys from brand_keywords.json."""
+    """Return sorted list of all brand keys from brand_keywords.json (excludes 'unknown')."""
     import json
     try:
         with _BRAND_KEYWORDS_PATH.open(encoding="utf-8") as f:
-            return sorted(json.load(f).keys())
+            return sorted(k for k in json.load(f).keys() if k != "unknown")
     except Exception:
         return []
 
@@ -74,6 +76,57 @@ DIFF_COLORS = {
     "changed":   "#b08000",
     "unchanged": None,
 }
+
+# ── Row thumbnail helpers ──────────────────────────────────────────────────
+_THUMB_ROW_SIZE = (44, 44)
+_thumb_cache: dict[str, ctk.CTkImage | None] = {}
+_thumb_pending: set[str] = set()
+_thumb_url_sem = threading.Semaphore(8)  # cap concurrent URL downloads
+
+
+def _schedule_thumb(product: Product, label: ctk.CTkLabel) -> None:
+    """Load a small product image into *label* (local file sync, URL async)."""
+    sku = product.sku
+    local = THUMB_DIR / f"{sku}.jpg"
+    if not local.exists():
+        local = THUMB_DIR / f"{sku}.png"
+    key = str(local) if local.exists() else (product.images[0] if product.images else "")
+    if not key:
+        return
+
+    if key in _thumb_cache:
+        img = _thumb_cache[key]
+        if img:
+            label.configure(image=img, text="")
+        return
+
+    if key in _thumb_pending:
+        return
+    _thumb_pending.add(key)
+
+    def _worker():
+        img = None
+        try:
+            if key.startswith("http"):
+                with _thumb_url_sem:
+                    from io import BytesIO
+                    from urllib.request import urlopen
+                    pil = Image.open(BytesIO(urlopen(key, timeout=8).read())).convert("RGB")
+            else:
+                pil = Image.open(key).convert("RGB")
+            pil = pil.resize(_THUMB_ROW_SIZE, Image.LANCZOS)
+            img = ctk.CTkImage(pil, size=_THUMB_ROW_SIZE)
+        except Exception:
+            pass
+        _thumb_cache[key] = img
+        _thumb_pending.discard(key)
+        if img:
+            try:
+                label.after(0, lambda: label.configure(image=img, text="") if label.winfo_exists() else None)
+            except Exception:
+                pass
+
+    threading.Thread(target=_worker, daemon=True).start()
 
 
 def _thumb_mode_dialog(parent, n_products: int) -> dict | None:
@@ -136,10 +189,10 @@ def _thumb_mode_dialog(parent, n_products: int) -> dict | None:
 
 
 class ProductRow(ctk.CTkFrame):
-    # SKU | TYTUŁ | MARKA | KAT. | MODEL | EAN | T | AI | Q
-    COL_WIDTHS = (130, 310, 110, 80, 100, 130, 40, 40, 50)
+    # CB | IMG | SKU | TYTUŁ | MARKA | KAT. | MODEL | EAN | T | AI | Q
+    COL_WIDTHS = (28, 50, 130, 280, 110, 80, 100, 130, 40, 40, 50)
 
-    def __init__(self, master, product: Product, on_click=None, **kwargs):
+    def __init__(self, master, product: Product, on_click=None, on_select=None, on_title_edit=None, is_selected: bool = False, **kwargs):
         diff = getattr(product, "diff_status", None)
         diff_border = DIFF_COLORS.get(diff) if diff else None
         super().__init__(
@@ -153,73 +206,97 @@ class ProductRow(ctk.CTkFrame):
         for i, w in enumerate(self.COL_WIDTHS):
             self.grid_columnconfigure(i, minsize=w, weight=0)
 
-        # SKU
+        # Checkbox (col 0)
+        self._cb_var = ctk.BooleanVar(value=is_selected)
+        self._cb = ctk.CTkCheckBox(
+            self, variable=self._cb_var, text="",
+            width=24, checkbox_width=16, checkbox_height=16,
+        )
+        self._cb.grid(row=0, column=0, padx=(4, 0), pady=3)
+        if on_select:
+            self._cb.configure(command=lambda sku=product.sku: on_select(sku, self._cb_var.get()))
+
+        # Image thumbnail (col 1) — lazy-loaded from local file or product URL
+        self._img_lbl = ctk.CTkLabel(self, text="·", width=44, fg_color="transparent",
+                                     font=ctk.CTkFont(size=16), text_color="#D1D5DB")
+        self._img_lbl.grid(row=0, column=1, padx=3, pady=3)
+        _schedule_thumb(product, self._img_lbl)
+
+        # SKU (col 2)
         ctk.CTkLabel(self, text=product.sku, anchor="w",
                      font=ctk.CTkFont(size=11)).grid(
-            row=0, column=0, sticky="w", padx=4, pady=3)
+            row=0, column=2, sticky="w", padx=4, pady=3)
 
-        # Title — truncated string, no wraplength (wraplength forces full-row relayout)
+        # Title (col 3) — truncated; click opens edit dialog
         title_raw = product.title or product.name or ""
-        title_text = title_raw[:55] + "…" if len(title_raw) > 55 else title_raw
-        ctk.CTkLabel(self, text=title_text, anchor="w",
-                     font=ctk.CTkFont(size=11)).grid(
-            row=0, column=1, sticky="w", padx=4, pady=3)
+        title_text = title_raw[:52] + "…" if len(title_raw) > 52 else title_raw
+        self._title_lbl = ctk.CTkLabel(self, text=title_text, anchor="w",
+                                       font=ctk.CTkFont(size=11),
+                                       cursor="hand2" if on_title_edit else "")
+        self._title_lbl.grid(row=0, column=3, sticky="w", padx=4, pady=3)
 
-        # Brand chip (static — no CTkOptionMenu per row)
-        bg_c, fg_c = get_brand_chip_colors(product.brand or "")
+        # Brand chip (col 4)
+        _brand_key = product.brand if product.brand and product.brand != "unknown" else ""
+        bg_c, fg_c = get_brand_chip_colors(_brand_key)
         ctk.CTkLabel(
-            self, text=(product.brand or "—").upper()[:10],
+            self, text=_brand_key.upper()[:10] if _brand_key else "—",
             fg_color=bg_c, text_color=fg_c,
             corner_radius=4, font=ctk.CTkFont(size=10, weight="bold"),
-        ).grid(row=0, column=2, sticky="w", padx=4, pady=3)
+        ).grid(row=0, column=4, sticky="w", padx=4, pady=3)
 
-        # Category chip
+        # Category chip (col 5)
         allegro_cat = getattr(product, "allegro_category", "")
         cat_text = allegro_cat.split(" > ")[-1][:12] if allegro_cat else "?"
         cat_bg, cat_fg = ("#DCFCE7", "#15803D") if allegro_cat else ("#FFEDD5", "#C2410C")
         ctk.CTkLabel(self, text=cat_text, fg_color=cat_bg, text_color=cat_fg,
                      corner_radius=4, font=ctk.CTkFont(size=9)).grid(
-            row=0, column=3, sticky="w", padx=4, pady=3)
+            row=0, column=5, sticky="w", padx=4, pady=3)
 
-        # Model
+        # Model (col 6)
         ctk.CTkLabel(self, text=product.model_name or "—", anchor="w",
                      font=ctk.CTkFont(size=11)).grid(
-            row=0, column=4, sticky="w", padx=4, pady=3)
+            row=0, column=6, sticky="w", padx=4, pady=3)
 
-        # EAN
+        # EAN (col 7)
         ean_color = "#1f883d" if getattr(product, "ean_valid", True) else "#d1242f"
         ctk.CTkLabel(self, text=product.ean or "—", anchor="w",
                      text_color=ean_color, font=ctk.CTkFont(size=11)).grid(
-            row=0, column=5, sticky="w", padx=4, pady=3)
+            row=0, column=7, sticky="w", padx=4, pady=3)
 
-        # Title length OK
+        # Title length OK (col 8)
         title_len = len(product.title or "")
         t_ok = "✓" if 0 < title_len <= 75 else "✗"
         t_color = "#1f883d" if t_ok == "✓" else "#d1242f"
         ctk.CTkLabel(self, text=t_ok, text_color=t_color,
                      font=ctk.CTkFont(size=11)).grid(
-            row=0, column=6, sticky="w", padx=4, pady=3)
+            row=0, column=8, sticky="w", padx=4, pady=3)
 
-        # AI status
+        # AI status (col 9)
         ai_sym = "🤖" if getattr(product, "ai_done", False) else "·"
         ctk.CTkLabel(self, text=ai_sym, font=ctk.CTkFont(size=11)).grid(
-            row=0, column=7, sticky="w", padx=4, pady=3)
+            row=0, column=9, sticky="w", padx=4, pady=3)
 
-        # Quality score
+        # Quality score (col 10)
         score = getattr(product, "quality_score", -1)
         if score >= 0:
             _, sc = get_label(score)
             ctk.CTkLabel(self, text=str(score), text_color=sc,
                          font=ctk.CTkFont(size=11, weight="bold")).grid(
-                row=0, column=8, sticky="w", padx=4, pady=3)
+                row=0, column=10, sticky="w", padx=4, pady=3)
         else:
             ctk.CTkLabel(self, text="—", font=ctk.CTkFont(size=11)).grid(
-                row=0, column=8, sticky="w", padx=4, pady=3)
+                row=0, column=10, sticky="w", padx=4, pady=3)
 
         if on_click:
             self.bind("<Button-1>", lambda e: on_click())
             for child in self.winfo_children():
+                if isinstance(child, ctk.CTkCheckBox):
+                    continue
+                if child is self._title_lbl:
+                    continue  # title label gets its own binding below
                 child.bind("<Button-1>", lambda e: on_click())
+        if on_title_edit:
+            self._title_lbl.bind("<Button-1>", lambda e: on_title_edit())
 
 
 _BaseApp = TkinterDnD.Tk if _DND_AVAILABLE else ctk.CTk
@@ -244,9 +321,13 @@ class App(_BaseApp):
         self._filter_ai: str = "Wszystkie"
         self._session_generated: int = 0
         self._session_cached: int = 0
+        self._session_cost_usd: float = 0.0
         self._cancel_event = threading.Event()
         self._page: int = 0
         self._page_size: int = 50
+        self._selected_skus: set[str] = set()
+        self._sel_label: ctk.CTkLabel | None = None
+        self._sel_clear_btn: ctk.CTkButton | None = None
 
         self._build_layout()
         self._setup_drag_drop()
@@ -302,16 +383,20 @@ class App(_BaseApp):
         topbar.grid_propagate(False)
         topbar.grid_columnconfigure(1, weight=1)
 
-        _logo_path = Path("/Users/jakubknap/Documents/_meta/assets/logo/LOGO MARKETIA.png")
+        _logo_path = Path(__file__).resolve().parents[2] / "assets" / "logo.png"
+        _logo_container = ctk.CTkFrame(topbar, fg_color="transparent")
+        _logo_container.grid(row=0, column=0, padx=(16, 0), pady=4)
         try:
-            _logo_img = ctk.CTkImage(Image.open(_logo_path), size=(130, 40))
-            ctk.CTkLabel(topbar, image=_logo_img, text="").grid(
-                row=0, column=0, padx=(16, 4), pady=6)
+            _logo_img = ctk.CTkImage(Image.open(_logo_path), size=(174, 52))
+            ctk.CTkLabel(_logo_container, image=_logo_img, text="").pack(side="left")
         except Exception:
             ctk.CTkLabel(
-                topbar, text="MARKETIA XML PRO",
+                _logo_container, text="MARKETIA XML PRO",
                 text_color=_DARK_TEXT, font=ctk.CTkFont(size=14, weight="bold"),
-            ).grid(row=0, column=0, padx=(16, 4), pady=6)
+            ).pack(side="left")
+        ctk.CTkFrame(_logo_container, width=1, height=36, fg_color="#444444").pack(
+            side="left", padx=(12, 0)
+        )
 
         dnd_hint = "  ·  przeciągnij plik XML tutaj" if _DND_AVAILABLE else ""
         self.summary_var = ctk.StringVar(value=f"Wczytaj XML aby zacząć{dnd_hint}")
@@ -325,17 +410,24 @@ class App(_BaseApp):
         self._build_stats_bar(self._topbar_stats)
 
         # ── SIDEBAR ──────────────────────────────────────────────────────────
-        sidebar = ctk.CTkFrame(self, width=220, corner_radius=0, fg_color=_DARK)
+        sidebar = ctk.CTkFrame(self, width=230, corner_radius=0, fg_color=_DARK)
         sidebar.grid(row=1, column=0, sticky="nsew")
         sidebar.grid_propagate(False)
 
+        _sb_scroll = ctk.CTkScrollableFrame(
+            sidebar, fg_color=_DARK, corner_radius=0,
+            scrollbar_button_color="#374151",
+            scrollbar_button_hover_color="#4B5563",
+        )
+        _sb_scroll.pack(fill="both", expand=True)
+
         def _section(label: str) -> None:
             ctk.CTkLabel(
-                sidebar, text=label,
+                _sb_scroll, text=label,
                 text_color="#6B7280", font=ctk.CTkFont(size=9, weight="bold"),
                 anchor="w",
             ).pack(fill="x", padx=16, pady=(14, 2))
-            ctk.CTkFrame(sidebar, height=1, fg_color="#374151").pack(
+            ctk.CTkFrame(_sb_scroll, height=1, fg_color="#374151").pack(
                 fill="x", padx=12, pady=(0, 4))
 
         def _sb(text, cmd, tip, pady=3, **kw) -> ctk.CTkButton:
@@ -346,7 +438,7 @@ class App(_BaseApp):
             kw.setdefault("font", ctk.CTkFont(size=12))
             kw.setdefault("height", 34)
             kw.setdefault("corner_radius", 8)
-            btn = ctk.CTkButton(sidebar, text=text, command=cmd, **kw)
+            btn = ctk.CTkButton(_sb_scroll, text=text, command=cmd, **kw)
             btn.pack(fill="x", padx=10, pady=pady)
             Tooltip(btn, tip)
             return btn
@@ -361,6 +453,14 @@ class App(_BaseApp):
             "Przydatne gdy automatyczna detekcja myli się markami.")
         _sb("  Zmień model serii", self._open_model_rename,
             "Masowa zmiana nazwy modelu dla całej serii kolorystycznej.")
+        _sb("  Audyt modeli", self._open_model_audit,
+            "Wykrywa produkty w tej samej serii (np. NOTO) przypisane do różnych grup — pozwala je scalić.")
+        _sb("  Usuń modele", self._remove_models,
+            "Usuwa model z zaznaczonych produktów (lub wszystkich). Produkt zostaje bez modelu.",
+            fg_color="#7f1d1d", hover_color="#991b1b")
+        _sb("  Odśwież modele", self._reset_models,
+            "Czyści cache nazw modeli i przelicza je ponownie (nowe grupowanie bez usuwania opisów).",
+            fg_color="#92400e", hover_color="#78350f")
         _sb("  Grupy wariantów", self._open_variant_view,
             "Podgląd i edycja grup wariantowych (kolor/rozmiar).")
         _sb("  Mapa kategorii", self._open_category_mapper,
@@ -371,9 +471,17 @@ class App(_BaseApp):
         _sb("  Uruchom transformy", self._run_transforms,
             "Wykrywanie marki/modelu, SEO tytuł ≤75 zn., EAN, atrybuty.",
             fg_color="#1a6f3a", hover_color="#145c2f")
+        _sb("  Regeneruj tytuły", self._regen_titles,
+            "Przelicza tytuły SEO dla zaznaczonych produktów (lub wszystkich).")
+        self.btn_ai_titles = _sb("  🤖 Tytuły AI (Gemini)", self._run_ai_titles,
+            "Gemini generuje tytuły SEO Allegro (max 75 zn., promp v1 z audytu TOP ofert).\n"
+            "Cache SQLite — idempotentne.",
+            fg_color="#0E7490", hover_color="#0C6177")
         self.btn_ai = _sb("  Generuj opisy (AI)", self._run_ai,
             "Gemini AI generuje opisy HTML. Cache SQLite — idempotentne.",
             fg_color="#1a6f3a", hover_color="#145c2f")
+        _sb("  Zaktualizuj model w opisach", self._sync_model_in_descriptions,
+            "Zastępuje starą nazwę modelu aktualną we wszystkich istniejących opisach.")
         self.btn_ai_unattended = _sb("  ⏳ Generuj automatycznie", self._run_ai_unattended,
             "Unattended mode: retry + cooldown — odejdź od komputera.",
             fg_color="#0E7490", hover_color="#0C6177")
@@ -383,8 +491,8 @@ class App(_BaseApp):
         self.btn_imgbb = _sb("  Upload ImgBB", self._run_imgbb,
             "Wysyła miniatury na ImgBB (CDN). Wymaga IMGBB_API_KEY.",
             fg_color="#9D174D", hover_color="#831843")
-        self.btn_lifestyle = _sb("  Lifestyle AI", self._run_lifestyle,
-            "rembg + Imagen 4 — produkt na lifestyle tle.",
+        self.btn_lifestyle = _sb("  Miniatury AI", self._run_lifestyle,
+            "rembg + Flux Pro — produkt na lifestyle tle. Otwiera zakładkę Miniatury AI.",
             fg_color="#0E7490", hover_color="#0C6177")
 
         # ── NARZĘDZIA
@@ -403,7 +511,7 @@ class App(_BaseApp):
             fg_color="#1D4ED8", hover_color="#1E40AF")
 
         # ── SYSTEM (bottom)
-        ctk.CTkFrame(sidebar, height=1, fg_color="#374151").pack(
+        ctk.CTkFrame(_sb_scroll, height=1, fg_color="#374151").pack(
             fill="x", padx=12, pady=(16, 4))
         _sb("  Wyczyść cache", self._clear_cache_dialog,
             "Usuwa dane z cache SQLite. Możesz wybrać które tabele.",
@@ -412,11 +520,25 @@ class App(_BaseApp):
             "Zarządzaj kluczami API: Gemini, ImgBB.",
             pady=(3, 16))
 
-        # ── MAIN AREA ────────────────────────────────────────────────────────
-        main = ctk.CTkFrame(self, fg_color="#F8FAFC")
-        main.grid(row=1, column=1, sticky="nsew")
-        main.grid_columnconfigure(0, weight=1)
-        main.grid_rowconfigure(1, weight=1)
+        # ── MAIN AREA (tabbed) ────────────────────────────────────────────────
+        self._main_tabs = ctk.CTkTabview(
+            self, fg_color="#F8FAFC", corner_radius=0,
+            anchor="nw", border_width=0,
+            segmented_button_fg_color="#E5E7EB",
+            segmented_button_selected_color="#1D4ED8",
+            segmented_button_unselected_color="#E5E7EB",
+            segmented_button_selected_hover_color="#1E40AF",
+            segmented_button_unselected_hover_color="#D1D5DB",
+        )
+        self._main_tabs.grid(row=1, column=1, sticky="nsew")
+
+        tab_prod = self._main_tabs.add("  Produkty  ")
+        tab_thumb = self._main_tabs.add("  Miniatury AI  ")
+
+        # ── PRODUKTY TAB
+        tab_prod.grid_columnconfigure(0, weight=1)
+        tab_prod.grid_rowconfigure(1, weight=1)
+        main = tab_prod
 
         self._build_filter_bar(main)
 
@@ -426,6 +548,9 @@ class App(_BaseApp):
 
         self._pagination_bar = tk.Frame(main, bg="#F1F5F9", height=36)
         self._pagination_bar.grid(row=2, column=0, sticky="ew", padx=10, pady=(0, 6))
+
+        # ── MINIATURY AI TAB
+        self._build_thumbnail_tab(tab_thumb)
 
         # ── FOOTER ───────────────────────────────────────────────────────────
         footer = ctk.CTkFrame(self, height=32, corner_radius=0, fg_color="#F1F5F9")
@@ -477,14 +602,15 @@ class App(_BaseApp):
         pct = int(ai_done / total * 100) if total else 0
         scores = [p.quality_score for p in self.products if getattr(p, "quality_score", -1) >= 0]
         q_avg = sum(scores) / len(scores) if scores else 0.0
-        cost = self._session_generated * 0.005
         total_calls = self._session_generated + self._session_cached
         cache_pct = int(self._session_cached / total_calls * 100) if total_calls else 0
+        cost = self._session_cost_usd
+        cost_str = f"${cost:.4f}" if cost > 0 else "$0.0000"
 
         self._stat_total.set(f"Produkty: {total}")
         self._stat_ai.set(f"Z opisem: {ai_done} ({pct}%)")
         self._stat_q.set(f"Q avg: {q_avg:.1f}" if scores else "Q avg: —")
-        self._stat_cost.set(f"Koszt: ~${cost:.2f}")
+        self._stat_cost.set(f"Koszt: {cost_str}")
         self._stat_cache.set(f"Cache: {cache_pct}%")
 
     def _build_filter_bar(self, parent: ctk.CTkFrame) -> None:
@@ -511,6 +637,21 @@ class App(_BaseApp):
 
         ctk.CTkButton(bar, text="Wyczyść", width=80, command=self._clear_filters).pack(side="left")
 
+        # Selection indicator (prawa strona paska)
+        self._sel_label = ctk.CTkLabel(
+            bar, text="", text_color="#2563EB",
+            font=ctk.CTkFont(size=11, weight="bold"),
+        )
+        self._sel_label.pack(side="right", padx=(0, 4))
+        self._sel_clear_btn = ctk.CTkButton(
+            bar, text="× Odznacz", width=80, height=26,
+            fg_color="transparent", border_width=1, border_color="#93C5FD",
+            text_color="#2563EB", hover_color="#EFF6FF",
+            command=self._clear_selection,
+        )
+        self._sel_clear_btn.pack(side="right", padx=(0, 8))
+        self._sel_clear_btn.pack_forget()  # ukryty na start
+
     def _on_filter_brand(self, value: str) -> None:
         self._filter_brand = value
         self._page = 0
@@ -527,6 +668,48 @@ class App(_BaseApp):
         self._page = 0
         self._brand_menu.set("Wszystkie")
         self._ai_seg.set("Wszystkie")
+        self._render_table()
+
+    def _effective_products(self, base: list[Product]) -> list[Product]:
+        """Return selected subset if any selection, else return base."""
+        if self._selected_skus:
+            return [p for p in base if p.sku in self._selected_skus]
+        return base
+
+    def _toggle_product_selection(self, sku: str, selected: bool) -> None:
+        if selected:
+            self._selected_skus.add(sku)
+        else:
+            self._selected_skus.discard(sku)
+        self._update_sel_indicator()
+
+    def _clear_selection(self) -> None:
+        self._selected_skus.clear()
+        self._update_sel_indicator()
+        self._render_table()
+
+    def _update_sel_indicator(self) -> None:
+        if self._sel_label is None:
+            return
+        n = len(self._selected_skus)
+        if n > 0:
+            self._sel_label.configure(text=f"{n} zaznaczonych")
+            self._sel_clear_btn.pack(side="right", padx=(0, 8))
+        else:
+            self._sel_label.configure(text="")
+            self._sel_clear_btn.pack_forget()
+
+    def _on_header_checkbox(self) -> None:
+        select = self._header_sel_var.get()
+        filtered = self._filtered_products()
+        start = self._page * self._page_size
+        page_items = filtered[start:start + self._page_size]
+        for p in page_items:
+            if select:
+                self._selected_skus.add(p.sku)
+            else:
+                self._selected_skus.discard(p.sku)
+        self._update_sel_indicator()
         self._render_table()
 
     def _update_brand_filter_options(self) -> None:
@@ -564,31 +747,32 @@ class App(_BaseApp):
         if not self.products:
             messagebox.showinfo(APP_NAME, "Najpierw wczytaj XML.")
             return
+        target = self._effective_products(self.products)
         self.status_var.set("Transformuję…")
         self.progress.configure(mode="indeterminate")
         self.progress.start()
-        threading.Thread(target=self._transform_worker, daemon=True).start()
+        threading.Thread(target=self._transform_worker, args=(target,), daemon=True).start()
 
-    def _transform_worker(self):
+    def _transform_worker(self, products: list[Product]):
         try:
             bm = BrandMapper()
-            bm.map_products(self.products)
-            bm.sanitize_manufacturer_names(self.products)
+            bm.map_products(products)
+            bm.sanitize_manufacturer_names(products)
             with open_cache() as conn:
-                ModelNameGenerator(conn).assign_all(self.products)
-            TitleTransformer().transform_all(self.products)
-            for p in self.products:
+                ModelNameGenerator(conn).assign_all(products)
+            TitleTransformer().transform_all(products)
+            for p in products:
                 p.ean_valid = validate_ean(p.ean)
             # Try to load cached descriptions
-            load_cached_descriptions(self.products)
+            load_cached_descriptions(products)
             # Strip legacy JUMI-format descriptions so AI regenerates them
-            stripped = strip_jumi_descriptions(self.products)
+            stripped = strip_jumi_descriptions(products)
             if stripped:
                 self.q.put(("status", f"Usunięto {stripped} opisów w formacie JUMI — zostaną wygenerowane przez AI."))
-            for p in self.products:
+            for p in products:
                 enrich_product_attributes(p)
             _cat_map = load_category_map()
-            map_all_products(self.products, _cat_map)
+            map_all_products(products, _cat_map)
             self.q.put(("transformed",))
         except Exception as e:
             self.q.put(("error", f"Transform: {e}"))
@@ -614,7 +798,8 @@ class App(_BaseApp):
             )
             return
 
-        pending = [p for p in self.products if not getattr(p, "ai_done", False)]
+        base = self._effective_products(self.products)
+        pending = [p for p in base if not getattr(p, "ai_done", False)]
         if not pending:
             messagebox.showinfo(APP_NAME, "Wszystkie opisy już wygenerowane (z cache).")
             return
@@ -632,7 +817,7 @@ class App(_BaseApp):
         self.progress.start()
         self._op_start()
         threading.Thread(
-            target=self._ai_worker, args=(self.products,), daemon=True
+            target=self._ai_worker, args=(base,), daemon=True
         ).start()
 
     def _ai_worker(self, products: list[Product]):
@@ -640,14 +825,14 @@ class App(_BaseApp):
             self.q.put(("status", msg))
 
         try:
-            submitted, cached = generate_descriptions(
+            submitted, cached, cost = generate_descriptions(
                 products, progress_callback=log,
                 cancel_check=lambda: self._cancel_event.is_set(),
             )
             if self._cancel_event.is_set():
                 self.q.put(("cancelled", f"Zatrzymano. Zapisano: {submitted} opisów."))
             else:
-                self.q.put(("ai_done", submitted, cached))
+                self.q.put(("ai_done", submitted, cached, cost))
         except Exception as e:
             self.q.put(("error", f"AI: {e}"))
 
@@ -668,7 +853,8 @@ class App(_BaseApp):
             )
             return
 
-        pending = [p for p in self.products if not getattr(p, "ai_done", False)]
+        base = self._effective_products(self.products)
+        pending = [p for p in base if not getattr(p, "ai_done", False)]
         if not pending:
             messagebox.showinfo(APP_NAME, "Wszystkie opisy już wygenerowane (z cache).")
             return
@@ -689,7 +875,7 @@ class App(_BaseApp):
         self.progress.start()
         self._op_start()
         threading.Thread(
-            target=self._ai_unattended_worker, args=(self.products,), daemon=True
+            target=self._ai_unattended_worker, args=(base,), daemon=True
         ).start()
 
     def _ai_unattended_worker(self, products: list[Product]):
@@ -697,7 +883,7 @@ class App(_BaseApp):
             self.q.put(("status", f"⏳ {msg}"))
 
         try:
-            submitted, cached = generate_descriptions(
+            submitted, cached, cost = generate_descriptions(
                 products,
                 progress_callback=log,
                 cancel_check=lambda: self._cancel_event.is_set(),
@@ -706,7 +892,7 @@ class App(_BaseApp):
             if self._cancel_event.is_set():
                 self.q.put(("cancelled", f"Zatrzymano. Zapisano: {submitted} opisów."))
             else:
-                self.q.put(("ai_done", submitted, cached))
+                self.q.put(("ai_done", submitted, cached, cost))
         except Exception as e:
             self.q.put(("error", f"Unattended generation: {e}"))
         finally:
@@ -806,19 +992,205 @@ class App(_BaseApp):
         count = open_audit_preview(self.products)
         self.status_var.set(f"Audyt otwarty w przeglądarce ({count} produktów).")
 
-    def _run_lifestyle(self) -> None:
+    # ── MINIATURY AI TAB ─────────────────────────────────────────────────────
+
+    def _build_thumbnail_tab(self, parent: ctk.CTkFrame) -> None:
+        """Build the Miniatury AI tab content."""
+        parent.grid_columnconfigure(0, weight=1)
+        parent.grid_rowconfigure(2, weight=1)
+
+        # Header
+        hdr = ctk.CTkFrame(parent, fg_color="#F0F9FF", corner_radius=8)
+        hdr.grid(row=0, column=0, sticky="ew", padx=12, pady=(8, 4))
+        ctk.CTkLabel(
+            hdr, text="Generator miniatur AI — Flux Pro",
+            font=ctk.CTkFont(size=14, weight="bold"), text_color="#0E7490",
+        ).pack(side="left", padx=12, pady=8)
+        ctk.CTkLabel(
+            hdr,
+            text="rembg wycina tło  ·  Flux Pro generuje scenę lifestyle  ·  Pillow nakłada produkt",
+            font=ctk.CTkFont(size=11), text_color="#6B7280",
+        ).pack(side="left", padx=(0, 12))
+
+        # Controls
+        ctrl = ctk.CTkFrame(parent, fg_color="#F3F4F6", corner_radius=8)
+        ctrl.grid(row=1, column=0, sticky="ew", padx=12, pady=4)
+
+        self._thumb_brand_vars: dict[str, ctk.BooleanVar] = {}
+        self._thumb_brands_frame = ctk.CTkFrame(ctrl, fg_color="transparent")
+        self._thumb_brands_frame.pack(side="left", fill="x", expand=True, padx=12, pady=8)
+
+        self._thumb_force_var = ctk.BooleanVar(value=False)
+        ctk.CTkCheckBox(
+            ctrl, text="Regeneruj istniejące",
+            variable=self._thumb_force_var,
+            font=ctk.CTkFont(size=11),
+        ).pack(side="right", padx=(0, 12), pady=8)
+
+        self._thumb_status_var = ctk.StringVar(value="Wczytaj XML i kliknij Generuj.")
+        ctk.CTkLabel(
+            ctrl, textvariable=self._thumb_status_var,
+            font=ctk.CTkFont(size=11), text_color="#B45309",
+        ).pack(side="right", padx=(0, 16), pady=8)
+
+        self._thumb_gen_btn = ctk.CTkButton(
+            ctrl, text="  Generuj lifestyle AI",
+            fg_color="#0E7490", hover_color="#0C6177",
+            font=ctk.CTkFont(size=12, weight="bold"),
+            command=self._thumb_start,
+        )
+        self._thumb_gen_btn.pack(side="right", padx=(0, 8), pady=8)
+
+        # Preview area
+        self._thumb_preview_frame = ctk.CTkScrollableFrame(
+            parent, fg_color="#FFFFFF", label_text=""
+        )
+        self._thumb_preview_frame.grid(row=2, column=0, sticky="nsew", padx=12, pady=(4, 8))
+        self._thumb_preview_frame.grid_columnconfigure(0, weight=1)
+
+        ctk.CTkLabel(
+            self._thumb_preview_frame,
+            text="Wczytaj XML i kliknij 'Generuj lifestyle AI'.\n"
+                 "Wygenerowane miniatury pojawią się tutaj.",
+            text_color="#9CA3AF", font=ctk.CTkFont(size=12),
+        ).pack(pady=40)
+
+    def _thumb_tab_refresh(self) -> None:
+        """Rebuild brand checkboxes based on currently loaded products."""
+        from app.images.lifestyle_composer import _BRAND_SCENES
+        frame = self._thumb_brands_frame
+        for w in frame.winfo_children():
+            w.destroy()
+        self._thumb_brand_vars.clear()
+
         if not self.products:
-            messagebox.showinfo(APP_NAME, "Najpierw wczytaj i przetransformuj XML.")
+            ctk.CTkLabel(
+                frame, text="Brak produktów — wczytaj XML.",
+                text_color="#9CA3AF", font=ctk.CTkFont(size=11),
+            ).pack(side="left")
             return
-        self.btn_lifestyle.configure(state="disabled")
-        LifestylePickerWindow(self, self.products, on_done=self._lifestyle_done)
+
+        brands = sorted({
+            p.brand for p in self.products
+            if p.brand and p.brand != "unknown" and getattr(p, "images", [])
+        })
+        from app.gui.brand_colors import get_brand_chip_colors
+        for brand in brands:
+            var = ctk.BooleanVar(value=brand.lower() in _BRAND_SCENES)
+            self._thumb_brand_vars[brand] = var
+            count = sum(1 for p in self.products if p.brand == brand and getattr(p, "images", []))
+            bg, fg = get_brand_chip_colors(brand)
+            row = ctk.CTkFrame(frame, fg_color="transparent")
+            row.pack(side="left", padx=4)
+            ctk.CTkCheckBox(
+                row, text=f"{brand.upper()} ({count})",
+                variable=var,
+                font=ctk.CTkFont(size=11),
+                fg_color=bg, hover_color=bg,
+                text_color="#374151",
+                checkmark_color=fg,
+            ).pack()
+
+        total = sum(1 for p in self.products if p.brand in brands and getattr(p, "images", []))
+        self._thumb_status_var.set(
+            f"~{total} produktów  ·  ~${total * 0.04:.2f} koszt  ·  FAL_KEY wymagany"
+        )
+
+    def _thumb_start(self) -> None:
+        selected = [b for b, v in self._thumb_brand_vars.items() if v.get()]
+        if not selected:
+            messagebox.showwarning("Brak wyboru", "Zaznacz co najmniej jedną markę.", parent=self)
+            return
+        fal_key = os.getenv("FAL_KEY", "").strip() or os.getenv("FAL_API_KEY", "").strip()
+        if not fal_key:
+            messagebox.showerror(
+                "Brak FAL_KEY",
+                "Dodaj klucz fal.ai do pliku .env jako FAL_KEY=twój_klucz\n"
+                "Konto: fal.ai → Dashboard → API Keys",
+                parent=self,
+            )
+            return
+        self._thumb_gen_btn.configure(state="disabled", text="Generuję…")
+        self._thumb_status_var.set("Generuję… może potrwać kilka minut.")
+        threading.Thread(
+            target=self._thumb_worker,
+            args=(selected, self._thumb_force_var.get()),
+            daemon=True,
+        ).start()
+
+    def _thumb_worker(self, brands: list[str], force: bool) -> None:
+        from app.images.lifestyle_composer import generate_lifestyle_thumbnails
+
+        def _progress(msg: str) -> None:
+            self.after(0, lambda m=msg: self._thumb_status_var.set(m))
+
+        try:
+            done, skipped = generate_lifestyle_thumbnails(
+                self._effective_products(self.products),
+                brands=brands,
+                force=force,
+                progress_callback=_progress,
+            )
+            self.after(0, lambda: self._thumb_finish(done, skipped))
+        except Exception as e:
+            self.after(0, lambda err=str(e): (
+                messagebox.showerror("Błąd Lifestyle AI", err, parent=self),
+                self._thumb_gen_btn.configure(state="normal", text="  Generuj lifestyle AI"),
+                self._thumb_status_var.set("Błąd — sprawdź FAL_KEY."),
+            ))
+
+    def _thumb_finish(self, done: int, skipped: int) -> None:
+        self._thumb_gen_btn.configure(state="normal", text="  Generuj lifestyle AI")
+        self._thumb_status_var.set(f"Gotowe: {done} wygenerowanych, {skipped} pominiętych.")
+        self._lifestyle_done(done)
+        self._thumb_show_results()
+
+    def _thumb_show_results(self) -> None:
+        """Display generated thumbnails in the preview area."""
+        from pathlib import Path
+        thumb_dir = Path(__file__).resolve().parents[2] / "output" / "thumbnails"
+        files = sorted(thumb_dir.glob("*_lifestyle.jpg"), key=lambda f: f.stat().st_mtime, reverse=True)
+
+        frame = self._thumb_preview_frame
+        for w in frame.winfo_children():
+            w.destroy()
+
+        if not files:
+            ctk.CTkLabel(
+                frame, text="Brak wygenerowanych miniatur.",
+                text_color="#9CA3AF", font=ctk.CTkFont(size=12),
+            ).pack(pady=20)
+            return
+
+        # Grid: 4 columns
+        cols = 4
+        grid = ctk.CTkFrame(frame, fg_color="transparent")
+        grid.pack(fill="both", expand=True, padx=8, pady=8)
+        for i in range(cols):
+            grid.grid_columnconfigure(i, weight=1)
+
+        for idx, fpath in enumerate(files[:40]):
+            col = idx % cols
+            row = idx // cols
+            try:
+                img = Image.open(fpath).resize((200, 200))
+                ctk_img = ctk.CTkImage(img, size=(200, 200))
+                cell = ctk.CTkFrame(grid, fg_color="#F8FAFC", corner_radius=8)
+                cell.grid(row=row, column=col, padx=6, pady=6, sticky="nsew")
+                ctk.CTkLabel(cell, image=ctk_img, text="").pack(pady=(8, 2))
+                ctk.CTkLabel(
+                    cell, text=fpath.stem[:20],
+                    font=ctk.CTkFont(size=9), text_color="#6B7280",
+                ).pack(pady=(0, 6))
+            except Exception:
+                pass
+
+    def _run_lifestyle(self) -> None:
+        self._main_tabs.set("  Miniatury AI  ")
+        self._thumb_tab_refresh()
 
     def _lifestyle_done(self, count: int) -> None:
-        self.btn_lifestyle.configure(state="normal")
-        self.status_var.set(f"Lifestyle: {count} miniaturek zapisanych jako *_lifestyle.jpg.")
-        messagebox.showinfo(APP_NAME,
-            f"Lifestyle thumbnails gotowe!\n{count} plików zapisanych w output/thumbnails/\n"
-            "Format: {sku}_lifestyle.jpg\nImgBB upload będzie preferować te pliki.")
+        self.status_var.set(f"Lifestyle AI: {count} miniaturek zapisanych jako *_lifestyle.jpg.")
 
     def _open_settings(self) -> None:
         SettingsWindow(self)
@@ -910,11 +1282,190 @@ class App(_BaseApp):
         if not self.products:
             messagebox.showinfo(APP_NAME, "Najpierw wczytaj i przetransformuj XML.")
             return
-        models = [p for p in self.products if p.model_name]
+        target = self._effective_products(self.products)
+        models = [p for p in target if p.model_name]
         if not models:
             messagebox.showinfo(APP_NAME, "Brak przypisanych modeli. Uruchom krok 3 (Transformy).")
             return
-        ModelRenameWindow(self, self.products, on_done=self._render_table)
+        ModelRenameWindow(self, target, on_done=self._render_table)
+
+    def _open_model_audit(self) -> None:
+        if not self.products:
+            messagebox.showinfo(APP_NAME, "Najpierw wczytaj i przetransformuj XML.")
+            return
+        has_models = any(p.model_name for p in self.products)
+        if not has_models:
+            messagebox.showinfo(APP_NAME, "Brak przypisanych modeli. Uruchom krok 3 (Transformy).")
+            return
+        ModelAuditWindow(self, self.products, on_done=self._render_table)
+
+    def _remove_models(self) -> None:
+        if not self.products:
+            messagebox.showinfo(APP_NAME, "Najpierw wczytaj i przetransformuj XML.")
+            return
+        target = self._effective_products(self.products)
+        n = len(target)
+        if not messagebox.askyesno(APP_NAME, f"Usunąć model z {n} produktów?"):
+            return
+        skus = [p.sku for p in target]
+        with open_cache() as conn:
+            placeholders = ",".join("?" * len(skus))
+            conn.execute(
+                f"DELETE FROM sku_model_names WHERE used_for_sku IN ({placeholders})",  # noqa: S608
+                skus,
+            )
+        from app.transformer.title_transformer import TitleTransformer
+        tt = TitleTransformer()
+        for p in target:
+            old_model = p.model_name or ""
+            p.model_name = ""
+            if old_model:
+                pat = re.compile(
+                    r'(?<![A-Za-z0-9])' + re.escape(old_model) + r'(?![A-Za-z0-9])',
+                    re.IGNORECASE,
+                )
+                for field in ("name", "description", "description_extra_1", "description_extra_2"):
+                    val = getattr(p, field, "") or ""
+                    if val:
+                        cleaned = pat.sub("", val)
+                        cleaned = re.sub(r"\s{2,}", " ", cleaned).strip()
+                        setattr(p, field, cleaned)
+            tt.transform(p)
+        self._render_table()
+        self.status_var.set(f"Usunięto model z {n} produktów.")
+
+    def _reset_models(self) -> None:
+        if not self.products:
+            messagebox.showinfo(APP_NAME, "Najpierw wczytaj i przetransformuj XML.")
+            return
+        if not messagebox.askyesno(
+            APP_NAME,
+            "Skasować cache nazw modeli dla wczytanych produktów i przeliczyć je na nowo?\n\n"
+            "Opisy AI i miniatury NIE zostaną usunięte.",
+        ):
+            return
+        target = self._effective_products(self.products)
+        skus = [p.sku for p in target]
+        with open_cache() as conn:
+            placeholders = ",".join("?" * len(skus))
+            conn.execute(
+                f"DELETE FROM sku_model_names WHERE used_for_sku IN ({placeholders})",  # noqa: S608
+                skus,
+            )
+        self.status_var.set("Przeliczam modele…")
+        self.progress.configure(mode="indeterminate")
+        self.progress.start()
+        threading.Thread(target=self._reset_models_worker, args=(target,), daemon=True).start()
+
+    def _reset_models_worker(self, products: list[Product]) -> None:
+        try:
+            with open_cache() as conn:
+                ModelNameGenerator(conn).assign_all(products)
+            TitleTransformer().transform_all(products)
+            self.q.put(("transformed",))
+        except Exception as e:
+            self.q.put(("error", f"Odśwież modele: {e}"))
+
+    def _sync_model_in_descriptions(self) -> None:
+        if not self.products:
+            messagebox.showinfo(APP_NAME, "Najpierw wczytaj i przetransformuj XML.")
+            return
+        pool_path = Path(__file__).resolve().parents[2] / "data" / "model_names.json"
+        try:
+            import json
+            with pool_path.open(encoding="utf-8") as f:
+                all_names: set[str] = {n.lower() for names in json.load(f).values() for n in names}
+        except Exception as exc:
+            messagebox.showerror(APP_NAME, f"Nie można wczytać model_names.json: {exc}")
+            return
+
+        _BOUNDARY = r'(?<![A-Za-zÀ-ɏ0-9])'
+        updated = 0
+        with open_cache() as conn:
+            for p in self.products:
+                if not p.model_name:
+                    continue
+                current_base = p.model_name.split()[0]
+                current_lower = current_base.lower()
+                desc_changed = False
+                for field in ("description", "description_extra_1", "description_extra_2"):
+                    val = getattr(p, field, "") or ""
+                    if not val:
+                        continue
+                    new_val = val
+                    for name in all_names:
+                        if name == current_lower:
+                            continue
+                        pat = re.compile(
+                            _BOUNDARY + re.escape(name) + r'(?![A-Za-zÀ-ɏ0-9])',
+                            re.IGNORECASE,
+                        )
+                        new_val = pat.sub(current_base, new_val)
+                    if new_val != val:
+                        setattr(p, field, new_val)
+                        if field == "description":
+                            save_description(conn, p.sku, new_val)
+                            desc_changed = True
+                if desc_changed:
+                    updated += 1
+        self._render_table()
+        messagebox.showinfo(APP_NAME, f"Zaktualizowano opisy dla {updated} produktów.")
+
+    def _regen_titles(self) -> None:
+        if not self.products:
+            messagebox.showinfo(APP_NAME, "Najpierw wczytaj XML.")
+            return
+        target = self._effective_products(self.products)
+        self.status_var.set("Regeneruję tytuły…")
+        self.progress.configure(mode="indeterminate")
+        self.progress.start()
+        threading.Thread(target=self._regen_titles_worker, args=(target,), daemon=True).start()
+
+    def _regen_titles_worker(self, products: list[Product]) -> None:
+        try:
+            TitleTransformer().transform_all(products)
+            self.q.put(("transformed",))
+        except Exception as e:
+            self.q.put(("error", f"Regeneruj tytuły: {e}"))
+
+    def _run_ai_titles(self) -> None:
+        if not self.products:
+            messagebox.showinfo(APP_NAME, "Najpierw wczytaj XML.")
+            return
+        target = self._effective_products(self.products)
+        if not target:
+            return
+        force = messagebox.askyesno(
+            APP_NAME,
+            f"Wygenerować tytuły AI (Gemini) dla {len(target)} produktów?\n\n"
+            "TAK = wymuś regenerację (nadpisuje cache).\n"
+            "NIE = użyj cache gdy dostępny."
+        )
+        self.status_var.set("Generuję tytuły AI…")
+        self.progress.configure(mode="determinate")
+        self.progress["value"] = 0
+        self.progress["maximum"] = len(target)
+        threading.Thread(
+            target=self._ai_titles_worker, args=(target, force), daemon=True
+        ).start()
+
+    def _ai_titles_worker(self, products: list[Product], force: bool) -> None:
+        try:
+            from app.ai.title_generator import AITitleGenerator
+            from app.cache.sqlite_cache import open_cache
+            with open_cache() as conn:
+                gen = AITitleGenerator(conn)
+                def _progress(done, total, custom_id, error=None):
+                    self.q.put(("ai_titles_progress", done, total, error))
+                updated = gen.apply_to_products(
+                    products, force=force, progress_cb=_progress
+                )
+            self.q.put(("ai_titles_done", updated, len(products)))
+        except Exception as e:
+            self.q.put(("error", f"Tytuły AI: {e}"))
+
+    def _open_title_edit(self, product: Product) -> None:
+        TitleEditDialog(self, product, on_done=self._render_table)
 
     def _open_variant_view(self) -> None:
         if not self.products:
@@ -989,7 +1540,8 @@ class App(_BaseApp):
             messagebox.showinfo(APP_NAME, "Najpierw wczytaj i przetransformuj XML (krok 3).")
             return
 
-        with_images = [p for p in self.products if getattr(p, "images", [])]
+        target = self._effective_products(self.products)
+        with_images = [p for p in target if getattr(p, "images", [])]
         if not with_images:
             messagebox.showinfo(APP_NAME, "Brak produktów z URL-ami zdjęć.")
             return
@@ -1055,55 +1607,11 @@ class App(_BaseApp):
         )
 
     def _on_brand_change(self, product: Product, new_brand: str) -> None:
-        import re as _re
-        old_brand = product.brand
-        old_model = product.model_name or ""
         product.brand = new_brand
-
         tt = TitleTransformer()
         product.manufacturer_name = (tt.brand_data.get(new_brand) or {}).get("name", new_brand.upper())
-
-        # Reassign model BEFORE generating title — assign modifies product.name
-        # (substitutes the series word), so title must be built from the updated name.
-        with open_cache() as conn:
-            conn.execute("DELETE FROM sku_model_names WHERE used_for_sku = ?", (product.sku,))
-            ModelNameGenerator(conn).assign(product)
-        new_model = product.model_name or ""
-
         tt.transform(product)
-
-        old_disp = (tt.brand_data.get(old_brand) or {}).get("name", old_brand.upper() if old_brand else "")
-        new_disp = (tt.brand_data.get(new_brand) or {}).get("name", new_brand)
-
-        old_base = old_model.split()[0] if old_model else ""
-        new_base = new_model.split()[0] if new_model else ""
-
-        replacements: list[tuple] = []
-        if old_disp and old_disp.upper() != new_disp.upper():
-            replacements.append((_re.compile(_re.escape(old_disp), _re.IGNORECASE), new_disp))
-        # Full model phrase first (e.g. "Horn Białe" → "Lind Białe"), then bare base word
-        if old_model and new_model and old_model.upper() != new_model.upper():
-            replacements.append((
-                _re.compile(r'(?<![A-Za-z0-9])' + _re.escape(old_model) + r'(?![A-Za-z0-9])', _re.IGNORECASE),
-                new_model,
-            ))
-        if old_base and new_base and old_base.upper() != new_base.upper():
-            replacements.append((
-                _re.compile(r'(?<![A-Za-z0-9])' + _re.escape(old_base) + r'(?![A-Za-z0-9])', _re.IGNORECASE),
-                new_base,
-            ))
-
-        if replacements:
-            for field in ("description", "description_extra_1", "description_extra_2"):
-                val = getattr(product, field, "") or ""
-                if not val:
-                    continue
-                for pat, rep in replacements:
-                    val = pat.sub(rep, val)
-                setattr(product, field, val)
-
         self._render_table()
-        # Refresh detail popup if it's open for this product
         if self._detail_win is not None:
             try:
                 if self._detail_win.winfo_exists():
@@ -1112,26 +1620,37 @@ class App(_BaseApp):
                 pass
 
     def _on_model_change(self, product: Product, new_model: str) -> None:
-        import re as _re
         old_model = product.model_name or ""
         product.model_name = new_model
 
         # Persist to SQLite cache (overrides auto-generated name)
         with open_cache() as conn:
             conn.execute("DELETE FROM sku_model_names WHERE used_for_sku = ?", (product.sku,))
-            from app.cache.sqlite_cache import save_sku_model_name
-            save_sku_model_name(conn, product.sku, product.brand or "", new_model)
+            if new_model:
+                from app.cache.sqlite_cache import save_sku_model_name
+                save_sku_model_name(conn, product.sku, product.brand or "", new_model)
 
-        # Replace old model name in existing description (word-boundary aware)
-        if old_model and old_model.upper() != new_model.upper():
-            pat = _re.compile(
-                r'(?<![A-Za-z0-9])' + _re.escape(old_model) + r'(?![A-Za-z0-9])',
-                _re.IGNORECASE,
+        # Strip/replace old model name in all text fields (word-boundary aware)
+        if old_model and old_model.upper() != (new_model or "").upper():
+            pat = re.compile(
+                r'(?<![A-Za-z0-9])' + re.escape(old_model) + r'(?![A-Za-z0-9])',
+                re.IGNORECASE,
             )
-            for field in ("description", "description_extra_1", "description_extra_2"):
+            text_fields = ["description", "description_extra_1", "description_extra_2"]
+            if not new_model:  # clearing — also clean name so title rebuilds clean
+                text_fields = ["name"] + text_fields
+            replacement = new_model if new_model else ""
+            for field in text_fields:
                 val = getattr(product, field, "") or ""
                 if val:
-                    setattr(product, field, pat.sub(new_model, val))
+                    cleaned = pat.sub(replacement, val)
+                    cleaned = re.sub(r"\s{2,}", " ", cleaned).strip()
+                    setattr(product, field, cleaned)
+
+        # Retransform title when model changes (including clearing)
+        if old_model != new_model:
+            from app.transformer.title_transformer import TitleTransformer
+            TitleTransformer().transform(product)
 
         self._render_table()
 
@@ -1159,6 +1678,8 @@ class App(_BaseApp):
             messagebox.showwarning(APP_NAME, "Brak zdefiniowanych marek w brand_keywords.json.")
             return
 
+        target = self._effective_products(self.products)
+
         win = ctk.CTkToplevel(self)
         win.title("Zmień markę — wszystkie produkty")
         win.geometry("400x230")
@@ -1171,15 +1692,16 @@ class App(_BaseApp):
             font=ctk.CTkFont(size=13, weight="bold"),
         ).pack(pady=(24, 2))
         ctk.CTkLabel(
-            win, text=f"{len(self.products)} produktów zostanie zaktualizowanych",
+            win, text=f"{len(target)} produktów zostanie zaktualizowanych",
             text_color="#6B7280", font=ctk.CTkFont(size=11),
         ).pack(pady=(0, 14))
 
         brand_var = ctk.StringVar(value=brands[0])
         ctk.CTkOptionMenu(win, values=brands, variable=brand_var, width=260).pack(pady=4)
 
+        _target = target  # capture for _apply closure
+
         def _apply() -> None:
-            import re as _re
             new_brand = brand_var.get()
             if not new_brand:
                 return
@@ -1190,7 +1712,7 @@ class App(_BaseApp):
 
             # Collect per-product old state BEFORE any mutations
             old_states: list[tuple] = []
-            for p in self.products:
+            for p in _target:
                 old_states.append((
                     p,
                     p.brand or "",
@@ -1205,15 +1727,15 @@ class App(_BaseApp):
 
             # Pass 2: batch model reassignment (modifies product.name with new series word)
             with open_cache() as conn:
-                skus = [p.sku for p in self.products]
+                skus = [p.sku for p in _target]
                 conn.execute(
                     f"DELETE FROM sku_model_names WHERE used_for_sku IN ({','.join('?' * len(skus))})",
                     skus,
                 )
-                ModelNameGenerator(conn).assign_all(self.products)
+                ModelNameGenerator(conn).assign_all(_target)
 
             # Pass 3: regenerate titles now that product.name has the new series names
-            for p in self.products:
+            for p in _target:
                 tt.transform(p)
 
             # Pass 4: description replacements using the now-correct model names
@@ -1224,21 +1746,21 @@ class App(_BaseApp):
                 replacements = []
                 if old_disp and old_disp.upper() != new_disp.upper():
                     replacements.append(
-                        (_re.compile(_re.escape(old_disp), _re.IGNORECASE), new_disp)
+                        (re.compile(re.escape(old_disp), re.IGNORECASE), new_disp)
                     )
                 if old_model and new_model and old_model.upper() != new_model.upper():
                     replacements.append((
-                        _re.compile(
-                            r'(?<![A-Za-z0-9])' + _re.escape(old_model) + r'(?![A-Za-z0-9])',
-                            _re.IGNORECASE,
+                        re.compile(
+                            r'(?<![A-Za-z0-9])' + re.escape(old_model) + r'(?![A-Za-z0-9])',
+                            re.IGNORECASE,
                         ),
                         new_model,
                     ))
                 if old_base and new_base and old_base.upper() != new_base.upper():
                     replacements.append((
-                        _re.compile(
-                            r'(?<![A-Za-z0-9])' + _re.escape(old_base) + r'(?![A-Za-z0-9])',
-                            _re.IGNORECASE,
+                        re.compile(
+                            r'(?<![A-Za-z0-9])' + re.escape(old_base) + r'(?![A-Za-z0-9])',
+                            re.IGNORECASE,
                         ),
                         new_base,
                     ))
@@ -1300,6 +1822,8 @@ class App(_BaseApp):
                 if tag == "loaded":
                     _, products, path, diff = msg
                     self.products = products
+                    self._selected_skus.clear()
+                    self._update_sel_indicator()
                     self.progress.stop()
                     self.progress.configure(mode="determinate")
                     self.progress.set(1.0)
@@ -1311,6 +1835,7 @@ class App(_BaseApp):
                     self._render_table()
                     self._update_brand_filter_options()
                     self._update_stats()
+                    self._thumb_tab_refresh()
 
                 elif tag == "transformed":
                     ai_done = sum(1 for p in self.products if getattr(p, "ai_done", False))
@@ -1331,7 +1856,7 @@ class App(_BaseApp):
                     self.progress.set(msg[1])
 
                 elif tag == "ai_done":
-                    _, submitted, cached = msg
+                    _, submitted, cached, cost = msg
                     self.progress.stop()
                     self.progress.configure(mode="determinate")
                     self.progress.set(1.0)
@@ -1339,8 +1864,9 @@ class App(_BaseApp):
                     self.summary_var.set(
                         f"{self.summary_var.get().split('•')[0]}• opisy AI: {ai_done}"
                     )
+                    cost_str = f" | Koszt sesji: ${cost:.4f}" if cost > 0 else ""
                     self.status_var.set(
-                        f"Opisy gotowe. Wygenerowano: {submitted} | Cache: {cached}"
+                        f"Opisy gotowe. Wygenerowano: {submitted} | Cache: {cached}{cost_str}"
                     )
                     self.btn_ai.configure(state="normal")
                     self.btn_ai_unattended.configure(state="normal")
@@ -1348,7 +1874,25 @@ class App(_BaseApp):
                     self._render_table()
                     self._session_generated += submitted
                     self._session_cached += cached
+                    self._session_cost_usd += cost
                     self._update_stats()
+
+                elif tag == "ai_titles_progress":
+                    _, done, total, error = msg
+                    self.progress["maximum"] = total
+                    self.progress["value"] = done
+                    suffix = f" (err: {error})" if error else ""
+                    self.status_var.set(f"Tytuły AI: {done}/{total}{suffix}")
+
+                elif tag == "ai_titles_done":
+                    _, updated, total = msg
+                    self.progress["value"] = self.progress["maximum"]
+                    self.btn_ai_titles.configure(state="normal")
+                    self._op_end()
+                    self.status_var.set(
+                        f"Tytuły AI gotowe. Zaktualizowano: {updated}/{total}."
+                    )
+                    self._render_table()
 
                 elif tag == "imgbb_done":
                     _, uploaded = msg
@@ -1451,16 +1995,27 @@ class App(_BaseApp):
 
         header_row = ctk.CTkFrame(self.list_frame, fg_color="#F3F4F6", corner_radius=4)
         header_row.grid(row=0, column=0, sticky="ew", pady=(0, 4))
+
+        # "Select all" checkbox dla bieżącej strony
+        self._header_sel_var = ctk.BooleanVar(value=False)
+        header_sel_cb = ctk.CTkCheckBox(
+            header_row, variable=self._header_sel_var, text="",
+            width=24, checkbox_width=16, checkbox_height=16,
+            command=self._on_header_checkbox,
+        )
+        header_sel_cb.grid(row=0, column=0, padx=(4, 0), pady=4)
+        header_row.grid_columnconfigure(0, minsize=28)
+
         for i, (text, w) in enumerate(
-            zip(("SKU", "TYTUŁ / NAZWA", "MARKA", "KAT.", "MODEL", "EAN", "OK", "AI", "Q"),
-                ProductRow.COL_WIDTHS)
+            zip(("", "SKU", "TYTUŁ / NAZWA", "MARKA", "KAT.", "MODEL", "EAN", "OK", "AI", "Q"),
+                ProductRow.COL_WIDTHS[1:])  # skip checkbox width
         ):
-            header_row.grid_columnconfigure(i, minsize=w)
+            header_row.grid_columnconfigure(i + 1, minsize=w)
             ctk.CTkLabel(
                 header_row, text=text, anchor="w",
                 font=ctk.CTkFont(size=11, weight="bold"),
                 text_color="#6B7280",
-            ).grid(row=0, column=i, sticky="w", padx=4, pady=4)
+            ).grid(row=0, column=i + 1, sticky="w", padx=4, pady=4)
 
         filtered = self._filtered_products()
         total = len(filtered)
@@ -1474,8 +2029,16 @@ class App(_BaseApp):
             row = ProductRow(
                 self.list_frame, p,
                 on_click=lambda prod=p: self._on_row_click(prod),
+                on_select=self._toggle_product_selection,
+                on_title_edit=lambda prod=p: self._open_title_edit(prod),
+                is_selected=p.sku in self._selected_skus,
             )
             row.grid(row=idx, column=0, sticky="ew", pady=1)
+
+        # Ustaw stan headera: zaznaczony jeśli WSZYSTKIE na stronie są w selekcji
+        if page_items:
+            all_sel = all(p.sku in self._selected_skus for p in page_items)
+            self._header_sel_var.set(all_sel)
 
         self._update_pagination(total, total_pages)
 
