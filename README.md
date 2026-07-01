@@ -1,6 +1,8 @@
-# Marketia XML Pro
+# Marketia Produktyzator
 
 Masowa transformacja XML produktowych z BaseLinker → marketplace (Allegro / Empik / OLX).
+
+(dawniej: Marketia XML Pro — projekt rozszerzony o sync stocków klonów multi-EAN, GUI BL integration etc.)
 
 ## Status
 

@@ -1,4 +1,4 @@
-"""Marketia XML Pro — GUI.
+"""Marketia Produktyzator — GUI.
 Phases 1-5: XML parse → transforms → AI descriptions → thumbnails → export.
 """
 from __future__ import annotations
@@ -50,13 +50,15 @@ from app.gui.seo_keyword_window import SeoKeywordWindow
 from app.gui.variant_view import VariantViewWindow
 from app.gui.model_audit_window import ModelAuditWindow
 from app.gui.title_edit_dialog import TitleEditDialog
+from app.gui.ean_edit_dialog import EanEditDialog
+from app.gui.sync_report_dialog import SyncReportDialog
 from app.gui.tooltip import Tooltip
 from app.validator import validate_ean, get_label
 
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("blue")
 
-APP_NAME = "Marketia XML Pro"
+APP_NAME = "Marketia Produktyzator"
 OUTPUT_DIR = Path(__file__).resolve().parents[2] / "output"
 
 _BRAND_KEYWORDS_PATH = Path(__file__).resolve().parents[2] / "data" / "brand_keywords.json"
@@ -189,10 +191,10 @@ def _thumb_mode_dialog(parent, n_products: int) -> dict | None:
 
 
 class ProductRow(ctk.CTkFrame):
-    # CB | IMG | SKU | TYTUŁ | MARKA | KAT. | MODEL | EAN | T | AI | Q
-    COL_WIDTHS = (28, 50, 130, 280, 110, 80, 100, 130, 40, 40, 50)
+    # CB | IMG | SKU | TYTUŁ | MARKA | KAT. | MODEL | EAN+btn | T | AI | Q
+    COL_WIDTHS = (28, 50, 130, 280, 110, 80, 100, 200, 40, 40, 50)
 
-    def __init__(self, master, product: Product, on_click=None, on_select=None, on_title_edit=None, is_selected: bool = False, **kwargs):
+    def __init__(self, master, product: Product, on_click=None, on_select=None, on_title_edit=None, on_ean_edit=None, is_selected: bool = False, **kwargs):
         diff = getattr(product, "diff_status", None)
         diff_border = DIFF_COLORS.get(diff) if diff else None
         super().__init__(
@@ -257,35 +259,69 @@ class ProductRow(ctk.CTkFrame):
                      font=ctk.CTkFont(size=11)).grid(
             row=0, column=6, sticky="w", padx=4, pady=3)
 
-        # EAN (col 7)
+        # EAN (col 7) — value + dedicated "+ EAN" button (clones counter when extras present)
         ean_color = "#1f883d" if getattr(product, "ean_valid", True) else "#d1242f"
-        ctk.CTkLabel(self, text=product.ean or "—", anchor="w",
-                     text_color=ean_color, font=ctk.CTkFont(size=11)).grid(
-            row=0, column=7, sticky="w", padx=4, pady=3)
+        extra_n = len(getattr(product, "extra_eans", []) or [])
+        self._ean_cell = ctk.CTkFrame(self, fg_color="transparent")
+        self._ean_cell.grid(row=0, column=7, sticky="w", padx=2, pady=2)
+        self._ean_lbl = ctk.CTkLabel(
+            self._ean_cell, text=product.ean or "—", anchor="w",
+            text_color=ean_color, font=ctk.CTkFont(size=11),
+        )
+        self._ean_lbl.pack(side="left", padx=(2, 4))
+        if on_ean_edit:
+            btn_text = f"+ EAN ({extra_n})" if extra_n else "+ EAN"
+            btn_fg = "#15803D" if extra_n else "#2563EB"
+            btn_hover = "#166534" if extra_n else "#1D4ED8"
+            self._ean_btn = ctk.CTkButton(
+                self._ean_cell, text=btn_text, width=70, height=22,
+                font=ctk.CTkFont(size=10, weight="bold"),
+                fg_color=btn_fg, hover_color=btn_hover, text_color="#FFFFFF",
+                corner_radius=4,
+                command=lambda: on_ean_edit(),
+            )
+            self._ean_btn.pack(side="left")
+            Tooltip(
+                self._ean_btn,
+                "Dodaj dodatkowe EAN-y — każdy stworzy klona produktu\n"
+                "(SKU-1, SKU-2, …) z innym kodem dla różnych kart Allegro."
+            )
 
         # Title length OK (col 8)
         title_len = len(product.title or "")
         t_ok = "✓" if 0 < title_len <= 75 else "✗"
         t_color = "#1f883d" if t_ok == "✓" else "#d1242f"
-        ctk.CTkLabel(self, text=t_ok, text_color=t_color,
-                     font=ctk.CTkFont(size=11)).grid(
-            row=0, column=8, sticky="w", padx=4, pady=3)
+        t_lbl = ctk.CTkLabel(self, text=t_ok, text_color=t_color,
+                              font=ctk.CTkFont(size=11))
+        t_lbl.grid(row=0, column=8, sticky="w", padx=4, pady=3)
+        Tooltip(
+            t_lbl,
+            f"Tytuł {title_len} zn.\n✓ = OK (1-75 zn.) — limit Allegro\n✗ = za długi lub pusty"
+        )
 
         # AI status (col 9)
         ai_sym = "🤖" if getattr(product, "ai_done", False) else "·"
-        ctk.CTkLabel(self, text=ai_sym, font=ctk.CTkFont(size=11)).grid(
-            row=0, column=9, sticky="w", padx=4, pady=3)
+        ai_lbl = ctk.CTkLabel(self, text=ai_sym, font=ctk.CTkFont(size=11))
+        ai_lbl.grid(row=0, column=9, sticky="w", padx=4, pady=3)
+        Tooltip(
+            ai_lbl,
+            "🤖 = opis AI wygenerowany\n· = jeszcze nie ma — uruchom 'Generuj opisy (AI)' w sidebar"
+        )
 
         # Quality score (col 10)
         score = getattr(product, "quality_score", -1)
         if score >= 0:
             _, sc = get_label(score)
-            ctk.CTkLabel(self, text=str(score), text_color=sc,
-                         font=ctk.CTkFont(size=11, weight="bold")).grid(
-                row=0, column=10, sticky="w", padx=4, pady=3)
+            q_lbl = ctk.CTkLabel(self, text=str(score), text_color=sc,
+                                  font=ctk.CTkFont(size=11, weight="bold"))
+            q_lbl.grid(row=0, column=10, sticky="w", padx=4, pady=3)
         else:
-            ctk.CTkLabel(self, text="—", font=ctk.CTkFont(size=11)).grid(
-                row=0, column=10, sticky="w", padx=4, pady=3)
+            q_lbl = ctk.CTkLabel(self, text="—", font=ctk.CTkFont(size=11))
+            q_lbl.grid(row=0, column=10, sticky="w", padx=4, pady=3)
+        Tooltip(
+            q_lbl,
+            "Q score = jakość opisu (0-10).\nWyliczane przez AI:\n- czy ma <b>, liczby, jednostki, sekcje\n— = brak opisu"
+        )
 
         if on_click:
             self.bind("<Button-1>", lambda e: on_click())
@@ -294,6 +330,8 @@ class ProductRow(ctk.CTkFrame):
                     continue
                 if child is self._title_lbl:
                     continue  # title label gets its own binding below
+                if child is self._ean_cell:
+                    continue  # EAN cell has its own button — don't swallow clicks
                 child.bind("<Button-1>", lambda e: on_click())
         if on_title_edit:
             self._title_lbl.bind("<Button-1>", lambda e: on_title_edit())
@@ -391,7 +429,7 @@ class App(_BaseApp):
             ctk.CTkLabel(_logo_container, image=_logo_img, text="").pack(side="left")
         except Exception:
             ctk.CTkLabel(
-                _logo_container, text="MARKETIA XML PRO",
+                _logo_container, text=APP_NAME.upper(),
                 text_color=_DARK_TEXT, font=ctk.CTkFont(size=14, weight="bold"),
             ).pack(side="left")
         ctk.CTkFrame(_logo_container, width=1, height=36, fg_color="#444444").pack(
@@ -509,6 +547,10 @@ class App(_BaseApp):
         self.btn_export = _sb("  Eksport XML", self._export_xml,
             "Eksportuje XML do BaseLinker z kategorią Allegro i atrybutami.",
             fg_color="#1D4ED8", hover_color="#1E40AF")
+        self.btn_bl_sync = _sb("  Sync stocki klonów (BaseLinker)", self._run_bl_sync,
+            "Pobiera stock rodziców (SKU bez suffixu) z BaseLinker i kopiuje go do klonów\n"
+            "(SKU `-1`, `-2`, …) przez API. Wymaga BASELINKER_TOKEN + INVENTORY_ID w Ustawieniach.",
+            fg_color="#0E7490", hover_color="#0C6177")
 
         # ── SYSTEM (bottom)
         ctk.CTkFrame(_sb_scroll, height=1, fg_color="#374151").pack(
@@ -738,10 +780,19 @@ class App(_BaseApp):
     def _load_worker(self, path: str):
         try:
             products = parse_xml(path)
+            self._hydrate_extra_eans(products)
             diff = run_diff(products)
             self.q.put(("loaded", products, path, diff))
         except Exception as e:
             self.q.put(("error", f"Parser: {e}"))
+
+    @staticmethod
+    def _hydrate_extra_eans(products: list[Product]) -> None:
+        """Populate Product.extra_eans from SQLite cache after parsing."""
+        from app.cache.sqlite_cache import get_extra_eans, open_cache
+        with open_cache() as conn:
+            for p in products:
+                p.extra_eans = get_extra_eans(conn, p.sku)
 
     def _run_transforms(self):
         if not self.products:
@@ -790,11 +841,11 @@ class App(_BaseApp):
         if not has_api_key:
             messagebox.showerror(
                 APP_NAME,
-                "Brak kluczy API Gemini!\n\n"
-                "Dodaj do pliku .env:\n"
-                "GEMINI_API_KEYS=klucz1,klucz2,klucz3\n"
-                "lub pojedynczo:\n"
-                "GEMINI_API_KEY=AIza...",
+                "❌ Brak klucza Gemini API\n\n"
+                "Co zrobić:\n"
+                "1. Sidebar → SYSTEM → Ustawienia\n"
+                "2. Sekcja 'Gemini API' → Dodaj klucz\n"
+                "3. Klucz dostaniesz za darmo na: aistudio.google.com → Get API Key",
             )
             return
 
@@ -849,7 +900,11 @@ class App(_BaseApp):
         if not has_api_key:
             messagebox.showerror(
                 APP_NAME,
-                "Brak kluczy API Gemini!\n\nDodaj do pliku .env:\nGEMINI_API_KEYS=klucz1,klucz2",
+                "❌ Brak klucza Gemini API\n\n"
+                "Co zrobić:\n"
+                "1. Sidebar → SYSTEM → Ustawienia\n"
+                "2. Sekcja 'Gemini API' → Dodaj klucz\n"
+                "3. Klucz dostaniesz za darmo na: aistudio.google.com → Get API Key",
             )
             return
 
@@ -903,9 +958,40 @@ class App(_BaseApp):
             messagebox.showinfo(APP_NAME, "Brak produktów do eksportu.")
             return
 
-        # Pre-export: check for local thumbnails not yet uploaded to ImgBB
+        target = self._effective_products(self.products)
+        total = len(self.products)
+        n = len(target)
+        if not n:
+            messagebox.showinfo(APP_NAME, "Wybrana selekcja jest pusta.")
+            return
+        extra_clones = sum(len(getattr(p, "extra_eans", []) or []) for p in target)
+        final_entries = n + extra_clones
+        clones_note = (
+            f"\n+ {extra_clones} klonów multi-EAN = {final_entries} wpisów <product> w XML"
+            if extra_clones else ""
+        )
+        if n < total:
+            if not messagebox.askyesno(
+                APP_NAME,
+                f"Masz zaznaczone {n} z {total} wczytanych produktów.\n\n"
+                f"Eksport obejmie TYLKO te {n} zaznaczone.{clones_note}\n"
+                f"Pozostałe {total - n} produktów NIE znajdzie się w XML.\n\n"
+                "Kontynuować?",
+            ):
+                return
+        elif extra_clones:
+            if not messagebox.askyesno(
+                APP_NAME,
+                f"Eksport obejmie {n} produktów{clones_note}.\n\n"
+                f"Każdy klon to osobny wpis z innym EAN-em (te same dane, "
+                f"suffix SKU `-1`, `-2`, …).\n\n"
+                "Kontynuować?",
+            ):
+                return
+
+        # Pre-export: check for local thumbnails not yet uploaded to ImgBB (within target only)
         needs_upload = [
-            p for p in self.products
+            p for p in target
             if not getattr(p, "thumbnail_url", "")
             and (THUMB_DIR / f"{p.sku}.jpg").exists()
         ]
@@ -923,7 +1009,7 @@ class App(_BaseApp):
                 if choice is None:
                     return
                 if choice:
-                    self._run_imgbb_then_export(needs_upload)
+                    self._run_imgbb_then_export(needs_upload, target)
                     return
             else:
                 messagebox.showwarning(
@@ -944,13 +1030,19 @@ class App(_BaseApp):
         if not output_path:
             return
 
-        self.status_var.set("Eksportuję XML…")
+        status_msg = (
+            f"Eksportuję XML ({n} prod. + {extra_clones} klonów = {final_entries} wpisów)…"
+            if extra_clones else f"Eksportuję XML ({n} prod.)…"
+        )
+        self.status_var.set(status_msg)
         threading.Thread(
-            target=self._export_worker, args=(self.products, output_path), daemon=True
+            target=self._export_worker, args=(target, output_path), daemon=True
         ).start()
 
-    def _run_imgbb_then_export(self, products_to_upload: list) -> None:
+    def _run_imgbb_then_export(self, products_to_upload: list, target_products: list | None = None) -> None:
         """Upload thumbnails to ImgBB, then open save dialog and export."""
+        # Stash target so post-upload export keeps the same selection.
+        self._pending_export_target = target_products if target_products is not None else self.products
         self.btn_imgbb.configure(state="disabled")
         self.btn_export.configure(state="disabled")
         self.status_var.set(f"Wgrywam {len(products_to_upload)} miniaturek na ImgBB przed eksportem…")
@@ -1195,11 +1287,71 @@ class App(_BaseApp):
     def _open_settings(self) -> None:
         SettingsWindow(self)
 
+    def _run_bl_sync(self) -> None:
+        """Trigger BaseLinker stock sync for multi-EAN clones (async, multi-catalog)."""
+        token = os.getenv("BASELINKER_TOKEN", "").strip()
+        if not token:
+            messagebox.showwarning(
+                APP_NAME,
+                "Brak konfiguracji BaseLinker.\n\n"
+                "Otwórz Ustawienia → BaseLinker API i wpisz token.\n"
+                "Token znajdziesz w BL → Moje konto → API.",
+            )
+            return
+
+        inv_raw = os.getenv("BASELINKER_INVENTORY_ID", "").strip()
+        inventory_ids: list[int] | None = None
+        if inv_raw:
+            try:
+                inventory_ids = [int(x.strip()) for x in inv_raw.split(",") if x.strip()]
+            except ValueError:
+                messagebox.showerror(
+                    APP_NAME,
+                    "BASELINKER_INVENTORY_ID zawiera niepoprawną wartość.\n"
+                    "Dozwolone: puste = wszystkie katalogi, lub liczby po przecinku (np. 34107, 34108).",
+                )
+                return
+
+        self.btn_bl_sync.configure(state="disabled")
+        self.status_var.set("BaseLinker: sync stocków klonów…")
+        self._op_start()
+        self.progress.configure(mode="indeterminate")
+        self.progress.start()
+
+        def _worker():
+            try:
+                from app.sync import BaseLinkerError, sync_all_clones
+                results = sync_all_clones(
+                    token, inventory_ids=inventory_ids,
+                    log=lambda m: self.q.put(("status", f"BL: {m}")),
+                )
+                self.q.put(("bl_sync_done", results))
+            except BaseLinkerError as e:
+                self.q.put(("bl_sync_error", str(e)))
+            except Exception as e:
+                # Friendly mapping dla najczęstszych błędów sieci/SSL
+                from urllib.error import URLError
+                import socket
+                if isinstance(e, URLError) or isinstance(e, socket.gaierror) or isinstance(e, socket.timeout):
+                    msg = (
+                        "Brak połączenia z BaseLinker.\n\n"
+                        "Sprawdź:\n"
+                        "• Czy masz internet?\n"
+                        "• Czy api.baselinker.com jest dostępne (firewall/VPN)?\n\n"
+                        f"Szczegóły techniczne: {e}"
+                    )
+                else:
+                    msg = f"Nieoczekiwany błąd: {e}"
+                self.q.put(("bl_sync_error", msg))
+
+        threading.Thread(target=_worker, daemon=True).start()
+
     def _clear_cache_dialog(self) -> None:
         win = ctk.CTkToplevel(self)
         win.title("Wyczyść cache")
-        win.geometry("420x480")
-        win.resizable(False, False)
+        win.geometry("420x560")
+        win.minsize(420, 500)
+        win.resizable(False, True)
         win.grab_set()
 
         ctk.CTkLabel(
@@ -1254,8 +1406,14 @@ class App(_BaseApp):
                 messagebox.showwarning("Brak wyboru", "Wybierz co najmniej jedną tabelę.", parent=win)
                 return
             if not messagebox.askyesno(
-                "Potwierdź",
-                f"Wyczyścić {len(selected)} tabel(e)?\nOperacja jest nieodwracalna.",
+                "Potwierdź wyczyszczenie cache",
+                f"⚠️ Wyczyścić {len(selected)} tabel(e)?\n\n"
+                "Konsekwencje:\n"
+                "• Stracisz cache opisów AI, tytułów AI, miniatur — będą generowane od zera\n"
+                "• Dodatkowe EAN-y klonów zostaną usunięte (jeśli zaznaczone)\n"
+                "• Regeneracja opisów AI = koszt $$ (Gemini API)\n"
+                "• Operacja NIEODWRACALNA\n\n"
+                "Na pewno kontynuować?",
                 parent=win,
             ):
                 return
@@ -1305,7 +1463,15 @@ class App(_BaseApp):
             return
         target = self._effective_products(self.products)
         n = len(target)
-        if not messagebox.askyesno(APP_NAME, f"Usunąć model z {n} produktów?"):
+        if not messagebox.askyesno(
+            APP_NAME,
+            f"⚠️ Usunąć model z {n} produktów?\n\n"
+            "Konsekwencje:\n"
+            "• Cache modelu (SKU → nazwa) zostanie skasowany\n"
+            "• Wygenerowane opisy HTML (jeśli zawierają model) zostaną nieaktualne\n"
+            "• Trzeba będzie uruchomić 'Zaktualizuj model w opisach' albo regenerować opisy AI\n\n"
+            "Na pewno kontynuować?",
+        ):
             return
         skus = [p.sku for p in target]
         with open_cache() as conn:
@@ -1467,6 +1633,9 @@ class App(_BaseApp):
     def _open_title_edit(self, product: Product) -> None:
         TitleEditDialog(self, product, on_done=self._render_table)
 
+    def _open_ean_edit(self, product: Product) -> None:
+        EanEditDialog(self, product, on_done=self._render_table)
+
     def _open_variant_view(self) -> None:
         if not self.products:
             messagebox.showinfo(APP_NAME, "Najpierw wczytaj i przetransformuj XML.")
@@ -1506,13 +1675,22 @@ class App(_BaseApp):
             messagebox.showinfo(APP_NAME, "Najpierw wczytaj XML.")
             return
         if not os.getenv("IMGBB_API_KEY", "").strip():
-            messagebox.showerror(APP_NAME, "Brak IMGBB_API_KEY w .env!\nDodaj: IMGBB_API_KEY=twój_klucz")
+            messagebox.showerror(
+                APP_NAME,
+                "❌ Brak klucza ImgBB\n\n"
+                "Co zrobić:\n"
+                "1. Sidebar → SYSTEM → Ustawienia\n"
+                "2. Sekcja 'ImgBB API' → wklej klucz\n"
+                "3. Klucz dostaniesz za darmo na: imgbb.com → konto → API",
+            )
             return
-        with_thumb = [p for p in self.products if (THUMB_DIR / f"{p.sku}.jpg").exists()]
+        target = self._effective_products(self.products)
+        with_thumb = [p for p in target if (THUMB_DIR / f"{p.sku}.jpg").exists()]
         if not with_thumb:
-            messagebox.showinfo(APP_NAME, "Brak wygenerowanych miniaturek.\nUruchom najpierw krok 4.5.")
+            messagebox.showinfo(APP_NAME, "Brak wygenerowanych miniaturek (w wybranej selekcji).\nUruchom najpierw krok 4.5.")
             return
-        if not messagebox.askyesno(APP_NAME, f"Uploadować {len(with_thumb)} miniaturek do ImgBB?\nURLe zostaną wstawione jako images[0] w eksporcie XML."):
+        scope = f" (z {len(self.products)} wczytanych)" if len(target) < len(self.products) else ""
+        if not messagebox.askyesno(APP_NAME, f"Uploadować {len(with_thumb)} miniaturek do ImgBB{scope}?\nURLe zostaną wstawione jako images[0] w eksporcie XML."):
             return
         self.btn_imgbb.configure(state="disabled")
         self.status_var.set(f"Uploaduję {len(with_thumb)} miniaturek na ImgBB…")
@@ -1922,10 +2100,18 @@ class App(_BaseApp):
                         initialfile="marketia_transformed.xml",
                     )
                     if output_path:
-                        self.status_var.set("Eksportuję XML…")
+                        target = getattr(self, "_pending_export_target", None) or self.products
+                        _n = len(target)
+                        _clones = sum(len(getattr(p, "extra_eans", []) or []) for p in target)
+                        _msg = (
+                            f"Eksportuję XML ({_n} prod. + {_clones} klonów = {_n + _clones} wpisów)…"
+                            if _clones else f"Eksportuję XML ({_n} prod.)…"
+                        )
+                        self.status_var.set(_msg)
                         threading.Thread(
-                            target=self._export_worker, args=(self.products, output_path), daemon=True
+                            target=self._export_worker, args=(target, output_path), daemon=True
                         ).start()
+                        self._pending_export_target = None
 
                 elif tag == "thumb_done":
                     _, done, skipped = msg
@@ -1945,8 +2131,74 @@ class App(_BaseApp):
 
                 elif tag == "exported":
                     _, count, path = msg
-                    self.status_var.set(f"Wyeksportowano {count} produktów → {path}")
-                    messagebox.showinfo(APP_NAME, f"Eksport zakończony!\n{count} produktów\n{path}")
+                    self.status_var.set(f"Wyeksportowano {count} wpisów <product> → {path}")
+                    messagebox.showinfo(
+                        APP_NAME,
+                        f"Eksport zakończony!\n{count} wpisów <product> w XML\n"
+                        f"(produkty bazowe + klony multi-EAN)\n{path}",
+                    )
+
+                elif tag == "bl_sync_done":
+                    _, results = msg
+                    self.progress.stop()
+                    self.progress.configure(mode="determinate")
+                    self.progress.set(1.0)
+                    self.btn_bl_sync.configure(state="normal")
+                    self._op_end()
+                    total_synced = sum(r.clones_synced for _, _, r in results)
+                    short = f"Sync zakończony: {total_synced} klonów w {len(results)} katalog(ach)."
+                    detail_text = "\n".join(
+                        f"• {name} (ID {inv_id}): {r.summary()}"
+                        for inv_id, name, r in results
+                    )
+                    self.status_var.set(f"BaseLinker: {short}")
+
+                    # Zapisz pełny raport diagnostyczny do pliku
+                    from pathlib import Path
+                    report_path = Path.home() / "Documents" / "marketia-sync-debug.txt"
+                    try:
+                        report_path.write_text(
+                            "=" * 70 + "\n"
+                            + "MARKETIA SYNC — RAPORT DIAGNOSTYCZNY\n"
+                            + "=" * 70 + "\n\n"
+                            + short + "\n\n"
+                            + ("\n" + "=" * 70 + "\n").join(
+                                f"\n>>> Katalog '{name}' (ID {inv_id}) <<<\n\n" + r.diagnostic_report()
+                                for inv_id, name, r in results
+                            ),
+                            encoding="utf-8",
+                        )
+                        saved_path = report_path
+                    except Exception:
+                        saved_path = None
+
+                    warning_lines = []
+                    for _, name, r in results:
+                        for w in r.warnings:
+                            warning_lines.append(f"• [{name}] {w}")
+                    warnings_text = "\n".join(warning_lines)
+                    has_warnings = bool(warning_lines)
+                    icon = "⚠️" if (has_warnings or total_synced == 0) else "✅"
+
+                    SyncReportDialog(
+                        self,
+                        title=APP_NAME,
+                        short_summary=short,
+                        detail_text=detail_text,
+                        warnings_text=warnings_text,
+                        report_path=saved_path,
+                        icon=icon,
+                    )
+
+                elif tag == "bl_sync_error":
+                    _, err = msg
+                    self.progress.stop()
+                    self.progress.configure(mode="determinate")
+                    self.progress.set(0)
+                    self.btn_bl_sync.configure(state="normal")
+                    self._op_end()
+                    self.status_var.set(f"BaseLinker sync: błąd — {err}")
+                    messagebox.showerror(APP_NAME, f"Sync nie powiódł się:\n\n{err}")
 
                 elif tag == "cancelled":
                     _, msg_text = msg
@@ -1993,6 +2245,38 @@ class App(_BaseApp):
         for child in self.list_frame.winfo_children():
             child.destroy()
 
+        # Empty state — pierwsza wizyta lub po wyczyszczeniu
+        if not self.products:
+            empty = ctk.CTkFrame(self.list_frame, fg_color="#FFFFFF")
+            empty.grid(row=0, column=0, sticky="nsew", pady=80)
+            ctk.CTkLabel(
+                empty, text="📋",
+                font=ctk.CTkFont(size=56),
+                text_color="#9CA3AF",
+            ).pack(pady=(0, 8))
+            ctk.CTkLabel(
+                empty, text="Wczytaj XML aby zacząć",
+                font=ctk.CTkFont(size=18, weight="bold"),
+                text_color="#374151",
+            ).pack(pady=(0, 6))
+            ctk.CTkLabel(
+                empty,
+                text="Sidebar po lewej → DANE → Wczytaj XML\n"
+                     "(albo upuść plik XML w to okno)",
+                font=ctk.CTkFont(size=12),
+                text_color="#6B7280",
+                justify="center",
+            ).pack(pady=(0, 16))
+            ctk.CTkButton(
+                empty, text="📂  Wczytaj plik XML",
+                width=200, height=40,
+                fg_color="#1D4ED8", hover_color="#1E40AF",
+                font=ctk.CTkFont(size=13, weight="bold"),
+                command=self._pick_xml,
+            ).pack()
+            self._update_pagination(0, 1)
+            return
+
         header_row = ctk.CTkFrame(self.list_frame, fg_color="#F3F4F6", corner_radius=4)
         header_row.grid(row=0, column=0, sticky="ew", pady=(0, 4))
 
@@ -2031,6 +2315,7 @@ class App(_BaseApp):
                 on_click=lambda prod=p: self._on_row_click(prod),
                 on_select=self._toggle_product_selection,
                 on_title_edit=lambda prod=p: self._open_title_edit(prod),
+                on_ean_edit=lambda prod=p: self._open_ean_edit(prod),
                 is_selected=p.sku in self._selected_skus,
             )
             row.grid(row=idx, column=0, sticky="ew", pady=1)

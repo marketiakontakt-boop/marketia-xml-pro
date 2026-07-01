@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  launchd plist — sync klonów multi-EAN co 5 minut.
+
+  Setup:
+    1. Edytuj ścieżki poniżej jeśli projekt nie jest w ~/Documents/Projects/marketia-xml-pro
+    2. cp scripts/com.marketia.bl-stock-sync.plist ~/Library/LaunchAgents/
+    3. launchctl load ~/Library/LaunchAgents/com.marketia.bl-stock-sync.plist
+    4. Sprawdź log: tail -f /tmp/marketia-bl-sync.log
+    5. Wyłącz: launchctl unload ~/Library/LaunchAgents/com.marketia.bl-stock-sync.plist
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.marketia.bl-stock-sync</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/jakubknap/Documents/Projects/marketia-xml-pro/venv/bin/python</string>
+        <string>/Users/jakubknap/Documents/Projects/marketia-xml-pro/scripts/sync_clone_stocks.py</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/jakubknap/Documents/Projects/marketia-xml-pro</string>
+
+    <key>StartInterval</key>
+    <integer>300</integer>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>/tmp/marketia-bl-sync.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/tmp/marketia-bl-sync.err</string>
+</dict>
+</plist>

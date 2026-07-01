@@ -150,10 +150,10 @@ def generate_audit_html(products: list[Product]) -> str:
     cards = "\n".join(_product_card(p) for p in products)
     return f"""<!DOCTYPE html>
 <html lang="pl">
-<head><meta charset="UTF-8"><title>Audit — Marketia XML Pro</title>{_CSS}</head>
+<head><meta charset="UTF-8"><title>Audit — Marketia Produktyzator</title>{_CSS}</head>
 <body>
 {_JS}
-<h1>Audyt produktów — Marketia XML Pro</h1>
+<h1>Audyt produktów — Marketia Produktyzator</h1>
 <p class="subtitle">Łącznie: {len(products)} produktów | Z problemami: {issues}</p>
 <div class="filters">
   <button class="filter-btn active" onclick="filterCards('all')">Wszystkie ({len(products)})</button>

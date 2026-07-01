@@ -77,6 +77,17 @@ CREATE TABLE IF NOT EXISTS ai_titles (
     prompt_version  TEXT NOT NULL,
     generated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS product_eans (
+    sku             TEXT NOT NULL,
+    ean             TEXT NOT NULL,
+    position        INTEGER NOT NULL,
+    added_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (sku, ean)
+);
+
+CREATE INDEX IF NOT EXISTS idx_product_eans_sku
+    ON product_eans(sku, position);
 """
 
 
@@ -270,6 +281,38 @@ def clear_ai_titles(conn: sqlite3.Connection, skus: list[str] | None = None) -> 
     return cur.rowcount
 
 
+# --- multi-EAN helpers (for Allegro product matching via clones) ---
+
+def get_extra_eans(conn: sqlite3.Connection, sku: str) -> list[str]:
+    """Return additional EANs for a SKU, ordered by position (1, 2, 3, …)."""
+    rows = conn.execute(
+        "SELECT ean FROM product_eans WHERE sku = ? ORDER BY position",
+        (sku,),
+    ).fetchall()
+    return [r["ean"] for r in rows]
+
+
+def set_extra_eans(conn: sqlite3.Connection, sku: str, eans: list[str]) -> None:
+    """Replace all extra EANs for `sku` atomically. Empty list deletes all."""
+    conn.execute("BEGIN")
+    try:
+        conn.execute("DELETE FROM product_eans WHERE sku = ?", (sku,))
+        for pos, ean in enumerate(eans, start=1):
+            conn.execute(
+                "INSERT INTO product_eans (sku, ean, position) VALUES (?, ?, ?)",
+                (sku, ean, pos),
+            )
+        conn.execute("COMMIT")
+    except Exception:
+        conn.execute("ROLLBACK")
+        raise
+
+
+def clear_extra_eans(conn: sqlite3.Connection, sku: str) -> int:
+    cur = conn.execute("DELETE FROM product_eans WHERE sku = ?", (sku,))
+    return cur.rowcount
+
+
 # --- product helpers ---
 
 _CLEARABLE_TABLES = {
@@ -283,6 +326,7 @@ _CLEARABLE_TABLES = {
     "thumbnails":           "Miniatury (cache)",
     "lifestyle_thumbnails": "Lifestyle AI (cache)",
     "ai_titles":            "Tytuły AI (cache)",
+    "product_eans":         "Dodatkowe EAN-y (klony)",
 }
 
 

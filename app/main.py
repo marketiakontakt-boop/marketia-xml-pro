@@ -1,4 +1,4 @@
-"""Marketia XML Pro — entry point.
+"""Marketia Produktyzator — entry point.
 Run via: ./venv/bin/python -m app.main
 """
 from app.gui.main_window import App

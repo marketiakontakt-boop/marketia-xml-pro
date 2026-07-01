@@ -9,9 +9,9 @@
   <key>CFBundleIdentifier</key>
   <string>com.marketia.xmlpro</string>
   <key>CFBundleName</key>
-  <string>Marketia XML Pro</string>
+  <string>Marketia Produktyzator</string>
   <key>CFBundleDisplayName</key>
-  <string>Marketia XML Pro</string>
+  <string>Marketia Produktyzator</string>
   <key>CFBundlePackageType</key>
   <string>APPL</string>
   <key>CFBundleShortVersionString</key>
@@ -23,8 +23,8 @@
   <key>NSHighResolutionCapable</key>
   <true/>
   <key>NSDocumentsFolderUsageDescription</key>
-  <string>Marketia XML Pro przechowuje pliki XML, bazy danych i eksporty w folderze Dokumenty.</string>
+  <string>Marketia Produktyzator przechowuje pliki XML, bazy danych i eksporty w folderze Dokumenty.</string>
   <key>NSAppleEventsUsageDescription</key>
-  <string>Marketia XML Pro używa Terminal.app do uruchomienia środowiska Python.</string>
+  <string>Marketia Produktyzator używa Terminal.app do uruchomienia środowiska Python.</string>
 </dict>
 </plist>

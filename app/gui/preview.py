@@ -83,7 +83,7 @@ def open_preview(products: list[Product]) -> int:
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<title>Marketia XML Pro — Podgląd opisów ({len(with_desc)} prod.)</title>
+<title>Marketia Produktyzator — Podgląd opisów ({len(with_desc)} prod.)</title>
 <style>{PREVIEW_CSS}</style>
 </head>
 <body>

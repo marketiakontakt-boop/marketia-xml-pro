@@ -80,6 +80,7 @@ class Product:
     allegro_category: str = ""   # populated by category_mapper transformer
     variant_group_id: int = 0    # 0 = not grouped; same positive int = same variant group
     variant_name: str = ""       # color/size suffix, e.g. "Białe", "XL"
+    extra_eans: list[str] = field(default_factory=list)  # additional EANs → XML clones
 
 
 def _collect_attributes(elem: Any) -> dict[str, str]:
