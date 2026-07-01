@@ -227,6 +227,30 @@ _FURNITURE_WORDS: frozenset[str] = frozenset({
     "drapak", "budka", "obroża", "smycz",
     # Inne typy produktów
     "wózek", "hulajnogi", "mata", "pojemniki", "komplet",
+    # Typy / miejsca użycia (fix 2026-07-01: 114/160 GardenStein miało ten sam model
+    # bo słowa "ogrodowy", "plażowy" itp. przechodziły frequency filter → 1 grupa)
+    "ogrodowy", "ogrodowa", "ogrodowe", "ogrodowych",
+    "plażowy", "plażowa", "plażowe",
+    "domowy", "domowa", "domowe",
+    "polowy", "polowa", "polowe",
+    "leżanka", "leżanki",
+    "kuchenny", "kuchenna", "kuchenne",
+    "łazienkowy", "łazienkowa", "łazienkowe",
+    # Cechy techniczne / adjektywy nie-model
+    "bujana", "bujany", "bujane",
+    "składany", "składana", "składane", "składający",
+    "kompaktowy", "kompaktowa", "kompaktowe",
+    "regulowany", "regulowana", "regulowane", "regulacja",
+    "obrotowy", "obrotowa", "obrotowe",
+    "przenośny", "przenośna", "przenośne",
+    "podwójny", "podwójna", "podwójne",
+    "wodoodporny", "wodoodporna", "wodoodporne",
+    "premium", "profesjonalny", "profesjonalna",
+    "daszek", "oparcie", "oparcia", "podstawka",
+    "plandeka", "pokrowiec", "pokrywa", "osłona",
+    # Nazwy dostawców / OEM — never should be treated as model
+    "multigarden", "modernhome", "hurtmeblowy", "hurtownia",
+    "ecotoys", "iplay", "bauerkraft", "kanzasklep",
 })
 
 

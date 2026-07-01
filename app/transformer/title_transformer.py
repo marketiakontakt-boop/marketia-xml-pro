@@ -229,29 +229,32 @@ class TitleTransformer:
         product_type = self.type_detector.detect(original, category, p.brand)
         model = (p.model_name or "").strip().upper()
 
-        # Build the title fresh from canonical parts (BRAND + MODEL + TYP).
+        # Build title (rev. 2026-07-01 — user request: BRAND NIE pierwsza).
+        # Order: TYP → CECHY(legacy) → BRAND MODEL → wymiary → atrybuty.
+        # SEO Allegro: user szuka "fotel ogrodowy" nie "GardenStein" — typ na początku.
         title = ""
-        if brand_display:
-            title = brand_display.upper()
-        if model:
-            title = _append_bounded(title, model, MAX_LEN)
         if product_type:
-            first_tok = product_type.split()[0]
-            if not _contains_word(title, first_tok):
-                title = _append_bounded(title, product_type, MAX_LEN)
+            title = product_type
 
-        # Preserve descriptive words from the original title that the brand/
-        # model/type didn't already cover (e.g. REZYDENCJA MALIBU, ŚWIECĄCE KOŁA).
-        # _clean_legacy strips supplier SKUs/brand/model so we don't echo them.
+        # Descriptive words z original name (cechy kluczowe: REZYDENCJA MALIBU, ŚWIECĄCE KOŁA)
+        # Zostaw miejsce na brand + model (~20 znaków rezerwy)
         legacy_desc = self._clean_legacy(original, brand_display, model)
+        brand_model_reserve = len(brand_display or "") + len(model) + 4  # + separatory
+        legacy_max = MAX_LEN - brand_model_reserve
         for tok in legacy_desc.split():
-            if len(title) >= MAX_LEN - 6:
+            if len(title) >= legacy_max - 3:
                 break
             if product_type and _contains_word(product_type, tok):
                 continue
             if _contains_word(title, tok):
                 continue
-            title = _append_bounded(title, tok, MAX_LEN)
+            title = _append_bounded(title, tok, legacy_max)
+
+        # BRAND + MODEL na KOŃCU (jako sygnatura marki, nie pierwsze słowo)
+        if brand_display and not _contains_word(title, brand_display):
+            title = _append_bounded(title, brand_display.upper(), MAX_LEN)
+        if model and not _contains_word(title, model):
+            title = _append_bounded(title, model, MAX_LEN)
 
         # Append hard features from attributes (Wymiar → Materiał → Kolor → …).
         dims = _format_dimensions(attrs.get("Wymiary") or attrs.get("wymiary"))

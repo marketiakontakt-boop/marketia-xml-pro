@@ -758,6 +758,14 @@ class App(_BaseApp):
         brands = _all_known_brands()
         self._brand_menu.configure(values=["Wszystkie"] + brands)
         self._brand_menu.set("Wszystkie")
+        # Fix 2026-07-01: bez resetowania state filter zostaje stara wartość ("villago")
+        # która po transform może już nie istnieć → _filtered_products zwraca [] → user
+        # widzi pustą tabelę i musi klikać filtry żeby "odświeżyć".
+        self._filter_brand = "Wszystkie"
+        self._filter_ai = "Wszystkie"
+        if hasattr(self, "_ai_seg"):
+            self._ai_seg.set("Wszystkie")
+        self._page = 0
 
     # ── actions ───────────────────────────────────────────────────────────
 
@@ -2075,7 +2083,9 @@ class App(_BaseApp):
                     self.progress.configure(mode="determinate")
                     self.progress.set(1.0)
                     self.status_var.set("Transformy OK. Krok 4 — Generuj opisy.")
+                    self._op_end()  # ← fix: bez tego stop button widoczny + status "Transformuję…" wisiał
                     self._render_table()
+                    self._update_brand_filter_options()  # ← fix: refresh listy marek żeby nie wisiała stara
                     self._update_stats()
 
                 elif tag == "status":

@@ -111,10 +111,12 @@ def test_strips_all_known_oem_regardless_of_detected_brand(tt):
 
 
 def test_appends_brand_if_missing(tt):
-    # v4: brand is at the FRONT (BRAND + MODEL + TYP + CECHY).
+    # 2026-07-01: rev — TYP + CECHY + BRAND + MODEL (user request: brand nie pierwsza)
     p = _p("Rowerek biegowy dla dzieci", brand="hopla_toys")
     tt.transform(p)
-    assert p.title.startswith("HOPLA TOYS")
+    assert "HOPLA TOYS" in p.title
+    # Brand nie może być pierwszym słowem
+    assert not p.title.startswith("HOPLA TOYS")
 
 
 def test_does_not_duplicate_brand(tt):
@@ -284,18 +286,19 @@ def test_known_oem_present():
         assert name in _ALL_OEM
 
 
-# ── v4: BRAND + MODEL + TYP + CECHY pattern ─────────────────────────────────
+# ── 2026-07-01 rev: TYP + CECHY + BRAND + MODEL pattern ─────────────────────
 
 
-def test_brand_first_then_model_then_type(tt):
+def test_type_first_then_brand_then_model(tt):
     p = _p("Domek z windą dla lalek REZYDENCJA MALIBU", brand="hopla_toys", model="GUDON")
     p.category_name = "DLA DZIECI / Domki dla lalek"
     tt.transform(p)
-    # Order: HOPLA TOYS → GUDON → DOMEK DLA LALEK → REZYDENCJA MALIBU
+    # Order: DOMEK DLA LALEK → REZYDENCJA MALIBU → HOPLA TOYS → GUDON
+    pos_type = p.title.find("DOMEK DLA LALEK")
     pos_brand = p.title.find("HOPLA TOYS")
     pos_model = p.title.find("GUDON")
-    pos_type = p.title.find("DOMEK DLA LALEK")
-    assert 0 <= pos_brand < pos_model < pos_type
+    assert pos_type == 0  # TYP na początku
+    assert pos_type < pos_brand < pos_model
 
 
 def test_intex_exception_preserves_original(tt):
