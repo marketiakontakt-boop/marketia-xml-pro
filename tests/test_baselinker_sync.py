@@ -405,8 +405,8 @@ def test_sync_all_clones_auto_discovers_all():
     with _patched_urlopen(
         inv_resp,
         cache_list_1, cache_list_2,                # faza 1
+        _WAREHOUSES_RESP,                          # faza 2a (writable — MUSI być przed global lookup)
         global_stock_1, global_stock_2,            # faza 3 (global lookup)
-        _WAREHOUSES_RESP,                          # faza 4 (writable warehouses)
         parent_stock_1, clone_stock_1, data_resp_1, push_resp_1,
         parent_stock_2, clone_stock_2, data_resp_2, push_resp_2,
     ):
@@ -442,8 +442,8 @@ def test_sync_all_clones_filters_by_explicit_ids():
     with _patched_urlopen(
         inv_resp,
         cache_list_1, cache_list_2, cache_list_3,
-        global_stock_2,
         _WAREHOUSES_RESP,
+        global_stock_2,
         parent_stock, clone_stock, data_resp, push_resp,
     ):
         results = bls.sync_all_clones("tok", inventory_ids=[2])

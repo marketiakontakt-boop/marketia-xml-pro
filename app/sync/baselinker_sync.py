@@ -301,6 +301,18 @@ def _pick_target_warehouse_key(writable: list[dict]) -> str | None:
     return writable[0]["key"]
 
 
+def _external_stock_sum(warehouses: dict[str, int], exclude_key: str | None) -> int:
+    """Suma stocków z warehouses które NIE są `exclude_key` (chroni przed feedback loop).
+
+    Bez wykluczenia target warehouse: sync N-ty czyta bl_58313 (co my zapisaliśmy w sync N-1)
+    + warehouse_5010250 (98 z hurtowni) → sum=196 → push 196 → sync N+1: sum=294 → push 294.
+    Po 12 syncach: 98 × 12 = 1176. Real world bug wykryty u user-a 2026-07-01.
+    """
+    return sum(
+        max(0, v) for k, v in warehouses.items() if k != exclude_key
+    )
+
+
 def sync_all_clones(
     token: str,
     inventory_ids: list[int] | None = None,
@@ -342,7 +354,20 @@ def sync_all_clones(
             _log(f"Pomijam katalog {inv['name']}: {e}")
             list_cache[inv["inventory_id"]] = {}
 
-    # Faza 2: zidentyfikuj parent SKUs z TARGET inventories (te które trzeba sync-ować)
+    # Faza 2a: pobierz writable warehouses NAJPIERW — potrzebne w fazie 3 do wykluczenia
+    # target_key ze sumy (fix feedback loop 98×12=1176).
+    try:
+        writable = list_writable_warehouses(token)
+        target_key = _pick_target_warehouse_key(writable)
+        if target_key:
+            _log(f"Target warehouse dla push: {target_key} ({next((w['name'] for w in writable if w['key']==target_key), '?')!r})")
+        else:
+            _log("⚠️ Brak writable warehouses — sync nie będzie nic zapisywał")
+    except Exception as e:
+        _log(f"Nie można pobrać writable warehouses: {e}")
+        target_key = None
+
+    # Faza 2b: zidentyfikuj parent SKUs z TARGET inventories (te które trzeba sync-ować)
     parent_skus_needed: set[str] = set()
     for inv in target_inventories:
         for sku in list_cache.get(inv["inventory_id"], {}):
@@ -350,7 +375,9 @@ def sync_all_clones(
             if m:
                 parent_skus_needed.add(m.group(1))
 
-    # Faza 3: cross-katalog max stock per parent (przeszukaj wszystkie katalogi konta)
+    # Faza 3: cross-katalog max stock per parent (przeszukaj wszystkie katalogi konta).
+    # WYKLUCZAMY target_key ze sumy — tam my piszemy przy poprzednich sync-ach, uwzględnienie
+    # spowodowałoby feedback loop (98 + 98 poprzedni push = 196 → 294 → 1176 po 12 syncach).
     _log(f"Zbieram stocki {len(parent_skus_needed)} rodziców z {len(all_inventories)} katalogów…")
     global_parent_stock: dict[str, int] = {}
     for inv in all_inventories:
@@ -366,24 +393,12 @@ def sync_all_clones(
             continue
         for parent_sku, pid in pid_for_sku.items():
             warehouses = stocks.get(pid, {})
-            warehouse_sum = sum(max(0, v) for v in warehouses.values())
+            warehouse_sum = _external_stock_sum(warehouses, target_key)
             qty_field = sku_to_info[parent_sku][1]
             best = max(warehouse_sum, qty_field, 0)
             if best > global_parent_stock.get(parent_sku, 0):
                 global_parent_stock[parent_sku] = best
     _log(f"Znaleziono globalne stocki dla {len(global_parent_stock)} rodziców.")
-
-    # Faza 4: pobierz writable warehouses — target dla wszystkich push-ów
-    try:
-        writable = list_writable_warehouses(token)
-        target_key = _pick_target_warehouse_key(writable)
-        if target_key:
-            _log(f"Target warehouse dla push: {target_key} ({next((w['name'] for w in writable if w['key']==target_key), '?')!r})")
-        else:
-            _log("⚠️ Brak writable warehouses — sync nie będzie nic zapisywał")
-    except Exception as e:
-        _log(f"Nie można pobrać writable warehouses: {e}")
-        target_key = None
 
     # Faza 5: sync per target katalog z global lookup + pre-fetched list cache + target warehouse
     results: list[tuple[int, str, SyncResult]] = []
@@ -533,7 +548,7 @@ def sync_clones(
         parent_warehouses = parent_stocks.get(parent_pid, {})
         global_stock_for_parent = _global_parent.get(parent_sku, 0)
 
-        warehouse_total = sum(max(0, v) for v in parent_warehouses.values())
+        warehouse_total = _external_stock_sum(parent_warehouses, _target_warehouse_key)
         target_stock = max(warehouse_total, parent_qty_field, global_stock_for_parent, 0)
 
         if _target_warehouse_key:
@@ -541,9 +556,9 @@ def sync_clones(
 
     clones_synced_count = len(updates)  # Count PRZED dodaniem rodziców
 
-    # Sync stocku RODZICÓW też — z global cross-katalog do writable warehouse w tym katalogu.
-    # Bez tego rodzic w Marketia Katalog / Allegro Asortyment miałby 0 mimo że hurtownia
-    # ma stock w MultiStore. Global lookup wybiera najwyższą wartość ze wszystkich katalogów.
+    # Sync stocku RODZICÓW — ZAWSZE nadpisuj wartością z hurtowni/global (bez porównania z existing).
+    # Guard "target > existing" byłby błędny bo overinflated stocki z poprzednich buggy sync (98×12=1176)
+    # by nigdy się nie zresetowały. Rodzic musi odzwierciedlać STAN ZEWNĘTRZNY, nie kumulować.
     parents_synced_count = 0
     if _target_warehouse_key:
         for parent_pid in parent_pids:
@@ -551,14 +566,10 @@ def sync_clones(
             parent_qty_field = sku_to_qty.get(parent_sku, 0)
             parent_warehouses = parent_stocks.get(parent_pid, {})
             global_stock_for_parent = _global_parent.get(parent_sku, 0)
-            warehouse_total = sum(max(0, v) for v in parent_warehouses.values())
+            warehouse_total = _external_stock_sum(parent_warehouses, _target_warehouse_key)
             target_stock = max(warehouse_total, parent_qty_field, global_stock_for_parent, 0)
-            # Nie nadpisuj rodzica jeśli w bieżącym katalogu MA już stock w target warehouse większy
-            # od global (żeby nie nadpisać hurtowni jej samej wartością).
-            existing_in_target = parent_warehouses.get(_target_warehouse_key, 0)
-            if target_stock > existing_in_target:
-                updates[parent_pid] = {_target_warehouse_key: target_stock}
-                parents_synced_count += 1
+            updates[parent_pid] = {_target_warehouse_key: target_stock}
+            parents_synced_count += 1
 
     actually_synced = clones_synced_count
     total_stock_synced = sum(sum(v.values()) for v in updates.values())
