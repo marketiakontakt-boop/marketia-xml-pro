@@ -1,10 +1,22 @@
 name: BL Stock Sync
 
+# Uruchamia sync stocku klonów + rodziców w BaseLinker co 5 minut.
+# Zastępuje lokalny launchd — działa w chmurze GitHub, komputer może być wyłączony.
+#
+# Setup:
+#   1. Settings → Secrets and variables → Actions → New repository secret
+#   2. Dodaj: BASELINKER_TOKEN = <twój token BL>
+#   3. (opcjonalnie) BASELINKER_INVENTORY_ID = <konkretne ID, lub pomiń dla wszystkich>
+#
+# Manualny run: Actions → BL Stock Sync → Run workflow
+
 on:
   schedule:
+    # Co 5 minut. GH może opóźnić o kilka minut przy dużym obciążeniu, dla stock sync bez znaczenia.
     - cron: '*/5 * * * *'
-  workflow_dispatch:
+  workflow_dispatch:  # przycisk "Run workflow" w UI Actions
 
+# Zapobiega równoległym uruchomieniom (jeśli poprzedni jeszcze trwa)
 concurrency:
   group: bl-stock-sync
   cancel-in-progress: false
@@ -12,7 +24,7 @@ concurrency:
 jobs:
   sync:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 10  # sync usera trwa ~1 min, 10 = duży zapas
     steps:
       - uses: actions/checkout@v4
 
@@ -23,19 +35,25 @@ jobs:
           cache: 'pip'
 
       - name: Install minimal deps
-        run: pip install python-dotenv certifi
+        run: |
+          # Tylko dotenv (do wczytania env — chociaż w GH Actions env dostajemy przez env: bloki)
+          # I certifi (dla SSL na Linux). Reszta requirements.txt to GUI/AI deps niepotrzebne dla sync.
+          pip install python-dotenv certifi
 
       - name: Run sync
         env:
           BASELINKER_TOKEN: ${{ secrets.BASELINKER_TOKEN }}
           BASELINKER_INVENTORY_ID: ${{ secrets.BASELINKER_INVENTORY_ID }}
-        run: python scripts/sync_clone_stocks.py
+        run: |
+          python scripts/sync_clone_stocks.py
 
+      # Uploaduje log jako artifact przy każdym uruchomieniu — do debugowania
       - name: Upload sync log
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: sync-log-${{ github.run_number }}
-          path: /tmp/marketia-bl-sync.log
+          path: |
+            /tmp/marketia-bl-sync.log
           if-no-files-found: ignore
           retention-days: 7
