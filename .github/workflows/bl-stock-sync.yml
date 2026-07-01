@@ -1,0 +1,41 @@
+name: BL Stock Sync
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: bl-stock-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install minimal deps
+        run: pip install python-dotenv certifi
+
+      - name: Run sync
+        env:
+          BASELINKER_TOKEN: ${{ secrets.BASELINKER_TOKEN }}
+          BASELINKER_INVENTORY_ID: ${{ secrets.BASELINKER_INVENTORY_ID }}
+        run: python scripts/sync_clone_stocks.py
+
+      - name: Upload sync log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sync-log-${{ github.run_number }}
+          path: /tmp/marketia-bl-sync.log
+          if-no-files-found: ignore
+          retention-days: 7
