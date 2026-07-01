@@ -778,10 +778,24 @@ class App(_BaseApp):
         threading.Thread(target=self._load_worker, args=(path,), daemon=True).start()
 
     def _load_worker(self, path: str):
+        import time
         try:
+            t0 = time.time()
+            self.q.put(("status", "Parsuję XML…"))
             products = parse_xml(path)
+            t_parse = time.time() - t0
+
+            t = time.time()
+            self.q.put(("status", f"Parsuję XML: {len(products)} produktów ({t_parse:.1f}s). Ładuję cache EAN…"))
             self._hydrate_extra_eans(products)
+            t_ean = time.time() - t
+
+            t = time.time()
+            self.q.put(("status", f"Porównuję zmiany (diff)…"))
             diff = run_diff(products)
+            t_diff = time.time() - t
+
+            self.q.put(("status", f"Wczytano {len(products)} produktów w {time.time()-t0:.1f}s (parse={t_parse:.1f}s, ean={t_ean:.1f}s, diff={t_diff:.1f}s)."))
             self.q.put(("loaded", products, path, diff))
         except Exception as e:
             self.q.put(("error", f"Parser: {e}"))
