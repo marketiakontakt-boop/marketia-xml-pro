@@ -41,28 +41,28 @@ def tt() -> TitleTransformer:
 def test_empty_title_is_noop(tt):
     p = _p("")
     tt.transform(p)
-    assert p.name == ""
+    assert p.title == ""
 
 
 def test_uppercases_title(tt):
     p = _p("drewniany domek dla lalek")
     tt.transform(p)
-    assert p.name == p.name.upper()
+    assert p.title == p.title.upper()
 
 
 def test_length_never_exceeds_max(tt):
     long = "A " + " ".join(["słowo"] * 40)
     p = _p(long)
     tt.transform(p)
-    assert len(p.name) <= MAX_LEN
+    assert len(p.title) <= MAX_LEN
 
 
 def test_word_boundary_trim(tt):
     long = "A " + " ".join(["bardzodlugislowo"] * 6)
     p = _p(long, brand="villago", model="DEMU")
     tt.transform(p)
-    assert " " not in p.name[-1]   # no trailing space
-    assert not p.name.endswith("-")
+    assert " " not in p.title[-1]   # no trailing space
+    assert not p.title.endswith("-")
 
 
 # ── OEM/supplier strip ──────────────────────────────────────────────────────
@@ -71,40 +71,40 @@ def test_word_boundary_trim(tt):
 def test_strips_modernhome(tt):
     p = _p("MODERNHOME VILLAGO LUGANO-39 2W1", brand="villago", model="LUGANO-39")
     tt.transform(p)
-    assert "MODERNHOME" not in p.name
-    assert "VILLAGO" in p.name
-    assert "LUGANO-39" in p.name
+    assert "MODERNHOME" not in p.title
+    assert "VILLAGO" in p.title
+    assert "LUGANO-39" in p.title
 
 
 def test_strips_iplay_and_modernhome(tt):
     p = _p("IPLAY MODERNHOME drewniany domek dla lalek", brand="hopla_toys")
     tt.transform(p)
-    assert "IPLAY" not in p.name
-    assert "MODERNHOME" not in p.name
-    assert "HOPLA TOYS" in p.name
+    assert "IPLAY" not in p.title
+    assert "MODERNHOME" not in p.title
+    assert "HOPLA TOYS" in p.title
 
 
 def test_strips_ecotoys(tt):
     p = _p("ECOTOYS Drewniany Domek dla Lalek", brand="hopla_toys")
     tt.transform(p)
-    assert "ECOTOYS" not in p.name
-    assert "HOPLA TOYS" in p.name
+    assert "ECOTOYS" not in p.title
+    assert "HOPLA TOYS" in p.title
 
 
 def test_strips_bauerkraft(tt):
     p = _p("BAUERKRAFT trampolina ogrodowa 305 CM PREMIUM",
            brand="gardenstein", model="ASPEN")
     tt.transform(p)
-    assert "BAUERKRAFT" not in p.name
-    assert "GARDENSTEIN" in p.name
-    assert "ASPEN" in p.name
+    assert "BAUERKRAFT" not in p.title
+    assert "GARDENSTEIN" in p.title
+    assert "ASPEN" in p.title
 
 
 def test_strips_all_known_oem_regardless_of_detected_brand(tt):
     # supplier names are global noise; strip MODERNHOME even from a villago title
     p = _p("MODERNHOME COŚ", brand="villago")
     tt.transform(p)
-    assert "MODERNHOME" not in p.name
+    assert "MODERNHOME" not in p.title
 
 
 # ── brand display injection ─────────────────────────────────────────────────
@@ -114,13 +114,13 @@ def test_appends_brand_if_missing(tt):
     # v4: brand is at the FRONT (BRAND + MODEL + TYP + CECHY).
     p = _p("Rowerek biegowy dla dzieci", brand="hopla_toys")
     tt.transform(p)
-    assert p.name.startswith("HOPLA TOYS")
+    assert p.title.startswith("HOPLA TOYS")
 
 
 def test_does_not_duplicate_brand(tt):
     p = _p("HOPLA TOYS rowerek biegowy", brand="hopla_toys")
     tt.transform(p)
-    assert p.name.count("HOPLA TOYS") == 1
+    assert p.title.count("HOPLA TOYS") == 1
 
 
 def test_no_brand_for_unknown(tt):
@@ -128,7 +128,7 @@ def test_no_brand_for_unknown(tt):
     p.category_name = ""   # disable enrichment so we can isolate brand logic
     tt.transform(p)
     # unknown brand → no brand append; title still uppercased
-    assert p.name == "COŚ TAM"
+    assert p.title == "COŚ TAM"
 
 
 # ── model handling ──────────────────────────────────────────────────────────
@@ -137,13 +137,13 @@ def test_no_brand_for_unknown(tt):
 def test_appends_model_if_missing(tt):
     p = _p("Drewniany domek", brand="hopla_toys", model="TOLA-2")
     tt.transform(p)
-    assert "TOLA-2" in p.name
+    assert "TOLA-2" in p.title
 
 
 def test_does_not_duplicate_model(tt):
     p = _p("DREWNIANY DOMEK TOLA-2", brand="hopla_toys", model="TOLA-2")
     tt.transform(p)
-    assert p.name.count("TOLA-2") == 1
+    assert p.title.count("TOLA-2") == 1
 
 
 # ── quote / whitespace normalization ────────────────────────────────────────
@@ -152,14 +152,14 @@ def test_does_not_duplicate_model(tt):
 def test_strips_quotes(tt):
     p = _p('"FLAM rowerek biegowy dla dzieci eva"', brand="hopla_toys", model="FLAM")
     tt.transform(p)
-    assert '"' not in p.name
-    assert "“" not in p.name
+    assert '"' not in p.title
+    assert "“" not in p.title
 
 
 def test_normalizes_multiple_spaces(tt):
     p = _p("drewniany    domek     dla   lalek", brand="hopla_toys")
     tt.transform(p)
-    assert "  " not in p.name
+    assert "  " not in p.title
 
 
 # ── transform_all batch API ─────────────────────────────────────────────────
@@ -169,7 +169,7 @@ def test_transform_all_runs_in_place(tt):
     ps = [_p("drewniany domek dla lalek", brand="hopla_toys") for _ in range(3)]
     tt.transform_all(ps)
     for p in ps:
-        assert "HOPLA TOYS" in p.name
+        assert "HOPLA TOYS" in p.title
 
 
 # ── enrichment (short titles get category noun + dimensions) ───────────────
@@ -180,15 +180,15 @@ def test_short_title_gets_product_type(tt):
     p = _p("Drewniana kuchnia dla dzieci", brand="hopla_toys")
     p.category_name = "Zabawki / Kuchnie"
     tt.transform(p)
-    assert "DREWNIANA KUCHNIA" in p.name
-    assert "HOPLA TOYS" in p.name
+    assert "DREWNIANA KUCHNIA" in p.title
+    assert "HOPLA TOYS" in p.title
 
 
 def test_short_title_gets_dimensions_from_attrs(tt):
     p = _p("Domek dla lalek", brand="hopla_toys")
     p.attributes = {"Wymiary": "87 x 32 x 114 cm"}
     tt.transform(p)
-    assert "87X32X114 CM" in p.name
+    assert "87X32X114 CM" in p.title
 
 
 def test_product_type_matches_polish_plural(tt):
@@ -196,7 +196,7 @@ def test_product_type_matches_polish_plural(tt):
     p = _p("Lugano-39", brand="villago", model="LUGANO-39")
     p.category_name = "meble/krzesła do jadalni"
     tt.transform(p)
-    assert "KRZESŁO DO JADALNI" in p.name
+    assert "KRZESŁO DO JADALNI" in p.title
 
 
 def test_long_title_skips_enrichment(tt):
@@ -205,8 +205,8 @@ def test_long_title_skips_enrichment(tt):
     p.category_name = "DLA DZIECI / Domki dla lalek"
     tt.transform(p)
     # Already > ENRICH_BELOW chars → no category noun injected.
-    assert "DOMKI DLA LALEK" not in p.name
-    assert "DOMEK" in p.name
+    assert "DOMKI DLA LALEK" not in p.title
+    assert "DOMEK" in p.title
 
 
 def test_generic_category_leaf_falls_through(tt):
@@ -214,8 +214,8 @@ def test_generic_category_leaf_falls_through(tt):
     p.category_name = "Wyposażenie"  # too generic → no noun injection
     tt.transform(p)
     # No category noun ("WYPOSAŻENIE" is in generic list); only brand appended.
-    assert "WYPOSAŻENIE" not in p.name
-    assert "HOPLA TOYS" in p.name
+    assert "WYPOSAŻENIE" not in p.title
+    assert "HOPLA TOYS" in p.title
 
 
 def test_audience_tag_added_from_category_root(tt):
@@ -223,7 +223,7 @@ def test_audience_tag_added_from_category_root(tt):
     p = _p("Zegar", brand="hopla_toys")
     p.category_name = "DLA DZIECI / Zegary edukacyjne"
     tt.transform(p)
-    assert "DLA DZIECI" in p.name
+    assert "DLA DZIECI" in p.title
 
 
 def test_feature_tokens_from_attributes(tt):
@@ -236,10 +236,10 @@ def test_feature_tokens_from_attributes(tt):
         "Przeznaczenie": "komplet obiadowy",
     }
     tt.transform(p)
-    assert "TECHNORATTAN" in p.name
-    assert "BRĄZOWY" in p.name
-    assert "GARDENSTEIN" in p.name
-    assert "WENECJA" in p.name
+    assert "TECHNORATTAN" in p.title
+    assert "BRĄZOWY" in p.title
+    assert "GARDENSTEIN" in p.title
+    assert "WENECJA" in p.title
 
 
 def test_enrichment_stops_at_target(tt):
@@ -256,9 +256,9 @@ def test_enrichment_stops_at_target(tt):
         "Liczba osób": "1",
     }
     tt.transform(p)
-    assert "VILLAGO" in p.name
-    assert "DEMU-12" in p.name
-    assert len(p.name) <= 75
+    assert "VILLAGO" in p.title
+    assert "DEMU-12" in p.title
+    assert len(p.title) <= 75
 
 
 def test_dimensions_not_duplicated_when_already_in_title(tt):
@@ -266,7 +266,7 @@ def test_dimensions_not_duplicated_when_already_in_title(tt):
     p.attributes = {"Wymiary": "188 x 46 cm"}
     tt.transform(p)
     # The dim regex already matches "188x46 cm" in the title → don't re-add.
-    assert p.name.upper().count("188") == 1
+    assert p.title.upper().count("188") == 1
 
 
 # ── OEM catalogue integrity ─────────────────────────────────────────────────
@@ -292,9 +292,9 @@ def test_brand_first_then_model_then_type(tt):
     p.category_name = "DLA DZIECI / Domki dla lalek"
     tt.transform(p)
     # Order: HOPLA TOYS → GUDON → DOMEK DLA LALEK → REZYDENCJA MALIBU
-    pos_brand = p.name.find("HOPLA TOYS")
-    pos_model = p.name.find("GUDON")
-    pos_type = p.name.find("DOMEK DLA LALEK")
+    pos_brand = p.title.find("HOPLA TOYS")
+    pos_model = p.title.find("GUDON")
+    pos_type = p.title.find("DOMEK DLA LALEK")
     assert 0 <= pos_brand < pos_model < pos_type
 
 
@@ -302,15 +302,15 @@ def test_intex_exception_preserves_original(tt):
     p = _p("INTEX basen stelażowy ogrodowy 305x76 cm 56406", brand="intex")
     tt.transform(p)
     # INTEX original is good — only UPPERCASE, no rebuild.
-    assert "305X76" in p.name or "305x76".upper() in p.name
-    assert "56406" in p.name
-    assert p.name.startswith("INTEX")
+    assert "305X76" in p.title or "305x76".upper() in p.title
+    assert "56406" in p.title
+    assert p.title.startswith("INTEX")
 
 
 def test_intex_brand_prepended_if_missing(tt):
     p = _p("basen stelażowy 305x76", brand="intex")
     tt.transform(p)
-    assert p.name.startswith("INTEX")
+    assert p.title.startswith("INTEX")
 
 
 def test_legacy_descriptors_kept_when_type_matches(tt):
@@ -321,7 +321,7 @@ def test_legacy_descriptors_kept_when_type_matches(tt):
     )
     p.category_name = "DLA DZIECI / Domki dla lalek"
     tt.transform(p)
-    assert "REZYDENCJA" in p.name or "MALIBU" in p.name
+    assert "REZYDENCJA" in p.title or "MALIBU" in p.title
 
 
 def test_supplier_sku_token_dropped(tt):
@@ -329,7 +329,7 @@ def test_supplier_sku_token_dropped(tt):
     p = _p("VICE Z G70 LIFEKRAFT CODZIENNY LIFESTYLE", brand="lifekraft")
     p.category_name = "Biżuteria ze stali chirurgicznej/Biżuteria ślubna"
     tt.transform(p)
-    assert "G70" not in p.name
+    assert "G70" not in p.title
 
 
 # ── validator ───────────────────────────────────────────────────────────────

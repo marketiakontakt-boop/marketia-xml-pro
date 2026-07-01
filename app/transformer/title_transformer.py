@@ -219,7 +219,7 @@ class TitleTransformer:
             return
 
         if (p.brand or "") == "intex":
-            p.name = self._transform_intex(original)
+            p.title = self._transform_intex(original)
             return
 
         brand_display = self._brand_display_for(p.brand)
@@ -270,7 +270,7 @@ class TitleTransformer:
             title = _append_bounded(title, audience, MAX_LEN)
 
         title = _MULTI_WS_RE.sub(" ", title).strip(_TRAILING_PUNCT)
-        p.name = _word_boundary_trim(title, MAX_LEN)
+        p.title = _word_boundary_trim(title, MAX_LEN)
 
     def transform_all(self, products: list[Product]) -> None:
         for p in products:
