@@ -819,25 +819,62 @@ class App(_BaseApp):
         threading.Thread(target=self._transform_worker, args=(target,), daemon=True).start()
 
     def _transform_worker(self, products: list[Product]):
+        import time
         try:
+            n = len(products)
+            t0 = time.time()
+
+            self.q.put(("status", f"Transformuję ({n} prod.): 1/7 marki…"))
+            t = time.time()
             bm = BrandMapper()
             bm.map_products(products)
             bm.sanitize_manufacturer_names(products)
+            t_brand = time.time() - t
+            known = sum(1 for p in products if p.brand and p.brand != "unknown")
+
+            self.q.put(("status", f"Transformuję ({n} prod.): 2/7 modele… (marki: {known}/{n} rozpoznanych w {t_brand:.1f}s)"))
+            t = time.time()
             with open_cache() as conn:
                 ModelNameGenerator(conn).assign_all(products)
+            t_model = time.time() - t
+
+            self.q.put(("status", f"Transformuję: 3/7 tytuły SEO…"))
+            t = time.time()
             TitleTransformer().transform_all(products)
+            t_title = time.time() - t
+
+            self.q.put(("status", f"Transformuję: 4/7 walidacja EAN + cache opisów…"))
+            t = time.time()
             for p in products:
                 p.ean_valid = validate_ean(p.ean)
-            # Try to load cached descriptions
             load_cached_descriptions(products)
-            # Strip legacy JUMI-format descriptions so AI regenerates them
+            t_ean = time.time() - t
+
+            self.q.put(("status", f"Transformuję: 5/7 czyszczenie opisów JUMI…"))
+            t = time.time()
             stripped = strip_jumi_descriptions(products)
-            if stripped:
-                self.q.put(("status", f"Usunięto {stripped} opisów w formacie JUMI — zostaną wygenerowane przez AI."))
+            t_strip = time.time() - t
+
+            self.q.put(("status", f"Transformuję: 6/7 atrybuty…"))
+            t = time.time()
             for p in products:
                 enrich_product_attributes(p)
+            t_attr = time.time() - t
+
+            self.q.put(("status", f"Transformuję: 7/7 mapowanie kategorii Allegro…"))
+            t = time.time()
             _cat_map = load_category_map()
             map_all_products(products, _cat_map)
+            t_cat = time.time() - t
+
+            total = time.time() - t0
+            self.q.put(("status",
+                f"Transformy OK — {total:.1f}s "
+                f"(marki={t_brand:.1f}s modele={t_model:.1f}s tytuły={t_title:.1f}s "
+                f"ean/cache={t_ean:.1f}s jumi={t_strip:.1f}s atrs={t_attr:.1f}s kat={t_cat:.1f}s)"
+            ))
+            if stripped:
+                self.q.put(("status", f"Usunięto {stripped} opisów JUMI — zostaną wygenerowane przez AI."))
             self.q.put(("transformed",))
         except Exception as e:
             self.q.put(("error", f"Transform: {e}"))
