@@ -13,6 +13,7 @@ def export_xml(
     products: list[Product],
     output_path: Path | str,
     include_variants: bool = False,
+    infographics_map: dict[str, list[str]] | None = None,
 ) -> int:
     """Write transformed XML. Returns count of <product> elements written.
 
@@ -31,10 +32,18 @@ def export_xml(
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
+    # Load infographic URLs once (single SQLite scan) unless caller pre-supplied them.
+    if infographics_map is None:
+        infographics_map = _load_infographics_map([p.sku for p in products])
+
     root = etree.Element("products")
     total = 0
     for p in products:
-        original_elem = _product_to_element(p, include_variants=include_variants)
+        original_elem = _product_to_element(
+            p,
+            include_variants=include_variants,
+            infographics_map=infographics_map,
+        )
         root.append(original_elem)
         total += 1
         for idx, ean in enumerate(getattr(p, "extra_eans", []) or [], start=1):
@@ -74,7 +83,27 @@ def _make_clone_element(
     return clone
 
 
-def _product_to_element(p: Product, include_variants: bool = False) -> etree._Element:
+def _load_infographics_map(skus: list[str]) -> dict[str, list[str]]:
+    """Return {sku: [imgbb_url, ...]} for every sku with uploaded infographics."""
+    from app.cache.sqlite_cache import get_infographics, open_cache
+
+    out: dict[str, list[str]] = {}
+    if not skus:
+        return out
+    with open_cache() as conn:
+        for sku in skus:
+            infos = get_infographics(conn, sku)
+            urls = [i["imgbb_url"] for i in infos if i.get("imgbb_url")]
+            if urls:
+                out[sku] = urls
+    return out
+
+
+def _product_to_element(
+    p: Product,
+    include_variants: bool = False,
+    infographics_map: dict[str, list[str]] | None = None,
+) -> etree._Element:
     e = etree.Element("product")
 
     def add(tag: str, value) -> None:
@@ -114,12 +143,18 @@ def _product_to_element(p: Product, include_variants: bool = False) -> etree._El
         child = etree.SubElement(e, field)
         child.text = etree.CDATA(val) if val.strip() else ""
 
-    # Images — thumbnail first (if uploaded), then all originals from XML.
+    # Images — MINIATURA (packshot lub pierwszy dostawcy) ZAWSZE jako główne zdjęcie [0].
+    # Kolejność: main → oryginały dostawcy → INFOGRAFIKI NA KOŃCU (user request 2026-07-12c —
+    # użytkownik nie chce ryzykować że infografiki wejdą "między" prawdziwe zdjęcia produktu).
     thumb = getattr(p, "thumbnail_url", "")
+    info_urls = list((infographics_map or {}).get(p.sku, []))
+    origins = list(p.images)
     if thumb and thumb.startswith("http"):
-        all_images = [thumb] + list(p.images)
+        all_images = [thumb] + origins + info_urls
+    elif origins:
+        all_images = origins + info_urls
     else:
-        all_images = list(p.images)
+        all_images = info_urls
 
     if all_images:
         etree.SubElement(e, "image").text = all_images[0]

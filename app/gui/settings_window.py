@@ -19,19 +19,9 @@ def _mask(key: str) -> str:
 def _load_gemini_keys() -> list[str]:
     load_dotenv(_ENV_PATH, override=True)
     multi = os.getenv("GEMINI_API_KEYS", "").strip()
-    if multi:
-        return [k.strip() for k in multi.split(",") if k.strip()]
-    numbered: list[str] = []
-    for i in range(1, 20):
-        k = os.getenv(f"GEMINI_API_KEY_{i}", "").strip()
-        if k:
-            numbered.append(k)
-        else:
-            break
-    if numbered:
-        return numbered
-    single = os.getenv("GEMINI_API_KEY", "").strip()
-    return [single] if single else []
+    if not multi:
+        return []
+    return [k.strip() for k in multi.split(",") if k.strip()]
 
 
 def _save_gemini_keys(keys: list[str]) -> None:
@@ -60,17 +50,6 @@ def _save_fal_key(key: str) -> None:
     _ENV_PATH.touch(exist_ok=True)
     set_key(str(_ENV_PATH), "FAL_KEY", key)
     os.environ["FAL_KEY"] = key
-
-
-def _load_paid_keys() -> str:
-    load_dotenv(_ENV_PATH, override=True)
-    return os.getenv("GEMINI_PAID_KEYS", "").strip()
-
-
-def _save_paid_keys(value: str) -> None:
-    _ENV_PATH.touch(exist_ok=True)
-    set_key(str(_ENV_PATH), "GEMINI_PAID_KEYS", value)
-    os.environ["GEMINI_PAID_KEYS"] = value
 
 
 def _load_bl_token() -> str:
@@ -231,33 +210,6 @@ class SettingsWindow(ctk.CTkToplevel):
             self._main,
             text="Zdobądź klucz na fal.ai — dashboard → API keys.",
             text_color="#6B7280", font=ctk.CTkFont(size=11),
-        ).pack(anchor="w", padx=20, pady=(0, 12))
-
-        # ---- Gemini Paid Keys section ----
-        ctk.CTkLabel(
-            self._main, text="Gemini Paid Keys — klucze bez cooldownu",
-            font=ctk.CTkFont(size=13, weight="bold"),
-        ).pack(anchor="w", padx=20, pady=(8, 4))
-
-        paid_row = ctk.CTkFrame(self._main, fg_color="transparent")
-        paid_row.pack(fill="x", padx=20, pady=(0, 4))
-        self._paid_var = ctk.StringVar(value=_load_paid_keys())
-        ctk.CTkEntry(
-            paid_row, textvariable=self._paid_var,
-            placeholder_text="klucz1,klucz2 (przecinkiem)",
-            width=360, show="•",
-        ).pack(side="left", padx=(0, 8))
-        ctk.CTkButton(
-            paid_row, text="Pokaż", width=80,
-            fg_color="#374151", hover_color="#1f2937",
-            command=lambda: self._toggle_entry_show(paid_row),
-        ).pack(side="left")
-
-        ctk.CTkLabel(
-            self._main,
-            text="Klucze płatne — używane jako pierwsze, nigdy nie wchodzą w cooldown.",
-            text_color="#6B7280", font=ctk.CTkFont(size=11),
-            wraplength=500,
         ).pack(anchor="w", padx=20, pady=(0, 12))
 
         # ---- BaseLinker section ----
@@ -436,9 +388,6 @@ class SettingsWindow(ctk.CTkToplevel):
         fal = self._fal_var.get().strip()
         if fal:
             _save_fal_key(fal)
-
-        paid = self._paid_var.get().strip()
-        _save_paid_keys(paid)
 
         bl_token = self._bl_token_var.get().strip()
         if bl_token:

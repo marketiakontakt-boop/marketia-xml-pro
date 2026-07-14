@@ -12,7 +12,7 @@ import sqlite3
 from pathlib import Path
 
 from app.ai.claude_client import ClaudeClient
-from app.ai.prompts import TITLE_PROMPT_VERSION, TITLE_SEO_PROMPT_V1
+from app.ai.prompts import TITLE_PROMPT_VERSION, TITLE_SEO_PROMPT_V1, build_title_system_prompt
 from app.cache.sqlite_cache import get_ai_title, save_ai_title
 from app.parser.normalizer import Product
 
@@ -56,6 +56,24 @@ def _product_payload(p: Product, brand_display: str) -> str:
     )
 
 
+def load_cached_ai_titles(products: list[Product]) -> int:
+    """Load AI titles v4 from SQLite cache into `p.title`. Returns hit count.
+
+    Analogous to `load_cached_descriptions` — called after `TitleTransformer` in the
+    transform pipeline so that products with cached AI titles show the AI version
+    instead of the deterministic one after session restart (user request 2026-07-12e).
+    """
+    from app.cache.sqlite_cache import open_cache
+    hits = 0
+    with open_cache() as conn:
+        for p in products:
+            ai = get_ai_title(conn, p.sku, prompt_version=TITLE_PROMPT_VERSION)
+            if ai:
+                p.title = ai
+                hits += 1
+    return hits
+
+
 class AITitleGenerator:
     def __init__(
         self,
@@ -75,17 +93,21 @@ class AITitleGenerator:
     def _brand_for(self, p: Product) -> str:
         return self.brand_display.get(p.brand or "", "")
 
-    def generate_one(self, p: Product, force: bool = False) -> str:
-        if not force:
-            cached = get_ai_title(self.conn, p.sku)
+    def generate_one(self, p: Product, force: bool = False, custom_instruction: str = "") -> str:
+        # Custom instruction = jednorazowy batch → force regen, NIE zapisuj do cache.
+        skip_cache = bool(custom_instruction.strip())
+        if not force and not skip_cache:
+            cached = get_ai_title(self.conn, p.sku, prompt_version=TITLE_PROMPT_VERSION)
             if cached:
                 return cached
         payload = _product_payload(p, self._brand_for(p))
-        raw = self.client.call(system=TITLE_SEO_PROMPT_V1, content=payload)
+        system_prompt = build_title_system_prompt(custom_instruction)
+        raw = self.client.call(system=system_prompt, content=payload)
         title = _clean_response(raw)
         if not title:
             return p.name or ""
-        save_ai_title(self.conn, p.sku, title, TITLE_PROMPT_VERSION)
+        if not skip_cache:
+            save_ai_title(self.conn, p.sku, title, TITLE_PROMPT_VERSION)
         return title
 
     def generate_all(
@@ -94,14 +116,19 @@ class AITitleGenerator:
         force: bool = False,
         progress_cb=None,
         cancel_check=None,
-        wait_on_cooldown: bool = True,
+        custom_instruction: str = "",
     ) -> dict[str, str]:
-        """Batch generate. Returns {sku: ai_title}."""
+        """Batch generate. Returns {sku: ai_title}.
+
+        `custom_instruction` (opcjonalne): dodatkowa instrukcja user'a do promptu.
+        Gdy podana: skip cache read, skip cache write, force regen wszystkiego.
+        """
+        skip_cache = bool(custom_instruction.strip())
         results: dict[str, str] = {}
         pending: list[Product] = []
         for p in products:
-            if not force:
-                cached = get_ai_title(self.conn, p.sku)
+            if not force and not skip_cache:
+                cached = get_ai_title(self.conn, p.sku, prompt_version=TITLE_PROMPT_VERSION)
                 if cached:
                     results[p.sku] = cached
                     continue
@@ -110,23 +137,23 @@ class AITitleGenerator:
         if not pending:
             return results
 
+        system_prompt = build_title_system_prompt(custom_instruction)
         requests = [
             {
                 "custom_id": p.sku,
-                "system": TITLE_SEO_PROMPT_V1,
+                "system": system_prompt,
                 "content": _product_payload(p, self._brand_for(p)),
             }
             for p in pending
         ]
 
-        def _adapter(done, total, custom_id, error=None, cooling_status=""):
+        def _adapter(done, total, custom_id, error=None):
             if progress_cb:
                 progress_cb(done, total, custom_id, error=error)
 
         raw_results = self.client.generate_all(
             requests,
             progress_callback=_adapter,
-            wait_on_cooldown=wait_on_cooldown,
             cancel_check=cancel_check,
         )
 
@@ -134,7 +161,8 @@ class AITitleGenerator:
             raw = raw_results.get(p.sku)
             title = _clean_response(raw) if raw else ""
             if title:
-                save_ai_title(self.conn, p.sku, title, TITLE_PROMPT_VERSION)
+                if not skip_cache:
+                    save_ai_title(self.conn, p.sku, title, TITLE_PROMPT_VERSION)
                 results[p.sku] = title
             else:
                 results[p.sku] = p.name or ""
@@ -146,15 +174,31 @@ class AITitleGenerator:
         force: bool = False,
         progress_cb=None,
         cancel_check=None,
+        custom_instruction: str = "",
     ) -> int:
-        """Generate + write ai_title to product.name in-place. Returns updated count."""
+        """Generate + write ai_title to product.title in-place. Returns updated count.
+
+        `generate_all` może zwrócić `p.name` jako fallback gdy AI nic nie wygenerował.
+        Standardowo źródło prawdy = cache SQLite. Ale gdy `custom_instruction` jest podana,
+        cache NIE jest aktualizowany (jednorazowy batch), więc czytamy z powrotu `generate_all`.
+        """
         titles = self.generate_all(
-            products, force=force, progress_cb=progress_cb, cancel_check=cancel_check
+            products, force=force, progress_cb=progress_cb, cancel_check=cancel_check,
+            custom_instruction=custom_instruction,
         )
         updated = 0
+        skip_cache = bool(custom_instruction.strip())
         for p in products:
-            new = titles.get(p.sku)
-            if new and new != p.name:
-                p.name = new
+            if skip_cache:
+                # Custom batch: read from returned dict directly (cache nie ma tego wpisu).
+                new = titles.get(p.sku)
+                # `generate_all` fallbackuje do p.name gdy AI failuje — ignoruj taki fallback.
+                if new and new != p.name and new != p.title:
+                    p.title = new
+                    updated += 1
+                continue
+            ai_title = get_ai_title(self.conn, p.sku, prompt_version=TITLE_PROMPT_VERSION)
+            if ai_title and ai_title != p.title:
+                p.title = ai_title
                 updated += 1
         return updated

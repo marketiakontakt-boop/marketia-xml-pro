@@ -165,6 +165,33 @@ def _list_products(token: str, inventory_id: int) -> dict[str, tuple[str, int]]:
     return out
 
 
+def _list_products_all_pids(token: str, inventory_id: int) -> dict[str, list[str]]:
+    """Return {sku: [pid, pid, ...]} — WSZYSTKIE PIDs per SKU (BL pozwala na duplikaty).
+
+    Odróżnia się od `_list_products` (który zwraca tylko ostatni PID per SKU).
+    Używane w sync gdzie wszystkie duplikaty muszą zostać zaktualizowane.
+    """
+    out: dict[str, list[str]] = {}
+    page = 1
+    while True:
+        data = _call(token, "getInventoryProductsList", {
+            "inventory_id": inventory_id,
+            "page": page,
+        })
+        products = data.get("products", {})
+        if not products:
+            break
+        for pid, info in products.items():
+            sku = info.get("sku", "")
+            if not sku:
+                continue
+            out.setdefault(sku, []).append(pid)
+        if len(products) < PAGE_SIZE:
+            break
+        page += 1
+    return out
+
+
 def _flatten_stock(warehouses) -> int:
     """Sum all warehouse counts. BL returns either `{bl_X: int}` (simple) or
     `{variant_id: {bl_X: int}}` (product has variants) — recurse the dict
@@ -412,6 +439,262 @@ def sync_all_clones(
             _target_warehouse_key=target_key,
         )))
     return results
+
+
+def sync_stocks_from_source(
+    token: str,
+    source_inventory_id: int,
+    target_inventory_ids: list[int] | None = None,
+    log: Callable[[str], None] | None = None,
+) -> list[tuple[int, str, SyncResult]]:
+    """Kopiuj warehouse breakdown z source katalogu do wszystkich SKU w target katalogach.
+
+    Per SKU w target katalogu:
+      - Jeśli SKU istnieje w source → skopiuj warehouse breakdown z source
+      - Jeśli SKU NIE istnieje w source → pomijamy
+      - Jeśli stan już zgodny → skip (bez noise'a API)
+
+    `target_inventory_ids=None` → auto-discover wszystkie katalogi ≠ source_inventory_id.
+    """
+    _log = log or (lambda _msg: None)
+    if not token:
+        raise BaseLinkerError("Brak tokenu BaseLinker")
+
+    all_inventories = list_inventories(token)
+    if not all_inventories:
+        raise BaseLinkerError("Konto nie ma skonfigurowanych katalogów BaseLinker")
+
+    source_inv = next((i for i in all_inventories if i["inventory_id"] == source_inventory_id), None)
+    if not source_inv:
+        ids = ", ".join(str(i["inventory_id"]) for i in all_inventories)
+        raise BaseLinkerError(
+            f"Source Inventory ID {source_inventory_id} nie znaleziony. Dostępne: {ids}"
+        )
+
+    if target_inventory_ids:
+        wanted = set(target_inventory_ids)
+        wanted.discard(source_inventory_id)
+        targets = [i for i in all_inventories if i["inventory_id"] in wanted]
+        if not targets:
+            raise BaseLinkerError(f"Żaden target ID nie istnieje: {target_inventory_ids}")
+    else:
+        targets = [i for i in all_inventories if i["inventory_id"] != source_inventory_id]
+
+    _log(f"Pobieram source katalog '{source_inv['name']}'…")
+    source_sku_to_info = _list_products(token, source_inventory_id)
+    _log(f"Source: {len(source_sku_to_info)} produktów.")
+    source_pids = [pid for pid, _ in source_sku_to_info.values()]
+    _log(f"Pobieram warehouse breakdowns dla source ({len(source_pids)} produktów)…")
+    source_stocks = _get_stocks(token, source_inventory_id, source_pids)
+
+    results: list[tuple[int, str, SyncResult]] = []
+    for tgt in targets:
+        tgt_id, tgt_name = tgt["inventory_id"], tgt["name"]
+        _log(f"=== Target '{tgt_name}' (ID {tgt_id}) ===")
+        # Zbierz WSZYSTKIE PIDs per SKU w target (BL pozwala na duplikaty SKU — jeden SKU
+        # może mieć N PIDs; sync musi zaktualizować wszystkie żeby fix dotarł do każdego).
+        # Fix 2026-07-14: Kathay ma 53 SKU z duplikatami (X-242-1 → 2 PIDs itd.).
+        tgt_sku_to_pids = _list_products_all_pids(token, tgt_id)
+        total_pids = sum(len(pids) for pids in tgt_sku_to_pids.values())
+        _log(f"  Target: {len(tgt_sku_to_pids)} SKU / {total_pids} PIDs (duplikaty: {total_pids - len(tgt_sku_to_pids)}).")
+
+        matched: list[tuple[str, str, str]] = []  # (sku, tgt_pid, src_pid) — expanded per PID
+        skipped_no_source: list[str] = []
+        for sku, tgt_pids in tgt_sku_to_pids.items():
+            src_info = source_sku_to_info.get(sku)
+            if src_info:
+                for tgt_pid in tgt_pids:
+                    matched.append((sku, tgt_pid, src_info[0]))
+            else:
+                skipped_no_source.append(sku)
+        _log(f"  Matched: {len(matched)} PIDs, skipped (brak w source): {len(skipped_no_source)} SKU")
+
+        if not matched:
+            results.append((tgt_id, tgt_name, SyncResult(
+                total_products=len(tgt_sku_to_pids),
+                clones_found=0, parents_resolved=0, clones_synced=0,
+                sample_skus=list(tgt_sku_to_pids.keys())[:10],
+                warnings=[f"Brak dopasowań SKU między source a '{tgt_name}'."],
+            )))
+            continue
+
+        tgt_pids = [tgt_pid for _, tgt_pid, _ in matched]
+        _log(f"  Pobieram breakdowns target ({len(tgt_pids)} pids)…")
+        tgt_stocks = _get_stocks(token, tgt_id, tgt_pids)
+
+        updates: dict[str, dict[str, int]] = {}
+        unchanged = 0
+        for sku, tgt_pid, src_pid in matched:
+            src_flat = _flatten_warehouses(source_stocks.get(src_pid, {}))
+            tgt_flat = _flatten_warehouses(tgt_stocks.get(tgt_pid, {}))
+            if src_flat == tgt_flat:
+                unchanged += 1
+                continue
+            updates[tgt_pid] = src_flat
+        _log(f"  Do zmiany: {len(updates)}, bez zmian: {unchanged}")
+
+        if updates:
+            _log(f"  Push {len(updates)} update'ów do BaseLinker…")
+            _push_stocks(token, tgt_id, updates)
+
+        results.append((tgt_id, tgt_name, SyncResult(
+            total_products=len(tgt_sku_to_pids),
+            clones_found=0, parents_resolved=len(matched),
+            clones_synced=len(updates),
+            sample_skus=[sku for sku, _, _ in matched[:10]],
+            warnings=[],
+        )))
+    return results
+
+
+def _flatten_warehouses(warehouses) -> dict[str, int]:
+    """Flatten warehouse breakdown do {warehouse_key: qty}. Sumuj po wariantach."""
+    if not warehouses:
+        return {}
+    flat: dict[str, int] = {}
+    for k, v in warehouses.items():
+        if isinstance(v, dict):
+            for wk, wv in _flatten_warehouses(v).items():
+                flat[wk] = flat.get(wk, 0) + int(wv or 0)
+        else:
+            flat[k] = flat.get(k, 0) + int(v or 0)
+    return flat
+
+
+def _max_across_sources(
+    sku: str,
+    source_data: dict[int, dict[str, list[str]]],
+    source_stocks: dict[int, dict[str, dict[str, int]]],
+) -> dict[str, int]:
+    """Zwróć MAX qty per warehouse_key across wszystkich source katalogów gdzie SKU występuje.
+
+    Semantic: rodzic ma stan zsumowany w hurtowniach; różne hurtownie mogą raportować
+    inaczej dla tego samego produktu — bierzemy najwyższy per klucz warehouse.
+    """
+    flat_per_key: dict[str, int] = {}
+    for inv_id, sku_to_pids in source_data.items():
+        for pid in sku_to_pids.get(sku, []):
+            wh_flat = _flatten_warehouses(source_stocks.get(inv_id, {}).get(pid, {}))
+            for wk, qty in wh_flat.items():
+                flat_per_key[wk] = max(flat_per_key.get(wk, 0), int(qty or 0))
+    return flat_per_key
+
+
+def sync_from_wholesale_to_target(
+    token: str,
+    source_inventory_ids: list[int],
+    target_inventory_id: int,
+    log: Callable[[str], None] | None = None,
+) -> SyncResult:
+    """Sync stany z hurtowni source → target katalog (rodzice + klony).
+
+    Workflow per SKU w target:
+      1. Znajdź `parent_sku` (SKU bez -N suffix, dla klona; sam SKU dla regular).
+      2. W source katalogach szukaj `parent_sku` → weź MAX warehouse breakdown ze wszystkich.
+      3. Zapisz stan do target: rodzic PID (jeśli jest) + WSZYSTKIE PIDs klonów `parent_sku-N`.
+
+    Target sync:
+      - Regular SKU (bez klonów): kopiuj stan bezpośrednio z source.
+      - Klon `PARENT-N`: kopiuj stan RODZICA (`PARENT` w source) do klona.
+      - Rodzic `PARENT` (jeśli obecny w target obok klonów): kopiuj bezpośrednio.
+
+    Duplikaty SKU w target: obsługiwane (używa `_list_products_all_pids`).
+    Skip: SKU których nie ma w żadnym source katalogu.
+
+    Zwraca SyncResult z liczbą synced PIDs.
+    """
+    _log = log or (lambda _msg: None)
+    if not token:
+        raise BaseLinkerError("Brak tokenu BaseLinker")
+    if not source_inventory_ids:
+        raise BaseLinkerError("Brak source_inventory_ids (hurtownie)")
+
+    # 1. Zbierz source: {inv_id: {sku: [pids...]}}
+    _log(f"Skanuję {len(source_inventory_ids)} source katalogów…")
+    source_data: dict[int, dict[str, list[str]]] = {}
+    for inv_id in source_inventory_ids:
+        try:
+            source_data[inv_id] = _list_products_all_pids(token, inv_id)
+        except Exception as e:
+            _log(f"[source {inv_id}] fail: {e}")
+            source_data[inv_id] = {}
+    total_source_skus = sum(len(m) for m in source_data.values())
+    _log(f"Source SKU total (across katalogów): {total_source_skus}")
+
+    # 2. Pobierz stocki source per inv
+    source_stocks: dict[int, dict[str, dict[str, int]]] = {}
+    for inv_id, sku_to_pids in source_data.items():
+        all_pids = [pid for pids in sku_to_pids.values() for pid in pids]
+        if not all_pids:
+            source_stocks[inv_id] = {}
+            continue
+        try:
+            source_stocks[inv_id] = _get_stocks(token, inv_id, all_pids)
+        except Exception as e:
+            _log(f"[source {inv_id}] stock fetch fail: {e}")
+            source_stocks[inv_id] = {}
+
+    # 3. Pobierz target: {sku: [pids...]}
+    tgt_sku_to_pids = _list_products_all_pids(token, target_inventory_id)
+    total_pids = sum(len(pids) for pids in tgt_sku_to_pids.values())
+    dup_count = total_pids - len(tgt_sku_to_pids)
+    _log(f"Target ma {len(tgt_sku_to_pids)} SKU / {total_pids} PIDs ({dup_count} duplikatów)")
+
+    # 4. Match + build updates
+    updates: dict[str, dict[str, int]] = {}
+    skipped_no_source: list[str] = []
+    parents_matched: set[str] = set()
+    regulars_matched: set[str] = set()
+    for sku, tgt_pids in tgt_sku_to_pids.items():
+        m = CLONE_RE.match(sku)
+        parent_sku = m.group(1) if m else sku
+        stock = _max_across_sources(parent_sku, source_data, source_stocks)
+        if not stock:
+            skipped_no_source.append(sku)
+            continue
+        if m:
+            parents_matched.add(parent_sku)
+        else:
+            regulars_matched.add(sku)
+        for tgt_pid in tgt_pids:
+            updates[tgt_pid] = stock
+
+    matched_skus = len(parents_matched) + len(regulars_matched)
+    _log(
+        f"Matched: {len(parents_matched)} rodziców + {len(regulars_matched)} regular "
+        f"= {matched_skus} SKU do sync"
+    )
+    _log(f"Skipped (brak w source): {len(skipped_no_source)} SKU")
+
+    # 5. Compare vs target existing, skip no-ops
+    all_tgt_pids = [pid for pids in tgt_sku_to_pids.values() for pid in pids]
+    tgt_stocks = _get_stocks(token, target_inventory_id, all_tgt_pids) if all_tgt_pids else {}
+    real_updates: dict[str, dict[str, int]] = {}
+    unchanged = 0
+    for pid, stock in updates.items():
+        existing = _flatten_warehouses(tgt_stocks.get(pid, {}))
+        if existing == stock:
+            unchanged += 1
+            continue
+        real_updates[pid] = stock
+    _log(f"Do zmiany: {len(real_updates)} PIDs, bez zmian: {unchanged} (już zgodne)")
+
+    if real_updates:
+        _log(f"Push {len(real_updates)} update'ów…")
+        _push_stocks(token, target_inventory_id, real_updates)
+
+    warnings: list[str] = []
+    if not matched_skus:
+        warnings.append("Żaden SKU w target nie ma odpowiednika w source katalogach.")
+
+    return SyncResult(
+        total_products=len(tgt_sku_to_pids),
+        clones_found=len(parents_matched),
+        parents_resolved=matched_skus,
+        clones_synced=len(real_updates),
+        sample_skus=list(tgt_sku_to_pids.keys())[:10],
+        warnings=warnings,
+    )
 
 
 def sync_clones(

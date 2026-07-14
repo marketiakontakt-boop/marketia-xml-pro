@@ -88,6 +88,26 @@ CREATE TABLE IF NOT EXISTS product_eans (
 
 CREATE INDEX IF NOT EXISTS idx_product_eans_sku
     ON product_eans(sku, position);
+
+CREATE TABLE IF NOT EXISTS product_infographics (
+    sku          TEXT NOT NULL,
+    param_key    TEXT NOT NULL,
+    path         TEXT NOT NULL,
+    imgbb_url    TEXT,
+    generated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(sku, param_key)
+);
+
+CREATE INDEX IF NOT EXISTS idx_product_infographics_sku
+    ON product_infographics(sku);
+
+CREATE TABLE IF NOT EXISTS session_state (
+    xml_hash TEXT PRIMARY KEY,
+    xml_path TEXT NOT NULL,
+    state_json TEXT NOT NULL,
+    saved_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_session_state_saved_at ON session_state(saved_at DESC);
 """
 
 
@@ -247,11 +267,20 @@ def save_sku_model_name(conn: sqlite3.Connection, sku: str, brand: str, model_na
 
 # --- AI title helpers ---
 
-def get_ai_title(conn: sqlite3.Connection, sku: str) -> str | None:
+def get_ai_title(
+    conn: sqlite3.Connection, sku: str, prompt_version: str | None = None
+) -> str | None:
+    """Zwraca cache'owany tytuł. Jeśli `prompt_version` podana i nie zgadza się z zapisaną,
+    zwraca None (traktuje jako stale — cache został wygenerowany starszą wersją prompta).
+    """
     row = conn.execute(
-        "SELECT title FROM ai_titles WHERE sku = ?", (sku,)
+        "SELECT title, prompt_version FROM ai_titles WHERE sku = ?", (sku,)
     ).fetchone()
-    return row["title"] if row else None
+    if not row:
+        return None
+    if prompt_version and row["prompt_version"] != prompt_version:
+        return None
+    return row["title"]
 
 
 def save_ai_title(
@@ -327,6 +356,8 @@ _CLEARABLE_TABLES = {
     "lifestyle_thumbnails": "Lifestyle AI (cache)",
     "ai_titles":            "Tytuły AI (cache)",
     "product_eans":         "Dodatkowe EAN-y (klony)",
+    "product_infographics": "Infografiki parametrów (cache)",
+    "session_state":        "Sesje GUI (filtry + selekcja per plik XML)",
 }
 
 
@@ -367,3 +398,102 @@ def upsert_product(
         """,
         (sku, product_id, brand, model_name),
     )
+
+
+# --- product infographic helpers ---
+
+def save_infographic(
+    conn: sqlite3.Connection, sku: str, param_key: str, path: str
+) -> None:
+    """Upsert path for (sku, param_key); resets imgbb_url so stale URLs don't linger."""
+    conn.execute(
+        "INSERT OR REPLACE INTO product_infographics (sku, param_key, path, imgbb_url) "
+        "VALUES (?, ?, ?, NULL)",
+        (sku, param_key, path),
+    )
+
+
+def set_infographic_imgbb(
+    conn: sqlite3.Connection, sku: str, param_key: str, url: str
+) -> None:
+    """Update imgbb_url for an existing (sku, param_key) infographic row."""
+    conn.execute(
+        "UPDATE product_infographics SET imgbb_url = ? "
+        "WHERE sku = ? AND param_key = ?",
+        (url, sku, param_key),
+    )
+
+
+def get_infographics(conn: sqlite3.Connection, sku: str) -> list[dict]:
+    """Return all infographic rows for `sku` as dicts (param_key, path, imgbb_url)."""
+    rows = conn.execute(
+        "SELECT param_key, path, imgbb_url FROM product_infographics "
+        "WHERE sku = ? ORDER BY param_key",
+        (sku,),
+    ).fetchall()
+    return [dict(r) for r in rows]
+
+
+# --- session state persistence helpers ---
+
+import hashlib
+import json as _json_module
+
+
+def hash_xml_file(path: str | Path) -> str:
+    """Return SHA256 hex of first 100KB + file size — stable identifier for XML file."""
+    p = Path(path)
+    size = p.stat().st_size
+    h = hashlib.sha256()
+    with p.open("rb") as f:
+        h.update(f.read(100_000))
+    h.update(str(size).encode())
+    return h.hexdigest()[:32]  # 32 chars sufficient
+
+
+def save_session_state(
+    conn: sqlite3.Connection, xml_hash: str, xml_path: str, state: dict
+) -> None:
+    """Upsert session state as JSON keyed by XML file hash."""
+    conn.execute(
+        "INSERT INTO session_state (xml_hash, xml_path, state_json, saved_at) "
+        "VALUES (?, ?, ?, CURRENT_TIMESTAMP) "
+        "ON CONFLICT(xml_hash) DO UPDATE SET xml_path=excluded.xml_path, "
+        "state_json=excluded.state_json, saved_at=CURRENT_TIMESTAMP",
+        (xml_hash, str(xml_path), _json_module.dumps(state, ensure_ascii=False)),
+    )
+
+
+def load_session_state(conn: sqlite3.Connection, xml_hash: str) -> dict | None:
+    """Load state dict for given XML hash, or None if not found / corrupt."""
+    row = conn.execute(
+        "SELECT state_json FROM session_state WHERE xml_hash = ?",
+        (xml_hash,),
+    ).fetchone()
+    if not row:
+        return None
+    try:
+        raw = row["state_json"] if hasattr(row, "keys") else row[0]
+        return _json_module.loads(raw)
+    except (_json_module.JSONDecodeError, KeyError, IndexError):
+        return None
+
+
+def list_recent_sessions(conn: sqlite3.Connection, limit: int = 10) -> list[dict]:
+    """List recent sessions [{xml_hash, xml_path, saved_at}, ...] ordered by saved_at DESC."""
+    rows = conn.execute(
+        "SELECT xml_hash, xml_path, saved_at FROM session_state "
+        "ORDER BY saved_at DESC LIMIT ?",
+        (limit,),
+    ).fetchall()
+    result: list[dict] = []
+    for r in rows:
+        if hasattr(r, "keys"):
+            result.append({
+                "xml_hash": r["xml_hash"],
+                "xml_path": r["xml_path"],
+                "saved_at": r["saved_at"],
+            })
+        else:
+            result.append({"xml_hash": r[0], "xml_path": r[1], "saved_at": r[2]})
+    return result

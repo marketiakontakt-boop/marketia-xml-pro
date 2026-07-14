@@ -1,12 +1,14 @@
 name: BL Stock Sync
 
-# Uruchamia sync stocku klonów + rodziców w BaseLinker co 5 minut.
+# Uruchamia sync stocków z hurtowni (MultiStore, Kathay, JUMI...) → target katalog
+# (Allegro Asortyment: rodzice + klony `PARENT-N`) co 5 minut.
 # Zastępuje lokalny launchd — działa w chmurze GitHub, komputer może być wyłączony.
 #
 # Setup:
-#   1. Settings → Secrets and variables → Actions → New repository secret
-#   2. Dodaj: BASELINKER_TOKEN = <twój token BL>
-#   3. (opcjonalnie) BASELINKER_INVENTORY_ID = <konkretne ID, lub pomiń dla wszystkich>
+#   Settings → Secrets and variables → Actions → New repository secret. Dodaj:
+#     BASELINKER_TOKEN                = <token BL>
+#     BASELINKER_SOURCE_INVENTORY_IDS = 52173,45513   (hurtownie, comma-sep)
+#     BASELINKER_TARGET_INVENTORY_ID  = 36713          (Allegro Asortyment, single int)
 #
 # Manualny run: Actions → BL Stock Sync → Run workflow
 
@@ -40,10 +42,11 @@ jobs:
           # I certifi (dla SSL na Linux). Reszta requirements.txt to GUI/AI deps niepotrzebne dla sync.
           pip install python-dotenv certifi
 
-      - name: Run sync
+      - name: Run stock sync
         env:
           BASELINKER_TOKEN: ${{ secrets.BASELINKER_TOKEN }}
-          BASELINKER_INVENTORY_ID: ${{ secrets.BASELINKER_INVENTORY_ID }}
+          BASELINKER_SOURCE_INVENTORY_IDS: ${{ secrets.BASELINKER_SOURCE_INVENTORY_IDS }}
+          BASELINKER_TARGET_INVENTORY_ID: ${{ secrets.BASELINKER_TARGET_INVENTORY_ID }}
         run: |
           python scripts/sync_clone_stocks.py
 

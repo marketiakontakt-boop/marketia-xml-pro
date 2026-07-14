@@ -14,3 +14,14 @@ dist/
 build/
 *.egg-info/
 .superpowers/
+
+# Generated content (per-session)
+output/infographics/
+output/*.jpg
+output/*.png
+
+# macOS app bundles (build artifacts)
+*.app/
+
+# Debug/probe scripts
+scripts/probe_bl_stock*.py

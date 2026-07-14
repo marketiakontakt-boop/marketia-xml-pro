@@ -5,6 +5,7 @@ import sqlite3
 
 import pytest
 
+from app.ai.prompts import TITLE_PROMPT_VERSION
 from app.ai.title_generator import AITitleGenerator, _clean_response
 from app.cache.sqlite_cache import init_schema, get_ai_title
 from app.parser.normalizer import Product
@@ -103,7 +104,7 @@ def test_clean_response_empty_safe():
 def test_generate_one_uses_cache(conn, brand_data):
     gen = AITitleGenerator(conn, brand_data=brand_data, client=_FakeClient(single="X"))
     from app.cache.sqlite_cache import save_ai_title
-    save_ai_title(conn, "SKU-1", "CACHED HOPLA TOYS TITLE", "v1")
+    save_ai_title(conn, "SKU-1", "CACHED HOPLA TOYS TITLE", TITLE_PROMPT_VERSION)
     p = _p("SKU-1", "anything")
     assert gen.generate_one(p) == "CACHED HOPLA TOYS TITLE"
     assert gen.client.calls == 0
@@ -123,7 +124,7 @@ def test_generate_one_force_bypasses_cache(conn, brand_data):
     fake = _FakeClient(single="NEW HOPLA TOYS TITLE")
     gen = AITitleGenerator(conn, brand_data=brand_data, client=fake)
     from app.cache.sqlite_cache import save_ai_title
-    save_ai_title(conn, "SKU-3", "OLD CACHED TITLE", "v1")
+    save_ai_title(conn, "SKU-3", "OLD CACHED TITLE", TITLE_PROMPT_VERSION)
     out = gen.generate_one(_p("SKU-3", "x"), force=True)
     assert out == "NEW HOPLA TOYS TITLE"
 
@@ -133,7 +134,7 @@ def test_generate_one_force_bypasses_cache(conn, brand_data):
 
 def test_generate_all_batch_mixes_cache_and_fresh(conn, brand_data):
     from app.cache.sqlite_cache import save_ai_title
-    save_ai_title(conn, "A", "CACHED A TITLE", "v1")
+    save_ai_title(conn, "A", "CACHED A TITLE", TITLE_PROMPT_VERSION)
     fake = _FakeClient(by_sku={"B": "FRESH B TITLE", "C": "FRESH C TITLE"})
     gen = AITitleGenerator(conn, brand_data=brand_data, client=fake)
     results = gen.generate_all([_p("A", "x"), _p("B", "y"), _p("C", "z")])
@@ -143,13 +144,19 @@ def test_generate_all_batch_mixes_cache_and_fresh(conn, brand_data):
 
 
 def test_apply_to_products_writes_in_place(conn, brand_data):
+    # Fix 2026-07-11: apply_to_products pisze do p.title, nie p.name.
+    # GUI/eksport używa `p.title or p.name` — TitleTransformer pisze do p.title,
+    # więc AI musi robić to samo, żeby wygrać z deterministycznym.
     fake = _FakeClient(by_sku={"A": "AI TITLE A", "B": "AI TITLE B"})
     gen = AITitleGenerator(conn, brand_data=brand_data, client=fake)
     ps = [_p("A", "old A"), _p("B", "old B")]
     updated = gen.apply_to_products(ps)
     assert updated == 2
-    assert ps[0].name == "AI TITLE A"
-    assert ps[1].name == "AI TITLE B"
+    assert ps[0].title == "AI TITLE A"
+    assert ps[1].title == "AI TITLE B"
+    # p.name (oryginał XML) pozostaje nietknięty
+    assert ps[0].name == "old A"
+    assert ps[1].name == "old B"
 
 
 def test_apply_skips_when_response_empty(conn, brand_data):
@@ -157,4 +164,5 @@ def test_apply_skips_when_response_empty(conn, brand_data):
     gen = AITitleGenerator(conn, brand_data=brand_data, client=fake)
     p = _p("A", "orig")
     gen.apply_to_products([p])
+    assert p.title == ""  # nie ustawione bo AI zwrócił nic
     assert p.name == "orig"

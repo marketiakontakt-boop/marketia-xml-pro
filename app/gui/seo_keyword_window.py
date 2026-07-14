@@ -261,7 +261,7 @@ class SeoKeywordWindow(ctk.CTkToplevel):
             return
         key = self._api_key()
         if not key:
-            messagebox.showerror("SEO", "Brak klucza Gemini API.\nDodaj GEMINI_API_KEYS lub GEMINI_API_KEY w .env.")
+            messagebox.showerror("SEO", "Brak klucza Gemini API.\nDodaj GEMINI_API_KEYS w .env.")
             return
         self._status_var.set("Ekstraktuję frazy SEO…")
         threading.Thread(target=self._extract_worker, args=(text, key), daemon=True).start()
@@ -424,7 +424,4 @@ class SeoKeywordWindow(ctk.CTkToplevel):
     # ------------------------------------------------------------------
 
     def _api_key(self) -> str:
-        return (
-            os.getenv("GEMINI_API_KEYS", "").split(",")[0].strip()
-            or os.getenv("GEMINI_API_KEY", "").strip()
-        )
+        return os.getenv("GEMINI_API_KEYS", "").split(",")[0].strip()

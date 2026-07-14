@@ -7,6 +7,8 @@ import os
 import queue
 import re
 import threading
+import time
+import traceback
 from pathlib import Path
 import tkinter as tk
 from tkinter import filedialog, messagebox
@@ -38,7 +40,8 @@ from app.transformer.category_mapper import load_category_map, map_all_products
 from app.transformer.xml_diff import run_diff, STATUS_NEW, STATUS_CHANGED
 from app.exporter.xml_exporter import export_xml
 from app.images.thumbnail_generator import generate_thumbnails, THUMB_DIR
-from app.images.imgbb_uploader import upload_thumbnails
+from app.images.imgbb_uploader import upload_thumbnails, upload_infographics
+from app.images.infographic_generator import generate_all_infographics
 from app.gui.preview import open_preview
 from app.gui.audit_preview import open_audit_preview
 from app.gui.product_detail import ProductDetailWindow
@@ -82,12 +85,31 @@ DIFF_COLORS = {
 # ── Row thumbnail helpers ──────────────────────────────────────────────────
 _THUMB_ROW_SIZE = (44, 44)
 _thumb_cache: dict[str, ctk.CTkImage | None] = {}
-_thumb_pending: set[str] = set()
+# Multi-subscriber pending: multiple labels can await the same URL.
+# Previously `set[str]` guard = new labels after re-render lost callback.
+_thumb_pending: dict[str, list[ctk.CTkLabel]] = {}
+_thumb_pending_lock = threading.Lock()
+# TTL na failed loads — scroll/re-render pozwala na retry po tym czasie.
+_THUMB_FAILED_TTL = 60.0
+_thumb_failed_at: dict[str, float] = {}
 _thumb_url_sem = threading.Semaphore(8)  # cap concurrent URL downloads
 
 
+def _apply_thumb(label: ctk.CTkLabel, img: ctk.CTkImage) -> None:
+    try:
+        label.after(0, lambda: label.configure(image=img, text="") if label.winfo_exists() else None)
+    except Exception:
+        pass
+
+
 def _schedule_thumb(product: Product, label: ctk.CTkLabel) -> None:
-    """Load a small product image into *label* (local file sync, URL async)."""
+    """Load a small product image into *label* (local file sync, URL async).
+
+    Multi-subscriber pending: gdy ten sam URL już się ładuje z powodu innego
+    ProductRow (paginacja/filtr re-render), nowa labelka dopisuje się do listy
+    subskrybentów. Worker po skończeniu iteruje wszystkie labelki i updatuje
+    te, które wciąż istnieją. Fix 2026-07-12 dla losowo pustych slotów.
+    """
     sku = product.sku
     local = THUMB_DIR / f"{sku}.jpg"
     if not local.exists():
@@ -99,12 +121,19 @@ def _schedule_thumb(product: Product, label: ctk.CTkLabel) -> None:
     if key in _thumb_cache:
         img = _thumb_cache[key]
         if img:
-            label.configure(image=img, text="")
+            _apply_thumb(label, img)
+        elif key in _thumb_failed_at and (time.monotonic() - _thumb_failed_at[key]) > _THUMB_FAILED_TTL:
+            # TTL wygasł — pozwól spróbować ponownie
+            _thumb_cache.pop(key, None)
+            _thumb_failed_at.pop(key, None)
+            _schedule_thumb(product, label)
         return
 
-    if key in _thumb_pending:
-        return
-    _thumb_pending.add(key)
+    with _thumb_pending_lock:
+        if key in _thumb_pending:
+            _thumb_pending[key].append(label)
+            return
+        _thumb_pending[key] = [label]
 
     def _worker():
         img = None
@@ -118,15 +147,18 @@ def _schedule_thumb(product: Product, label: ctk.CTkLabel) -> None:
                 pil = Image.open(key).convert("RGB")
             pil = pil.resize(_THUMB_ROW_SIZE, Image.LANCZOS)
             img = ctk.CTkImage(pil, size=_THUMB_ROW_SIZE)
-        except Exception:
-            pass
+        except Exception as e:
+            print(f"[thumb load failed] {key[:80]}: {type(e).__name__}: {e}", flush=True)
+
         _thumb_cache[key] = img
-        _thumb_pending.discard(key)
+        if img is None:
+            _thumb_failed_at[key] = time.monotonic()
+
+        with _thumb_pending_lock:
+            subscribers = _thumb_pending.pop(key, [])
         if img:
-            try:
-                label.after(0, lambda: label.configure(image=img, text="") if label.winfo_exists() else None)
-            except Exception:
-                pass
+            for lbl in subscribers:
+                _apply_thumb(lbl, img)
 
     threading.Thread(target=_worker, daemon=True).start()
 
@@ -182,6 +214,88 @@ def _thumb_mode_dialog(parent, n_products: int) -> dict | None:
     ctk.CTkButton(btn_f, text="Regeneruj wszystkie", width=160,
                   fg_color="#7c3aed", hover_color="#6d28d9",
                   command=lambda: _pick("all")).grid(row=0, column=1, padx=4)
+    ctk.CTkButton(btn_f, text="Anuluj", width=80,
+                  fg_color="#374151", hover_color="#1f2937",
+                  command=win.destroy).grid(row=0, column=2, padx=4)
+
+    parent.wait_window(win)
+    return result[0]
+
+
+def _ai_titles_dialog(parent, n_products: int, last_custom: str = "") -> dict | None:
+    """Show AI titles options dialog with optional custom instructions.
+
+    Returns dict {force: bool, custom_instruction: str} or None on cancel.
+    Custom instruction is session-scoped — `last_custom` preselects the field.
+    """
+    result: list[dict | None] = [None]
+
+    win = ctk.CTkToplevel(parent)
+    win.title("Generuj tytuły AI")
+    win.geometry("560x460")
+    win.resizable(False, False)
+    win.grab_set()
+
+    ctk.CTkLabel(
+        win,
+        text=f"Wygenerować tytuły AI (Gemini) dla {n_products} produktów?",
+        font=ctk.CTkFont(size=13, weight="bold"),
+        wraplength=500,
+    ).pack(pady=(20, 8))
+
+    force_var = ctk.BooleanVar(value=False)
+    ctk.CTkCheckBox(
+        win,
+        text="Wymuś regenerację (nadpisz cache)",
+        variable=force_var,
+        font=ctk.CTkFont(size=12),
+    ).pack(anchor="w", padx=32, pady=(0, 8))
+
+    ctk.CTkLabel(
+        win,
+        text="Dodatkowe instrukcje AI (opcjonalne):",
+        font=ctk.CTkFont(size=12, weight="bold"),
+    ).pack(anchor="w", padx=24, pady=(8, 2))
+
+    ctk.CTkLabel(
+        win,
+        text="Np. „Nie wpisuj wymiarów w tytułach — nie mają sensu dla drapaczek dla kotów"
+        "\"    lub    „Zawsze dodawaj słowo PREMIUM na końcu."
+        "\n\nPole jednorazowe — instrukcje NIE zapisują się do cache tytułów.",
+        text_color="#6B7280",
+        font=ctk.CTkFont(size=10),
+        wraplength=500,
+        justify="left",
+    ).pack(anchor="w", padx=24, pady=(0, 6))
+
+    text_frame = ctk.CTkFrame(win, fg_color="#F3F4F6", corner_radius=8)
+    text_frame.pack(fill="x", padx=24, pady=(0, 8))
+    text_box = ctk.CTkTextbox(
+        text_frame,
+        height=110,
+        font=ctk.CTkFont(size=12),
+        wrap="word",
+    )
+    text_box.pack(fill="x", padx=8, pady=8)
+    if last_custom:
+        text_box.insert("1.0", last_custom)
+
+    btn_f = ctk.CTkFrame(win, fg_color="transparent")
+    btn_f.pack(pady=(4, 16))
+
+    def _submit():
+        custom = text_box.get("1.0", "end").strip()
+        result[0] = {"force": force_var.get(), "custom_instruction": custom}
+        win.destroy()
+
+    def _clear_text():
+        text_box.delete("1.0", "end")
+
+    ctk.CTkButton(btn_f, text="Generuj", width=120,
+                  command=_submit).grid(row=0, column=0, padx=4)
+    ctk.CTkButton(btn_f, text="Wyczyść pole", width=120,
+                  fg_color="#9CA3AF", hover_color="#6B7280",
+                  command=_clear_text).grid(row=0, column=1, padx=4)
     ctk.CTkButton(btn_f, text="Anuluj", width=80,
                   fg_color="#374151", hover_color="#1f2937",
                   command=win.destroy).grid(row=0, column=2, padx=4)
@@ -366,17 +480,77 @@ class App(_BaseApp):
         self._selected_skus: set[str] = set()
         self._sel_label: ctk.CTkLabel | None = None
         self._sel_clear_btn: ctk.CTkButton | None = None
+        # Session-scoped custom instruction for AI titles (persist while app alive).
+        self._last_ai_custom_instruction: str = ""
+
+        # Session state persistence — save/restore filtry/selekcja per XML file
+        self._session_xml_hash: str | None = None
+        self._last_session_save_ts: float = 0.0
 
         self._build_layout()
         self._setup_drag_drop()
         self.after(50, lambda: (self.lift(), self.focus_force()))
         self.after(100, self._poll_queue)
+        # Zapisz sesję przed zamknięciem okna — filtry/selekcja przetrwają restart.
+        self.protocol("WM_DELETE_WINDOW", self._on_close)
 
     def _setup_drag_drop(self):
         if not _DND_AVAILABLE:
             return
         self.drop_target_register(DND_FILES)
         self.dnd_bind("<<Drop>>", self._on_drop)
+
+    # ── Session state persistence ─────────────────────────────────────────
+    def _capture_state(self) -> dict:
+        """Return current UI session state as dict for persistence."""
+        return {
+            "filter_brand": self._filter_brand,
+            "filter_ai": self._filter_ai,
+            "selected_skus": sorted(self._selected_skus),
+            "page": self._page,
+            "custom_instruction": self._last_ai_custom_instruction,
+        }
+
+    def _restore_state(self, state: dict) -> None:
+        """Restore UI session state from dict."""
+        self._filter_brand = state.get("filter_brand", "Wszystkie")
+        self._filter_ai = state.get("filter_ai", "Wszystkie")
+        self._selected_skus = set(state.get("selected_skus", []))
+        self._page = int(state.get("page", 0))
+        self._last_ai_custom_instruction = state.get("custom_instruction", "")
+        # Sync widgets, jeśli już istnieją.
+        try:
+            if hasattr(self, "_brand_menu"):
+                self._brand_menu.set(self._filter_brand)
+            if hasattr(self, "_ai_seg"):
+                self._ai_seg.set(self._filter_ai)
+        except Exception:
+            pass
+        self._update_sel_indicator()
+
+    def _maybe_save_session(self, force: bool = False) -> None:
+        """Throttled session save (max 1x/2s) unless force=True."""
+        if not self._session_xml_hash or not getattr(self, "_xml_path", None):
+            return
+        now = time.monotonic()
+        if not force and (now - self._last_session_save_ts) < 2.0:
+            return
+        self._last_session_save_ts = now
+        state = self._capture_state()
+        try:
+            from app.cache.sqlite_cache import save_session_state, open_cache
+            with open_cache() as conn:
+                save_session_state(conn, self._session_xml_hash, self._xml_path, state)
+        except Exception as e:
+            print(f"[SESSION SAVE] failed: {e}", flush=True)
+
+    def _on_close(self) -> None:
+        """Persist session before window destroys."""
+        try:
+            self._maybe_save_session(force=True)
+        except Exception:
+            pass
+        self.destroy()
 
     def _on_drop(self, event):
         """Handle a file dropped onto the window."""
@@ -520,12 +694,13 @@ class App(_BaseApp):
             fg_color="#1a6f3a", hover_color="#145c2f")
         _sb("  Zaktualizuj model w opisach", self._sync_model_in_descriptions,
             "Zastępuje starą nazwę modelu aktualną we wszystkich istniejących opisach.")
-        self.btn_ai_unattended = _sb("  ⏳ Generuj automatycznie", self._run_ai_unattended,
-            "Unattended mode: retry + cooldown — odejdź od komputera.",
-            fg_color="#0E7490", hover_color="#0C6177")
         self.btn_thumb = _sb("  Generuj miniatury", self._run_thumbnails,
             "Pobiera pierwsze zdjęcie produktu i zapisuje jako JPEG.",
             fg_color="#6D28D9", hover_color="#5B21B6")
+        self.btn_infographics = _sb("  Infografiki AI", self._run_infographics,
+            "Generuje infografiki parametrów (WYMIARY/WAGA/KOLOR/MATERIAŁ) — packshot + zielony pasek. "
+            "Bez marki (regulamin Allegro). Wchodzą jako image_extra_N w XML.",
+            fg_color="#4D7021", hover_color="#3A5518")
         self.btn_imgbb = _sb("  Upload ImgBB", self._run_imgbb,
             "Wysyła miniatury na ImgBB (CDN). Wymaga IMGBB_API_KEY.",
             fg_color="#9D174D", hover_color="#831843")
@@ -547,9 +722,10 @@ class App(_BaseApp):
         self.btn_export = _sb("  Eksport XML", self._export_xml,
             "Eksportuje XML do BaseLinker z kategorią Allegro i atrybutami.",
             fg_color="#1D4ED8", hover_color="#1E40AF")
-        self.btn_bl_sync = _sb("  Sync stocki klonów (BaseLinker)", self._run_bl_sync,
-            "Pobiera stock rodziców (SKU bez suffixu) z BaseLinker i kopiuje go do klonów\n"
-            "(SKU `-1`, `-2`, …) przez API. Wymaga BASELINKER_TOKEN + INVENTORY_ID w Ustawieniach.",
+        self.btn_bl_sync = _sb("  Sync stany magazynowe (BL)", self._run_bl_sync,
+            "Kopiuje stany z hurtowni (MultiStore, Kathay, ...) do katalogu Allegro Asortyment.\n"
+            "Dla klonów `SKU-N` bierze stan rodzica `SKU`. Wymaga w .env:\n"
+            "BASELINKER_SOURCE_INVENTORY_IDS + BASELINKER_TARGET_INVENTORY_ID.",
             fg_color="#0E7490", hover_color="#0C6177")
 
         # ── SYSTEM (bottom)
@@ -698,11 +874,13 @@ class App(_BaseApp):
         self._filter_brand = value
         self._page = 0
         self._render_table()
+        self._maybe_save_session()
 
     def _on_filter_ai(self, value: str) -> None:
         self._filter_ai = value
         self._page = 0
         self._render_table()
+        self._maybe_save_session()
 
     def _clear_filters(self) -> None:
         self._filter_brand = "Wszystkie"
@@ -724,11 +902,13 @@ class App(_BaseApp):
         else:
             self._selected_skus.discard(sku)
         self._update_sel_indicator()
+        self._maybe_save_session()
 
     def _clear_selection(self) -> None:
         self._selected_skus.clear()
         self._update_sel_indicator()
         self._render_table()
+        self._maybe_save_session()
 
     def _update_sel_indicator(self) -> None:
         if self._sel_label is None:
@@ -793,18 +973,30 @@ class App(_BaseApp):
             products = parse_xml(path)
             t_parse = time.time() - t0
 
+            # Compute XML hash dla session identification (tani, ~100KB read).
+            from app.cache.sqlite_cache import hash_xml_file
+            try:
+                xml_hash = hash_xml_file(path)
+            except Exception:
+                xml_hash = None
+
             t = time.time()
             self.q.put(("status", f"Parsuję XML: {len(products)} produktów ({t_parse:.1f}s). Ładuję cache EAN…"))
             self._hydrate_extra_eans(products)
             t_ean = time.time() - t
 
             t = time.time()
+            self.q.put(("status", f"Ładuję cache packshotów (ImgBB)…"))
+            n_thumbs = self._hydrate_thumbnail_urls(products)
+            t_thumb = time.time() - t
+
+            t = time.time()
             self.q.put(("status", f"Porównuję zmiany (diff)…"))
             diff = run_diff(products)
             t_diff = time.time() - t
 
-            self.q.put(("status", f"Wczytano {len(products)} produktów w {time.time()-t0:.1f}s (parse={t_parse:.1f}s, ean={t_ean:.1f}s, diff={t_diff:.1f}s)."))
-            self.q.put(("loaded", products, path, diff))
+            self.q.put(("status", f"Wczytano {len(products)} produktów w {time.time()-t0:.1f}s (parse={t_parse:.1f}s, ean={t_ean:.1f}s, thumbs={n_thumbs}, diff={t_diff:.1f}s)."))
+            self.q.put(("loaded", products, path, diff, xml_hash))
         except Exception as e:
             self.q.put(("error", f"Parser: {e}"))
 
@@ -815,6 +1007,25 @@ class App(_BaseApp):
         with open_cache() as conn:
             for p in products:
                 p.extra_eans = get_extra_eans(conn, p.sku)
+
+    @staticmethod
+    def _hydrate_thumbnail_urls(products: list[Product]) -> int:
+        """Populate Product.thumbnail_url from imgbb_uploads cache after parsing.
+
+        Bez tego user po zamknięciu apki traci przypisanie packshotu → eksport XML
+        wraca do oryginałów dostawcy zamiast używać wgranego packshotu (2026-07-12d).
+        Returns liczba produktów które dostały URL z cache.
+        """
+        from app.cache.sqlite_cache import open_cache
+        from app.images.imgbb_uploader import get_cached_url
+        n = 0
+        with open_cache() as conn:
+            for p in products:
+                url = get_cached_url(conn, p.sku)
+                if url:
+                    p.thumbnail_url = url
+                    n += 1
+        return n
 
     def _run_transforms(self):
         if not self.products:
@@ -849,9 +1060,14 @@ class App(_BaseApp):
             self.q.put(("status", f"Transformuję: 3/7 tytuły SEO…"))
             t = time.time()
             TitleTransformer().transform_all(products)
+            # Load AI titles v4 z cache — nadpisz deterministic gdy cache trafi.
+            # User request 2026-07-12e: cache = single source of truth, po restarcie
+            # widać AI wersję bez klikania "Tytuły AI".
+            from app.ai.title_generator import load_cached_ai_titles
+            n_ai_titles = load_cached_ai_titles(products)
             t_title = time.time() - t
 
-            self.q.put(("status", f"Transformuję: 4/7 walidacja EAN + cache opisów…"))
+            self.q.put(("status", f"Transformuję: 4/7 walidacja EAN + cache opisów… (AI titles: {n_ai_titles}/{n})"))
             t = time.time()
             for p in products:
                 p.ean_valid = validate_ean(p.ean)
@@ -892,19 +1108,11 @@ class App(_BaseApp):
             messagebox.showinfo(APP_NAME, "Najpierw wczytaj i przetransformuj XML (krok 3).")
             return
 
-        has_api_key = bool(
-            os.getenv("GEMINI_API_KEYS", "").strip()
-            or os.getenv("GEMINI_API_KEY_1", "").strip()
-            or os.getenv("GEMINI_API_KEY", "").strip()
-        )
-        if not has_api_key:
+        if not os.getenv("GEMINI_API_KEYS", "").strip():
             messagebox.showerror(
                 APP_NAME,
                 "❌ Brak klucza Gemini API\n\n"
-                "Co zrobić:\n"
-                "1. Sidebar → SYSTEM → Ustawienia\n"
-                "2. Sekcja 'Gemini API' → Dodaj klucz\n"
-                "3. Klucz dostaniesz za darmo na: aistudio.google.com → Get API Key",
+                "Ustaw GEMINI_API_KEYS w pliku .env (paid Google Cloud key).",
             )
             return
 
@@ -931,86 +1139,83 @@ class App(_BaseApp):
         ).start()
 
     def _ai_worker(self, products: list[Product]):
-        def log(msg: str):
+        # Heartbeat state — czytany przez _poll_queue na main thread (bez self.after z workera!).
+        # UWAGA: żadnych Tk ops (self.after / widget.configure) w tym threadzie — tylko self.q.put i primitive attrs.
+        self._ai_worker_alive = True
+        self._ai_worker_op = "Generuję opisy"
+        self._ai_worker_start = time.monotonic()
+        self._ai_worker_total = len(products)
+        self._ai_worker_done = 0
+
+        _prog_re = re.compile(r"\[(\d+)/(\d+)\]")
+
+        def log_and_count(msg: str):
+            m = _prog_re.search(msg)
+            if m:
+                self._ai_worker_done = int(m.group(1))
             self.q.put(("status", msg))
 
-        try:
-            submitted, cached, cost = generate_descriptions(
-                products, progress_callback=log,
-                cancel_check=lambda: self._cancel_event.is_set(),
-            )
+        # Watchdog: Python 3.14 + google-genai SDK czasem wisi w cleanup PO wszystkich
+        # SUCCESS (`[N/N]` osiągnięte, opisy zapisane w cache, ale `generate_descriptions`
+        # nie return'uje). Rozwiązanie: uruchom w wewnętrznym daemon threadzie i monitoruj
+        # postęp. Gdy done==total i minie 8s bez zmian, uznaj że opisy są gotowe (są w
+        # cache), emit "ai_done" i wraca — daemon thread umrze z procesem (2026-07-13).
+        result = [None]
+        exc = [None]
+        def _run():
+            try:
+                result[0] = generate_descriptions(
+                    products, progress_callback=log_and_count,
+                    cancel_check=lambda: self._cancel_event.is_set(),
+                )
+            except Exception as e:
+                exc[0] = e
+
+        inner = threading.Thread(target=_run, daemon=True)
+        inner.start()
+
+        last_done = -1
+        last_change_ts = time.monotonic()
+        while inner.is_alive():
+            inner.join(timeout=1.0)
+            if not inner.is_alive():
+                break
             if self._cancel_event.is_set():
-                self.q.put(("cancelled", f"Zatrzymano. Zapisano: {submitted} opisów."))
-            else:
-                self.q.put(("ai_done", submitted, cached, cost))
-        except Exception as e:
-            self.q.put(("error", f"AI: {e}"))
+                break
+            # Watchdog: batch reported wszystkie N/N i od 8s bez updateów → assume done
+            if self._ai_worker_done >= self._ai_worker_total > 0:
+                if self._ai_worker_done != last_done:
+                    last_done = self._ai_worker_done
+                    last_change_ts = time.monotonic()
+                elif time.monotonic() - last_change_ts > 8.0:
+                    # Assume finished — opisy są w cache; policz z cache
+                    print(f"[AI_WORKER WATCHDOG] {self._ai_worker_done}/{self._ai_worker_total} zaraportowane, brak zmian 8s — kończę (opisy w cache)", flush=True)
+                    break
 
-    def _run_ai_unattended(self):
-        if not self.products:
-            messagebox.showinfo(APP_NAME, "Najpierw wczytaj i przetransformuj XML (krok 3).")
-            return
+        if exc[0]:
+            tb = "".join(traceback.format_exception(type(exc[0]), exc[0], exc[0].__traceback__))
+            print(f"[AI_WORKER] EXCEPTION:\n{tb}", flush=True)
+            self.q.put(("error", f"AI: {exc[0]}"))
+        elif self._cancel_event.is_set():
+            # Count what's actually in cache
+            from app.cache.sqlite_cache import get_cached_description
+            with open_cache() as conn:
+                saved = sum(1 for p in products if get_cached_description(conn, p.sku))
+            self.q.put(("cancelled", f"Zatrzymano. Zapisano: {saved} opisów."))
+        elif result[0] is not None:
+            # Normal return (unlikely bo SDK wisi)
+            submitted, cached, cost = result[0]
+            self.q.put(("ai_done", submitted, cached, cost))
+        else:
+            # Watchdog fired: count from cache
+            from app.cache.sqlite_cache import get_cached_description
+            with open_cache() as conn:
+                saved = sum(1 for p in products if get_cached_description(conn, p.sku))
+            self.q.put(("ai_done", saved, 0, 0.0))
+        self._ai_worker_alive = False
 
-        has_api_key = bool(
-            os.getenv("GEMINI_API_KEYS", "").strip()
-            or os.getenv("GEMINI_API_KEY_1", "").strip()
-            or os.getenv("GEMINI_API_KEY", "").strip()
-        )
-        if not has_api_key:
-            messagebox.showerror(
-                APP_NAME,
-                "❌ Brak klucza Gemini API\n\n"
-                "Co zrobić:\n"
-                "1. Sidebar → SYSTEM → Ustawienia\n"
-                "2. Sekcja 'Gemini API' → Dodaj klucz\n"
-                "3. Klucz dostaniesz za darmo na: aistudio.google.com → Get API Key",
-            )
-            return
-
-        base = self._effective_products(self.products)
-        pending = [p for p in base if not getattr(p, "ai_done", False)]
-        if not pending:
-            messagebox.showinfo(APP_NAME, "Wszystkie opisy już wygenerowane (z cache).")
-            return
-
-        if not messagebox.askyesno(
-            APP_NAME,
-            f"Uruchomić unattended generation dla {len(pending)} produktów?\n\n"
-            "Program będzie czekał na cooldown kluczy API.\n"
-            "Możesz odejść od komputera — SQLite cache zapisuje postęp na bieżąco.\n"
-            "Stop zatrzymuje po ukończeniu bieżącej paczki.",
-        ):
-            return
-
-        self.btn_ai_unattended.configure(state="disabled")
-        self.btn_ai.configure(state="disabled")
-        self.status_var.set(f"⏳ Unattended: generuję {len(pending)} opisów…")
-        self.progress.configure(mode="indeterminate")
-        self.progress.start()
-        self._op_start()
-        threading.Thread(
-            target=self._ai_unattended_worker, args=(base,), daemon=True
-        ).start()
-
-    def _ai_unattended_worker(self, products: list[Product]):
-        def log(msg: str):
-            self.q.put(("status", f"⏳ {msg}"))
-
-        try:
-            submitted, cached, cost = generate_descriptions(
-                products,
-                progress_callback=log,
-                cancel_check=lambda: self._cancel_event.is_set(),
-                wait_on_cooldown=True,
-            )
-            if self._cancel_event.is_set():
-                self.q.put(("cancelled", f"Zatrzymano. Zapisano: {submitted} opisów."))
-            else:
-                self.q.put(("ai_done", submitted, cached, cost))
-        except Exception as e:
-            self.q.put(("error", f"Unattended generation: {e}"))
-        finally:
-            self._op_end()
+    # Unattended mode usunięty 2026-07-04 — paid Gemini key nie ma cooldown,
+    # więc regular `_run_ai` wystarcza. Był potrzebny tylko dla free tier daily quota.
 
     def _export_xml(self):
         if not self.products:
@@ -1113,6 +1318,11 @@ class App(_BaseApp):
                 self.q.put(("status", msg))
             try:
                 uploaded = upload_thumbnails(products_to_upload, THUMB_DIR, progress_callback=log)
+                # Also upload infographics for the same target — bez URL nie pójdą jako image_extra_N.
+                infographics_dir = OUTPUT_DIR / "infographics"
+                if infographics_dir.exists():
+                    target = getattr(self, "_pending_export_target", None) or self.products
+                    upload_infographics(target, infographics_dir, progress_callback=log)
                 self.q.put(("imgbb_then_export", uploaded))
             except Exception as e:
                 self.q.put(("error", f"ImgBB: {e}"))
@@ -1347,51 +1557,61 @@ class App(_BaseApp):
         SettingsWindow(self)
 
     def _run_bl_sync(self) -> None:
-        """Trigger BaseLinker stock sync for multi-EAN clones (async, multi-catalog)."""
+        """Sync stany hurtowni → target katalog (Allegro Asortyment, rodzice + klony)."""
         token = os.getenv("BASELINKER_TOKEN", "").strip()
-        if not token:
+        src_raw = os.getenv("BASELINKER_SOURCE_INVENTORY_IDS", "").strip()
+        tgt_raw = os.getenv("BASELINKER_TARGET_INVENTORY_ID", "").strip()
+
+        if not token or not src_raw or not tgt_raw:
             messagebox.showwarning(
                 APP_NAME,
                 "Brak konfiguracji BaseLinker.\n\n"
-                "Otwórz Ustawienia → BaseLinker API i wpisz token.\n"
-                "Token znajdziesz w BL → Moje konto → API.",
+                "Uzupełnij w .env:\n"
+                "  BASELINKER_TOKEN=<twój token>\n"
+                "  BASELINKER_SOURCE_INVENTORY_IDS=52173,45513  (hurtownie)\n"
+                "  BASELINKER_TARGET_INVENTORY_ID=36713          (Allegro Asortyment)",
             )
             return
 
-        inv_raw = os.getenv("BASELINKER_INVENTORY_ID", "").strip()
-        inventory_ids: list[int] | None = None
-        if inv_raw:
-            try:
-                inventory_ids = [int(x.strip()) for x in inv_raw.split(",") if x.strip()]
-            except ValueError:
-                messagebox.showerror(
-                    APP_NAME,
-                    "BASELINKER_INVENTORY_ID zawiera niepoprawną wartość.\n"
-                    "Dozwolone: puste = wszystkie katalogi, lub liczby po przecinku (np. 34107, 34108).",
-                )
-                return
+        try:
+            source_ids = [int(x.strip()) for x in src_raw.split(",") if x.strip()]
+        except ValueError:
+            messagebox.showerror(
+                APP_NAME,
+                "BASELINKER_SOURCE_INVENTORY_IDS musi być comma-sep int-y (np. 52173,45513).",
+            )
+            return
+        try:
+            target_id = int(tgt_raw)
+        except ValueError:
+            messagebox.showerror(
+                APP_NAME,
+                "BASELINKER_TARGET_INVENTORY_ID musi być liczbą (np. 36713).",
+            )
+            return
 
         self.btn_bl_sync.configure(state="disabled")
-        self.status_var.set("BaseLinker: sync stocków klonów…")
+        self.status_var.set("BaseLinker: sync stanów magazynowych…")
         self._op_start()
         self.progress.configure(mode="indeterminate")
         self.progress.start()
 
         def _worker():
             try:
-                from app.sync import BaseLinkerError, sync_all_clones
-                results = sync_all_clones(
-                    token, inventory_ids=inventory_ids,
+                from app.sync import BaseLinkerError, sync_from_wholesale_to_target
+                result = sync_from_wholesale_to_target(
+                    token=token,
+                    source_inventory_ids=source_ids,
+                    target_inventory_id=target_id,
                     log=lambda m: self.q.put(("status", f"BL: {m}")),
                 )
-                self.q.put(("bl_sync_done", results))
+                self.q.put(("bl_sync_done", result))
             except BaseLinkerError as e:
                 self.q.put(("bl_sync_error", str(e)))
             except Exception as e:
-                # Friendly mapping dla najczęstszych błędów sieci/SSL
                 from urllib.error import URLError
                 import socket
-                if isinstance(e, URLError) or isinstance(e, socket.gaierror) or isinstance(e, socket.timeout):
+                if isinstance(e, (URLError, socket.gaierror, socket.timeout)):
                     msg = (
                         "Brak połączenia z BaseLinker.\n\n"
                         "Sprawdź:\n"
@@ -1660,34 +1880,52 @@ class App(_BaseApp):
         target = self._effective_products(self.products)
         if not target:
             return
-        force = messagebox.askyesno(
-            APP_NAME,
-            f"Wygenerować tytuły AI (Gemini) dla {len(target)} produktów?\n\n"
-            "TAK = wymuś regenerację (nadpisuje cache).\n"
-            "NIE = użyj cache gdy dostępny."
-        )
-        self.status_var.set("Generuję tytuły AI…")
+        opts = _ai_titles_dialog(self, len(target), self._last_ai_custom_instruction)
+        if opts is None:
+            return
+        self._last_ai_custom_instruction = opts["custom_instruction"]
+        self._maybe_save_session()
+        self.btn_ai_titles.configure(state="disabled")
+        status = "Generuję tytuły AI"
+        if opts["custom_instruction"].strip():
+            status += " z instrukcjami użytkownika"
+        self.status_var.set(status + "…")
         self.progress.configure(mode="determinate")
-        self.progress["value"] = 0
-        self.progress["maximum"] = len(target)
+        self.progress.set(0)
+        self._op_start()
         threading.Thread(
-            target=self._ai_titles_worker, args=(target, force), daemon=True
+            target=self._ai_titles_worker,
+            args=(target, opts["force"], opts["custom_instruction"]),
+            daemon=True,
         ).start()
 
-    def _ai_titles_worker(self, products: list[Product], force: bool) -> None:
+    def _ai_titles_worker(self, products: list[Product], force: bool, custom_instruction: str = "") -> None:
+        # Heartbeat state — reused by _tick_ai_heartbeat na main thread.
+        self._ai_worker_alive = True
+        self._ai_worker_op = "Generuję tytuły AI"
+        self._ai_worker_start = time.monotonic()
+        self._ai_worker_total = len(products)
+        self._ai_worker_done = 0
         try:
             from app.ai.title_generator import AITitleGenerator
             from app.cache.sqlite_cache import open_cache
             with open_cache() as conn:
                 gen = AITitleGenerator(conn)
                 def _progress(done, total, custom_id, error=None):
+                    self._ai_worker_done = done
                     self.q.put(("ai_titles_progress", done, total, error))
                 updated = gen.apply_to_products(
-                    products, force=force, progress_cb=_progress
+                    products, force=force, progress_cb=_progress,
+                    cancel_check=lambda: self._cancel_event.is_set(),
+                    custom_instruction=custom_instruction,
                 )
             self.q.put(("ai_titles_done", updated, len(products)))
         except Exception as e:
+            tb = traceback.format_exc()
+            print(f"[AI_TITLES] EXCEPTION:\n{tb}", flush=True)
             self.q.put(("error", f"Tytuły AI: {e}"))
+        finally:
+            self._ai_worker_alive = False
 
     def _open_title_edit(self, product: Product) -> None:
         TitleEditDialog(self, product, on_done=self._render_table)
@@ -1765,10 +2003,17 @@ class App(_BaseApp):
                 products, THUMB_DIR, progress_callback=log,
                 cancel_check=lambda: self._cancel_event.is_set(),
             )
+            # Also upload infographics — bez URL nie pojawią się jako image_extra_N w XML.
+            infographics_dir = OUTPUT_DIR / "infographics"
+            info_uploaded = 0
+            if not self._cancel_event.is_set() and infographics_dir.exists():
+                info_uploaded = upload_infographics(
+                    products, infographics_dir, progress_callback=log,
+                )
             if self._cancel_event.is_set():
-                self.q.put(("cancelled", f"Zatrzymano. Przesłano: {uploaded} miniaturek."))
+                self.q.put(("cancelled", f"Zatrzymano. Przesłano: {uploaded} miniaturek + {info_uploaded} infografik."))
             else:
-                self.q.put(("imgbb_done", uploaded))
+                self.q.put(("imgbb_done", uploaded + info_uploaded))
         except Exception as e:
             self.q.put(("error", f"ImgBB: {e}"))
 
@@ -1823,6 +2068,63 @@ class App(_BaseApp):
         except Exception as e:
             self.q.put(("error", f"Miniatury: {e}"))
 
+    # ── Infografiki AI ────────────────────────────────────────────────────
+
+    def _run_infographics(self):
+        """Generate parameter infographics for all products with a thumbnail."""
+        if not self.products:
+            messagebox.showinfo(APP_NAME, "Najpierw wczytaj i przetransformuj XML.")
+            return
+
+        target = self._effective_products(self.products)
+        if not target:
+            messagebox.showinfo(APP_NAME, "Brak produktów do przetworzenia.")
+            return
+
+        est_seconds = len(target) * 15
+        mins = max(1, est_seconds // 60)
+        if not messagebox.askyesno(
+            APP_NAME,
+            f"Wygenerować infografiki dla {len(target)} produktów?\n"
+            f"(~15 s / prod. → ok. {mins} min)\n\n"
+            f"Wymagane: uprzednio wygenerowane miniatury (packshoty) w output/thumbnails/."
+        ):
+            return
+
+        self.btn_infographics.configure(state="disabled")
+        self.status_var.set(f"Generuję infografiki dla {len(target)} prod…")
+        self.progress.configure(mode="determinate")
+        self.progress.set(0)
+        self._op_start()
+        threading.Thread(
+            target=self._infographics_worker, args=(target,), daemon=True
+        ).start()
+
+    def _infographics_worker(self, products: list) -> None:
+        """Background worker: batch-generate infographics via generate_all_infographics."""
+        total = len(products)
+        infographics_dir = OUTPUT_DIR / "infographics"
+
+        def cb(done: int, _total: int, sku: str) -> None:
+            self.q.put(("status", f"Infografiki: {done}/{total} — {sku}"))
+            if total:
+                self.q.put(("progress", done / total))
+
+        try:
+            generated, skipped = generate_all_infographics(
+                products,
+                thumb_dir=THUMB_DIR,
+                output_dir=infographics_dir,
+                progress_cb=cb,
+                cancel_check=lambda: self._cancel_event.is_set(),
+            )
+            if self._cancel_event.is_set():
+                self.q.put(("cancelled", f"Zatrzymano. Wygenerowano: {generated} infografik."))
+            else:
+                self.q.put(("infographics_done", generated, skipped))
+        except Exception as e:
+            self.q.put(("error", f"Infografiki: {e}"))
+
     def _on_row_click(self, product: Product) -> None:
         brands = _all_known_brands()
         if self._detail_win is not None:
@@ -1846,8 +2148,20 @@ class App(_BaseApp):
     def _on_brand_change(self, product: Product, new_brand: str) -> None:
         product.brand = new_brand
         tt = TitleTransformer()
-        product.manufacturer_name = (tt.brand_data.get(new_brand) or {}).get("name", new_brand.upper())
+        # Fix 2026-07-01: TitleTransformer ma atrybut `brand_display` (dict str→str), nie `brand_data`.
+        # Poprzedni kod `tt.brand_data.get(...).get("name")` rzucał AttributeError → crash.
+        product.manufacturer_name = tt.brand_display.get(new_brand) or new_brand.upper()
         tt.transform(product)
+        # Fix 2026-07-03: jeśli aktywny filtr marki nie pasuje do nowej marki,
+        # produkt zniknie z listy — user myśli że "nic się nie zmieniło".
+        # Reset filter do "Wszystkie" żeby zmiana była widoczna.
+        if self._filter_brand not in ("Wszystkie", new_brand):
+            self._filter_brand = "Wszystkie"
+            try:
+                self._brand_menu.set("Wszystkie")
+            except Exception:
+                pass
+            self._page = 0
         self._render_table()
         if self._detail_win is not None:
             try:
@@ -1945,7 +2259,11 @@ class App(_BaseApp):
             win.destroy()
 
             tt = TitleTransformer()
-            new_disp = (tt.brand_data.get(new_brand) or {}).get("name", new_brand)
+            # Fix 2026-07-03: TitleTransformer trzyma dict{str→str} w `brand_display`,
+            # NIE `brand_data` (`brand_data` to raw JSON tylko w __init__, nie zapisany na self).
+            # Poprzedni kod `tt.brand_data.get(...)` rzucał AttributeError i cały _apply crashował
+            # bez widocznego błędu (Tk połyka wyjątki z button command do stderr).
+            new_disp = tt.brand_display.get(new_brand, new_brand)
 
             # Collect per-product old state BEFORE any mutations
             old_states: list[tuple] = []
@@ -1954,13 +2272,13 @@ class App(_BaseApp):
                     p,
                     p.brand or "",
                     p.model_name or "",
-                    (tt.brand_data.get(p.brand) or {}).get("name", (p.brand or "").upper()),
+                    tt.brand_display.get(p.brand or "", (p.brand or "").upper()),
                 ))
 
             # Pass 1: update brand/manufacturer only — title comes AFTER model reassignment
             for p, _, _, _ in old_states:
                 p.brand = new_brand
-                p.manufacturer_name = (tt.brand_data.get(new_brand) or {}).get("name", new_brand.upper())
+                p.manufacturer_name = tt.brand_display.get(new_brand, new_brand.upper())
 
             # Pass 2: batch model reassignment (modifies product.name with new series word)
             with open_cache() as conn:
@@ -2010,6 +2328,17 @@ class App(_BaseApp):
                             val = pat.sub(rep, val)
                         setattr(p, field, val)
 
+            # Fix 2026-07-03: reset filter state — inaczej jeśli user miał aktywny
+                # filtr marki (np. "villago"), po zmianie na "hopla_toys" filter zwraca 0 produktów
+                # i user widzi pustą listę (myśli że nic się nie stało).
+            self._filter_brand = "Wszystkie"
+            self._filter_ai = "Wszystkie"
+            self._page = 0
+            try:
+                self._brand_menu.set("Wszystkie")
+                self._ai_seg.set("Wszystkie")
+            except Exception:
+                pass
             self._update_stats()
             self._update_brand_filter_options()
             self._render_table()
@@ -2051,256 +2380,373 @@ class App(_BaseApp):
     # ── queue / UI updates ────────────────────────────────────────────────
 
     def _poll_queue(self):
+        # BULLETPROOF: każdy exception w handlerze MUSI być złapany żeby self.after(100, ...) na końcu
+        # zawsze się wykonał. Bez tego jedna cicha AttributeError zabija cały polling → statusy zamarzają,
+        # user musi klikać żeby cokolwiek się odświeżyło. Nie polegamy na "queue.Empty catches all".
+        try:
+            self._drain_queue()
+            self._tick_ai_heartbeat()
+        except Exception as e:
+            tb = traceback.format_exc()
+            print(f"[POLL_QUEUE] EXCEPTION swallowed:\n{tb}", flush=True)
+        self.after(100, self._poll_queue)
+
+    def _tick_ai_heartbeat(self) -> None:
+        """Heartbeat statusu podczas generowania AI. Wywoływany co 100ms w _poll_queue.
+        Emit co 2s żeby user widział że coś się dzieje nawet podczas długich cooldownów.
+        """
+        if not getattr(self, "_ai_worker_alive", False):
+            return
+        now = time.monotonic()
+        last = getattr(self, "_ai_hb_last", 0.0)
+        if now - last < 2.0:
+            return
+        self._ai_hb_last = now
+        elapsed = int(now - self._ai_worker_start)
+        done = getattr(self, "_ai_worker_done", 0)
+        total = getattr(self, "_ai_worker_total", 0)
+        op = getattr(self, "_ai_worker_op", "AI")
+        self.status_var.set(
+            f"⏳ {op}… {elapsed}s (postęp: {done}/{total})"
+        )
+
+    def _drain_queue(self):
         try:
             while True:
                 msg = self.q.get_nowait()
-                tag = msg[0]
-
-                if tag == "loaded":
-                    _, products, path, diff = msg
-                    self.products = products
-                    self._selected_skus.clear()
-                    self._update_sel_indicator()
-                    self.progress.stop()
-                    self.progress.configure(mode="determinate")
-                    self.progress.set(1.0)
-                    diff_str = f"  •  Nowe: {diff.new} / Zmienione: {diff.changed} / Bez zmian: {diff.unchanged}"
-                    self.summary_var.set(
-                        f"📂 {Path(path).name}  •  produktów: {len(products)}{diff_str}"
-                    )
-                    self.status_var.set("Wczytano. Kliknij krok 3 — Uruchom transformy.")
-                    self._render_table()
-                    self._update_brand_filter_options()
-                    self._update_stats()
-                    self._thumb_tab_refresh()
-
-                elif tag == "transformed":
-                    ai_done = sum(1 for p in self.products if getattr(p, "ai_done", False))
-                    self.summary_var.set(
-                        f"{self.summary_var.get()}  •  transformy OK  •  opisy cache: {ai_done}"
-                    )
-                    self.progress.stop()
-                    self.progress.configure(mode="determinate")
-                    self.progress.set(1.0)
-                    self.status_var.set("Transformy OK. Krok 4 — Generuj opisy.")
-                    self._op_end()  # ← fix: bez tego stop button widoczny + status "Transformuję…" wisiał
-                    self._render_table()
-                    self._update_brand_filter_options()  # ← fix: refresh listy marek żeby nie wisiała stara
-                    self._update_stats()
-
-                elif tag == "status":
-                    self.status_var.set(msg[1])
-
-                elif tag == "progress":
-                    self.progress.set(msg[1])
-
-                elif tag == "ai_done":
-                    _, submitted, cached, cost = msg
-                    self.progress.stop()
-                    self.progress.configure(mode="determinate")
-                    self.progress.set(1.0)
-                    ai_done = sum(1 for p in self.products if getattr(p, "ai_done", False))
-                    self.summary_var.set(
-                        f"{self.summary_var.get().split('•')[0]}• opisy AI: {ai_done}"
-                    )
-                    cost_str = f" | Koszt sesji: ${cost:.4f}" if cost > 0 else ""
-                    self.status_var.set(
-                        f"Opisy gotowe. Wygenerowano: {submitted} | Cache: {cached}{cost_str}"
-                    )
-                    self.btn_ai.configure(state="normal")
-                    self.btn_ai_unattended.configure(state="normal")
-                    self._op_end()
-                    self._render_table()
-                    self._session_generated += submitted
-                    self._session_cached += cached
-                    self._session_cost_usd += cost
-                    self._update_stats()
-
-                elif tag == "ai_titles_progress":
-                    _, done, total, error = msg
-                    self.progress["maximum"] = total
-                    self.progress["value"] = done
-                    suffix = f" (err: {error})" if error else ""
-                    self.status_var.set(f"Tytuły AI: {done}/{total}{suffix}")
-
-                elif tag == "ai_titles_done":
-                    _, updated, total = msg
-                    self.progress["value"] = self.progress["maximum"]
-                    self.btn_ai_titles.configure(state="normal")
-                    self._op_end()
-                    self.status_var.set(
-                        f"Tytuły AI gotowe. Zaktualizowano: {updated}/{total}."
-                    )
-                    self._render_table()
-
-                elif tag == "imgbb_done":
-                    _, uploaded = msg
-                    self.progress.stop()
-                    self.progress.configure(mode="determinate")
-                    self.progress.set(1.0)
-                    self.btn_imgbb.configure(state="normal")
-                    self._op_end()
-                    self.status_var.set(f"ImgBB: {uploaded} miniaturek uploadowanych.")
-                    messagebox.showinfo(APP_NAME, f"Upload zakończony!\n{uploaded} miniaturek na ImgBB.\nURL-e zostaną użyte w eksporcie XML.")
-
-                elif tag == "imgbb_then_export":
-                    _, uploaded = msg
-                    self.progress.stop()
-                    self.progress.configure(mode="determinate")
-                    self.progress.set(1.0)
-                    self.btn_imgbb.configure(state="normal")
-                    self.btn_export.configure(state="normal")
-                    self.status_var.set(f"ImgBB: {uploaded} miniaturek wgranych — teraz zapisz XML.")
-                    # Now open the save dialog and export
-                    OUTPUT_DIR.mkdir(exist_ok=True)
-                    output_path = filedialog.asksaveasfilename(
-                        title="Zapisz XML",
-                        initialdir=str(OUTPUT_DIR),
-                        defaultextension=".xml",
-                        filetypes=[("XML", "*.xml")],
-                        initialfile="marketia_transformed.xml",
-                    )
-                    if output_path:
-                        target = getattr(self, "_pending_export_target", None) or self.products
-                        _n = len(target)
-                        _clones = sum(len(getattr(p, "extra_eans", []) or []) for p in target)
-                        _msg = (
-                            f"Eksportuję XML ({_n} prod. + {_clones} klonów = {_n + _clones} wpisów)…"
-                            if _clones else f"Eksportuję XML ({_n} prod.)…"
-                        )
-                        self.status_var.set(_msg)
-                        threading.Thread(
-                            target=self._export_worker, args=(target, output_path), daemon=True
-                        ).start()
-                        self._pending_export_target = None
-
-                elif tag == "thumb_done":
-                    _, done, skipped = msg
-                    self.progress.stop()
-                    self.progress.configure(mode="determinate")
-                    self.progress.set(1.0)
-                    self.status_var.set(f"Miniatury: {done} wygenerowanych, {skipped} z cache.")
-                    self.btn_thumb.configure(state="normal")
-                    self._op_end()
-                    messagebox.showinfo(
-                        APP_NAME,
-                        f"Miniatury gotowe!\n"
-                        f"Wygenerowane: {done}\n"
-                        f"Pominięte (cache): {skipped}\n"
-                        f"Folder: output/thumbnails/",
-                    )
-
-                elif tag == "exported":
-                    _, count, path = msg
-                    self.status_var.set(f"Wyeksportowano {count} wpisów <product> → {path}")
-                    messagebox.showinfo(
-                        APP_NAME,
-                        f"Eksport zakończony!\n{count} wpisów <product> w XML\n"
-                        f"(produkty bazowe + klony multi-EAN)\n{path}",
-                    )
-
-                elif tag == "bl_sync_done":
-                    _, results = msg
-                    self.progress.stop()
-                    self.progress.configure(mode="determinate")
-                    self.progress.set(1.0)
-                    self.btn_bl_sync.configure(state="normal")
-                    self._op_end()
-                    total_synced = sum(r.clones_synced for _, _, r in results)
-                    short = f"Sync zakończony: {total_synced} klonów w {len(results)} katalog(ach)."
-                    detail_text = "\n".join(
-                        f"• {name} (ID {inv_id}): {r.summary()}"
-                        for inv_id, name, r in results
-                    )
-                    self.status_var.set(f"BaseLinker: {short}")
-
-                    # Zapisz pełny raport diagnostyczny do pliku
-                    from pathlib import Path
-                    report_path = Path.home() / "Documents" / "marketia-sync-debug.txt"
-                    try:
-                        report_path.write_text(
-                            "=" * 70 + "\n"
-                            + "MARKETIA SYNC — RAPORT DIAGNOSTYCZNY\n"
-                            + "=" * 70 + "\n\n"
-                            + short + "\n\n"
-                            + ("\n" + "=" * 70 + "\n").join(
-                                f"\n>>> Katalog '{name}' (ID {inv_id}) <<<\n\n" + r.diagnostic_report()
-                                for inv_id, name, r in results
-                            ),
-                            encoding="utf-8",
-                        )
-                        saved_path = report_path
-                    except Exception:
-                        saved_path = None
-
-                    warning_lines = []
-                    for _, name, r in results:
-                        for w in r.warnings:
-                            warning_lines.append(f"• [{name}] {w}")
-                    warnings_text = "\n".join(warning_lines)
-                    has_warnings = bool(warning_lines)
-                    icon = "⚠️" if (has_warnings or total_synced == 0) else "✅"
-
-                    SyncReportDialog(
-                        self,
-                        title=APP_NAME,
-                        short_summary=short,
-                        detail_text=detail_text,
-                        warnings_text=warnings_text,
-                        report_path=saved_path,
-                        icon=icon,
-                    )
-
-                elif tag == "bl_sync_error":
-                    _, err = msg
-                    self.progress.stop()
-                    self.progress.configure(mode="determinate")
-                    self.progress.set(0)
-                    self.btn_bl_sync.configure(state="normal")
-                    self._op_end()
-                    self.status_var.set(f"BaseLinker sync: błąd — {err}")
-                    messagebox.showerror(APP_NAME, f"Sync nie powiódł się:\n\n{err}")
-
-                elif tag == "cancelled":
-                    _, msg_text = msg
-                    self.progress.stop()
-                    self.progress.configure(mode="determinate")
-                    self.progress.set(0)
-                    self.status_var.set(msg_text)
-                    self.btn_ai.configure(state="normal")
-                    self.btn_thumb.configure(state="normal")
-                    self.btn_imgbb.configure(state="normal")
-                    self.btn_lifestyle.configure(state="normal")
-                    self._op_end()
-                    self._render_table()
-                    self._update_stats()
-
-                elif tag == "error":
-                    _, err = msg
-                    self.progress.stop()
-                    self.progress.set(0)
-                    self.status_var.set("Błąd.")
-                    self.btn_ai.configure(state="normal")
-                    self.btn_thumb.configure(state="normal")
-                    self.btn_imgbb.configure(state="normal")
-                    self.btn_lifestyle.configure(state="normal")
-                    self._op_end()
-                    messagebox.showerror(APP_NAME, err)
-
-                elif tag == "single_regen_done":
-                    _, product = msg
-                    self._render_table()
-                    self._update_stats()
-                    if self._detail_win:
-                        try:
-                            self._detail_win.refresh()
-                            self._detail_win.enable_regen_btn()
-                        except Exception:
-                            pass
-
+                try:
+                    self._handle_msg(msg)
+                except Exception as e:
+                    tb = traceback.format_exc()
+                    print(f"[HANDLE_MSG] EXCEPTION on tag {msg[0]!r}:\n{tb}", flush=True)
         except queue.Empty:
             pass
-        self.after(100, self._poll_queue)
+
+    def _handle_msg(self, msg):
+        tag = msg[0]
+        if tag == "loaded":
+            # Backward compat: obsłuż stary 4-tuple i nowy 5-tuple (z xml_hash).
+            if len(msg) == 5:
+                _, products, path, diff, xml_hash = msg
+            else:
+                _, products, path, diff = msg
+                xml_hash = None
+            self.products = products
+            self._session_xml_hash = xml_hash
+            self._selected_skus.clear()
+            self._update_sel_indicator()
+            self.progress.stop()
+            self.progress.configure(mode="determinate")
+            self.progress.set(1.0)
+            diff_str = f"  •  Nowe: {diff.new} / Zmienione: {diff.changed} / Bez zmian: {diff.unchanged}"
+            self.summary_var.set(
+                f"📂 {Path(path).name}  •  produktów: {len(products)}{diff_str}"
+            )
+            self._render_table()
+            self._update_brand_filter_options()
+            self._update_stats()
+            self._thumb_tab_refresh()
+            # Auto-Transformy po Wczytaj XML — user request 2026-07-12d: "nie trzeba było
+            # transformów znowu klikać". Deterministyczne (brand/category/title/desc-strip)
+            # + load AI cache (descriptions, titles v4). Bezpieczne, idempotent.
+            self.status_var.set("Wczytano. Uruchamiam automatycznie Transformy…")
+            self._run_transforms()
+            # Session state restore — rozpoznaj plik po hash i przywróć filtry/selekcję.
+            if xml_hash:
+                from app.cache.sqlite_cache import load_session_state, open_cache
+                try:
+                    with open_cache() as conn:
+                        saved = load_session_state(conn, xml_hash)
+                    if saved:
+                        self._restore_state(saved)
+                        self._render_table()
+                        self.status_var.set(
+                            "Wczytano + wykryto poprzednią sesję dla tego pliku — "
+                            "przywrócono filtry, selekcję, custom instruction."
+                        )
+                except Exception as e:
+                    print(f"[SESSION RESTORE] failed: {e}", flush=True)
+
+        elif tag == "transformed":
+            ai_done = sum(1 for p in self.products if getattr(p, "ai_done", False))
+            self.summary_var.set(
+                f"{self.summary_var.get()}  •  transformy OK  •  opisy cache: {ai_done}"
+            )
+            self.progress.stop()
+            self.progress.configure(mode="determinate")
+            self.progress.set(1.0)
+            self.status_var.set("Transformy OK. Krok 4 — Generuj opisy.")
+            self._op_end()  # ← fix: bez tego stop button widoczny + status "Transformuję…" wisiał
+            self._render_table()
+            self._update_brand_filter_options()  # ← fix: refresh listy marek żeby nie wisiała stara
+            self._update_stats()
+
+        elif tag == "status":
+            self.status_var.set(msg[1])
+
+        elif tag == "progress":
+            self.progress.set(msg[1])
+
+        elif tag == "ai_done":
+            _, submitted, cached, cost = msg
+            self.progress.stop()
+            self.progress.configure(mode="determinate")
+            self.progress.set(1.0)
+            ai_done = sum(1 for p in self.products if getattr(p, "ai_done", False))
+            # Ile było w tej sesji do generacji (pending przed run)
+            requested = getattr(self, "_ai_worker_total", 0)
+            failed = max(0, requested - submitted)
+            self.summary_var.set(
+                f"{self.summary_var.get().split('•')[0]}• opisy AI: {ai_done}"
+            )
+            cost_str = f" | Koszt sesji: ${cost:.4f}" if cost > 0 else ""
+            if failed > 0 and submitted == 0:
+                self.status_var.set(
+                    f"❌ 0/{requested} wygenerowanych. Wszystkie requesty do Gemini nieudane."
+                )
+                messagebox.showwarning(
+                    APP_NAME,
+                    f"Wygenerowano 0 z {requested} opisów.\n\n"
+                    f"Możliwe przyczyny:\n"
+                    f"• Klucz Gemini API nieprawidłowy lub wygasł\n"
+                    f"• Chwilowy problem z Google Cloud API\n"
+                    f"• Brak internetu / błąd sieci\n\n"
+                    f"Sprawdź terminal / stderr — tam będzie stack trace z konkretnym błędem."
+                )
+            elif failed > 0:
+                self.status_var.set(
+                    f"⚠️ {submitted}/{requested} wygenerowanych, {failed} fail (quota/error){cost_str}"
+                )
+            else:
+                self.status_var.set(
+                    f"✅ Opisy gotowe. Wygenerowano: {submitted} | Cache: {cached}{cost_str}"
+                )
+            self.btn_ai.configure(state="normal")
+            self._op_end()
+            # Fix 2026-07-03: jeśli user miał filtr "Bez opisu" gdy odpalał AI,
+            # po zakończeniu wszystkie mają ai_done=True → filter zwraca 0 produktów
+            # → user widzi pustą listę i myśli "nic się nie stało".
+            # Reset AI filter do "Wszystkie" żeby zmiana była widoczna.
+            if self._filter_ai != "Wszystkie":
+                self._filter_ai = "Wszystkie"
+                try:
+                    self._ai_seg.set("Wszystkie")
+                except Exception:
+                    pass
+                self._page = 0
+            self._render_table()
+            self._session_generated += submitted
+            self._session_cached += cached
+            self._session_cost_usd += cost
+            self._update_stats()
+
+        elif tag == "ai_titles_progress":
+            _, done, total, error = msg
+            # CTkProgressBar API: set(0.0-1.0), nie ttk.Progressbar['value'/'maximum']
+            if total > 0:
+                self.progress.set(done / total)
+            suffix = f" (err: {error})" if error else ""
+            self.status_var.set(f"Tytuły AI: {done}/{total}{suffix}")
+
+        elif tag == "ai_titles_done":
+            _, updated, total = msg
+            self.progress.stop()
+            self.progress.configure(mode="determinate")
+            self.progress.set(1.0)
+            self.btn_ai_titles.configure(state="normal")
+            self._op_end()
+            self.status_var.set(
+                f"Tytuły AI gotowe. Zaktualizowano: {updated}/{total}."
+            )
+            # Fix 2026-07-03: reset filtra brand (nowe tytuły mogą zawierać nowe brandy)
+            # + reset page. Filter AI zostawiamy — tytuły nie zmieniają ai_done.
+            if self._filter_brand != "Wszystkie":
+                self._filter_brand = "Wszystkie"
+                try:
+                    self._brand_menu.set("Wszystkie")
+                except Exception:
+                    pass
+                self._page = 0
+            self._render_table()
+
+        elif tag == "imgbb_done":
+            _, uploaded = msg
+            self.progress.stop()
+            self.progress.configure(mode="determinate")
+            self.progress.set(1.0)
+            self.btn_imgbb.configure(state="normal")
+            self._op_end()
+            self.status_var.set(f"ImgBB: {uploaded} miniaturek uploadowanych.")
+            messagebox.showinfo(APP_NAME, f"Upload zakończony!\n{uploaded} miniaturek na ImgBB.\nURL-e zostaną użyte w eksporcie XML.")
+
+        elif tag == "imgbb_then_export":
+            _, uploaded = msg
+            self.progress.stop()
+            self.progress.configure(mode="determinate")
+            self.progress.set(1.0)
+            self.btn_imgbb.configure(state="normal")
+            self.btn_export.configure(state="normal")
+            self.status_var.set(f"ImgBB: {uploaded} miniaturek wgranych — teraz zapisz XML.")
+            # Now open the save dialog and export
+            OUTPUT_DIR.mkdir(exist_ok=True)
+            output_path = filedialog.asksaveasfilename(
+                title="Zapisz XML",
+                initialdir=str(OUTPUT_DIR),
+                defaultextension=".xml",
+                filetypes=[("XML", "*.xml")],
+                initialfile="marketia_transformed.xml",
+            )
+            if output_path:
+                target = getattr(self, "_pending_export_target", None) or self.products
+                _n = len(target)
+                _clones = sum(len(getattr(p, "extra_eans", []) or []) for p in target)
+                _msg = (
+                    f"Eksportuję XML ({_n} prod. + {_clones} klonów = {_n + _clones} wpisów)…"
+                    if _clones else f"Eksportuję XML ({_n} prod.)…"
+                )
+                self.status_var.set(_msg)
+                threading.Thread(
+                    target=self._export_worker, args=(target, output_path), daemon=True
+                ).start()
+                self._pending_export_target = None
+
+        elif tag == "thumb_done":
+            _, done, skipped = msg
+            self.progress.stop()
+            self.progress.configure(mode="determinate")
+            self.progress.set(1.0)
+            self.status_var.set(f"Miniatury: {done} wygenerowanych, {skipped} z cache.")
+            self.btn_thumb.configure(state="normal")
+            self._op_end()
+            messagebox.showinfo(
+                APP_NAME,
+                f"Miniatury gotowe!\n"
+                f"Wygenerowane: {done}\n"
+                f"Pominięte (cache): {skipped}\n"
+                f"Folder: output/thumbnails/",
+            )
+
+        elif tag == "infographics_done":
+            _, generated, skipped = msg
+            self.progress.stop()
+            self.progress.configure(mode="determinate")
+            self.progress.set(1.0)
+            self.status_var.set(
+                f"Wygenerowano {generated} infografik ({skipped} bez packshotu). "
+                f"Wgraj na ImgBB przed eksportem."
+            )
+            self.btn_infographics.configure(state="normal")
+            self._op_end()
+            messagebox.showinfo(
+                APP_NAME,
+                f"Infografiki gotowe!\n"
+                f"Wygenerowane: {generated}\n"
+                f"Bez packshotu (pomijane): {skipped}\n"
+                f"Folder: output/infographics/",
+            )
+
+        elif tag == "exported":
+            _, count, path = msg
+            self.status_var.set(f"Wyeksportowano {count} wpisów <product> → {path}")
+            messagebox.showinfo(
+                APP_NAME,
+                f"Eksport zakończony!\n{count} wpisów <product> w XML\n"
+                f"(produkty bazowe + klony multi-EAN)\n{path}",
+            )
+
+        elif tag == "bl_sync_done":
+            _, result = msg
+            self.progress.stop()
+            self.progress.configure(mode="determinate")
+            self.progress.set(1.0)
+            self.btn_bl_sync.configure(state="normal")
+            self._op_end()
+            short = (
+                f"Sync zakończony: {result.clones_synced} PIDs zaktualizowanych "
+                f"(matched {result.parents_resolved}/{result.total_products} SKU)."
+            )
+            detail_text = result.summary()
+            self.status_var.set(f"BaseLinker: {short}")
+
+            # Zapisz pełny raport diagnostyczny do pliku
+            from pathlib import Path
+            report_path = Path.home() / "Documents" / "marketia-sync-debug.txt"
+            try:
+                report_path.write_text(
+                    "=" * 70 + "\n"
+                    + "MARKETIA SYNC — RAPORT DIAGNOSTYCZNY\n"
+                    + "=" * 70 + "\n\n"
+                    + short + "\n\n"
+                    + result.diagnostic_report(),
+                    encoding="utf-8",
+                )
+                saved_path = report_path
+            except Exception:
+                saved_path = None
+
+            warnings_text = "\n".join(f"• {w}" for w in result.warnings)
+            has_warnings = bool(result.warnings)
+            icon = "⚠️" if (has_warnings or result.clones_synced == 0) else "✅"
+
+            SyncReportDialog(
+                self,
+                title=APP_NAME,
+                short_summary=short,
+                detail_text=detail_text,
+                warnings_text=warnings_text,
+                report_path=saved_path,
+                icon=icon,
+            )
+
+        elif tag == "bl_sync_error":
+            _, err = msg
+            self.progress.stop()
+            self.progress.configure(mode="determinate")
+            self.progress.set(0)
+            self.btn_bl_sync.configure(state="normal")
+            self._op_end()
+            self.status_var.set(f"BaseLinker sync: błąd — {err}")
+            messagebox.showerror(APP_NAME, f"Sync nie powiódł się:\n\n{err}")
+
+        elif tag == "cancelled":
+            _, msg_text = msg
+            self.progress.stop()
+            self.progress.configure(mode="determinate")
+            self.progress.set(0)
+            self.status_var.set(msg_text)
+            self.btn_ai.configure(state="normal")
+            self.btn_thumb.configure(state="normal")
+            self.btn_imgbb.configure(state="normal")
+            self.btn_lifestyle.configure(state="normal")
+            self._op_end()
+            self._render_table()
+            self._update_stats()
+
+        elif tag == "error":
+            _, err = msg
+            self.progress.stop()
+            self.progress.set(0)
+            # Widoczny błąd w statusie — nie tylko lakoniczne "Błąd." + messagebox.
+            err_short = err.replace("\n", " ")[:200]
+            self.status_var.set(f"❌ {err_short}")
+            self.btn_ai.configure(state="normal")
+            self.btn_thumb.configure(state="normal")
+            self.btn_imgbb.configure(state="normal")
+            self.btn_lifestyle.configure(state="normal")
+            self._op_end()
+            messagebox.showerror(APP_NAME, err)
+
+        elif tag == "single_regen_done":
+            _, product = msg
+            self._render_table()
+            self._update_stats()
+            if self._detail_win:
+                try:
+                    self._detail_win.refresh()
+                    self._detail_win.enable_regen_btn()
+                except Exception:
+                    pass
+
 
     def _render_table(self):
         for child in self.list_frame.winfo_children():
@@ -2388,6 +2834,13 @@ class App(_BaseApp):
 
         self._update_pagination(total, total_pages)
 
+        # Reset scroll do góry po każdym renderze — bez tego CTkScrollableFrame
+        # trzyma poprzednią pozycję i viewport pokazuje puste miejsce po filter/page/transform.
+        try:
+            self.after(0, lambda: self.list_frame._parent_canvas.yview_moveto(0))
+        except Exception:
+            pass
+
     def _update_pagination(self, total: int, total_pages: int) -> None:
         for w in self._pagination_bar.winfo_children():
             w.destroy()
@@ -2422,10 +2875,12 @@ class App(_BaseApp):
         if self._page > 0:
             self._page -= 1
             self._render_table()
+            self._maybe_save_session()
 
     def _next_page(self) -> None:
         self._page += 1
         self._render_table()
+        self._maybe_save_session()
 
 
 if __name__ == "__main__":

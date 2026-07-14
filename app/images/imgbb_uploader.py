@@ -73,6 +73,74 @@ def upload_image(sku: str, image_path: Path, force: bool = False) -> str | None:
         return None
 
 
+def _upload_file_raw(api_key: str, image_path: Path, name: str) -> str | None:
+    """Upload a file to ImgBB without cache lookup; returns URL or None."""
+    if not image_path.exists():
+        return None
+    img_b64 = base64.b64encode(image_path.read_bytes()).decode()
+    try:
+        resp = httpx.post(
+            API_URL,
+            data={"key": api_key, "image": img_b64, "name": name},
+            timeout=30,
+        )
+        data = resp.json()
+        if data.get("success"):
+            return data["data"]["url"]
+    except Exception:
+        pass
+    return None
+
+
+def upload_infographics(
+    products,
+    output_dir: Path,
+    progress_callback=None,
+    cancel_check=None,
+) -> int:
+    """Upload every cached infographic to ImgBB; save URL back into SQLite cache.
+
+    Iterates products, queries `get_infographics(sku)` per product, uploads each
+    row whose `imgbb_url` is empty, and persists the returned URL via
+    `set_infographic_imgbb`. Returns number of successful uploads.
+    """
+    from app.cache.sqlite_cache import get_infographics, set_infographic_imgbb
+
+    api_key = os.getenv("IMGBB_API_KEY", "").strip()
+    if not api_key:
+        if progress_callback:
+            progress_callback("ImgBB: brak IMGBB_API_KEY w .env — pomijam upload.")
+        return 0
+
+    output_dir = Path(output_dir)
+    uploaded = 0
+
+    with open_cache() as conn:
+        for i, p in enumerate(products, 1):
+            if cancel_check and cancel_check():
+                break
+            infos = get_infographics(conn, p.sku)
+            if not infos:
+                continue
+            for info in infos:
+                if info.get("imgbb_url"):
+                    continue  # already uploaded — skip
+                path = Path(info["path"])
+                if not path.exists():
+                    # fall back to conventional location if stored path is stale
+                    path = output_dir / path.name
+                    if not path.exists():
+                        continue
+                name = f"{p.sku}_{info['param_key']}"
+                if progress_callback:
+                    progress_callback(f"ImgBB infografiki: {i} — {name}")
+                url = _upload_file_raw(api_key, path, name)
+                if url:
+                    set_infographic_imgbb(conn, p.sku, info["param_key"], url)
+                    uploaded += 1
+    return uploaded
+
+
 def upload_thumbnails(
     products,
     thumb_dir: Path,

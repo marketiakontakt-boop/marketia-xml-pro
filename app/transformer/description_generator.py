@@ -54,7 +54,6 @@ def generate_descriptions(
     products: list[Product],
     progress_callback: Callable[[str], None] | None = None,
     cancel_check: "Callable[[], bool] | None" = None,
-    wait_on_cooldown: bool = False,
 ) -> tuple[int, int, float]:
     """Generate descriptions for pending products via Gemini.
 
@@ -75,10 +74,20 @@ def generate_descriptions(
 
     log(f"Cache: {cached_count} | Do wygenerowania: {len(pending)}")
 
-    def on_key_cooling(key_idx: int, seconds: float):
-        log(f"⏳ Klucz #{key_idx + 1} wchodzi w cooldown {int(seconds)}s — czekam na wolny klucz…")
+    # Safety: force brand detection dla produktów z brand=None/unknown.
+    # Bug 2026-07-13c: user wgrał XML, kliknął "Generuj opisy AI" zanim Transformy skończyły
+    # przypisać brand → 59/59 opisów wygenerowane z "UNKNOWN" zamiast "INTEX". Fix: sanity
+    # check przed wygenerowaniem promptu — jeśli brand nie ustawiony, wołaj BrandMapper
+    # natychmiast (deterministic, szybkie).
+    from app.transformer.brand_mapper import BrandMapper
+    need_brand = [p for p in pending if not p.brand or p.brand == "unknown"]
+    if need_brand:
+        bm = BrandMapper()
+        bm.map_products(need_brand)
+        fixed = sum(1 for p in need_brand if p.brand and p.brand != "unknown")
+        log(f"⚠️ Auto-fix brand dla {fixed}/{len(need_brand)} produktów (brand był pusty/unknown)")
 
-    client = ClaudeClient(on_key_cooling=on_key_cooling)
+    client = ClaudeClient()
 
     requests = []
     for p in pending:
@@ -96,50 +105,61 @@ def generate_descriptions(
     total = len(requests)
     generated = 0
 
-    def on_progress(done: int, total_: int, sku: str, error: str | None = None, cooling_status: str = ""):
+    def on_progress(done: int, total_: int, sku: str, error: str | None = None):
         nonlocal generated
-        suffix = f" | {cooling_status}" if cooling_status else ""
         cost_str = f" | ${client.cost_usd:.4f}" if client.cost_usd > 0 else ""
         if error:
-            log(f"[{done}/{total_}] BŁĄD {sku}: {error}{suffix}")
+            log(f"[{done}/{total_}] BŁĄD {sku}: {error}")
         else:
             generated += 1
-            log(f"[{done}/{total_}] ✓ {sku}{cost_str}{suffix}")
+            log(f"[{done}/{total_}] ✓ {sku}{cost_str}")
+
+    # Streaming save — natychmiast po każdym success żeby crash nie tracił postępu.
+    # Fix 2026-07-04: user zgłosił "generowało wieczność, po zamknięciu nic nie ma".
+    # Root cause: save był PO całym batch, więc kill/crash w środku = utrata.
+    # + retry w claude_client dla transient errors (18/500 → ~500/500).
+    MIN_DESC_LEN = 500
+    empty_responses = [0]  # box do mutacji z closure
+
+    def _save_one(sku: str, raw: str):
+        """Streaming save callback — wołany przez generate_all natychmiast po każdym success."""
+        if raw is None:
+            return
+        p = sku_map.get(sku)
+        data = _extract_json(raw)
+        if data and (data.get("section_1") or data.get("sections")):
+            brand_key = (p.brand if p else None) or "unknown"
+            brand_info = brand_data.get(brand_key, {"name": brand_key.upper()})
+            brand_display = brand_info.get("name", "").upper()
+            spec = _spec_items(p, brand_display) if p else []
+            html = assemble_html_from_json(data, list(p.images) if p else [], spec)
+        else:
+            html = raw or ""
+
+        if len(html) < MIN_DESC_LEN:
+            empty_responses[0] += 1
+            log(f"⚠️ {sku}: pusta/za krótka odpowiedź AI ({len(html)} zn.) — pomijam, nie zapisuję do cache")
+            return
+
+        score = score_description(html)
+        if p:
+            p.description = html
+            p.ai_done = True
+            p.quality_score = score
+        # Każdy save w osobnej krótkiej conn — autocommit gwarantuje persist.
+        # Alternatywa (shared conn) była też OK ale wymagała żywej conn przez cały batch.
+        with open_cache() as conn:
+            save_description(conn, sku, html, quality_score=score)
 
     log(f"Generuję {total} opisów przez Gemini 2.5 Flash...")
     results = client.generate_all(
         requests,
         progress_callback=on_progress,
-        wait_on_cooldown=wait_on_cooldown,
         cancel_check=cancel_check,
+        on_result=_save_one,
     )
 
-    with open_cache() as conn:
-        for sku, raw in results.items():
-            if cancel_check and cancel_check():
-                break
-            if raw is None:
-                continue
-            p = sku_map.get(sku)
-            # v2: parse JSON → assemble HTML
-            data = _extract_json(raw)
-            if data and (data.get("section_1") or data.get("sections")):
-                brand_key = (p.brand if p else None) or "unknown"
-                brand_info = brand_data.get(brand_key, {"name": brand_key.upper()})
-                brand_display = brand_info.get("name", "").upper()
-                spec = _spec_items(p, brand_display) if p else []
-                html = assemble_html_from_json(data, list(p.images) if p else [], spec)
-            else:
-                # Fallback: treat raw as HTML (e.g. if json_mode not supported)
-                html = raw
-            score = score_description(html)
-            if p:
-                p.description = html
-                p.ai_done = True
-                p.quality_score = score
-            save_description(conn, sku, html, quality_score=score)
-
-    errors = sum(1 for v in results.values() if v is None)
+    errors = sum(1 for v in results.values() if v is None) + empty_responses[0]
     cost_usd = client.cost_usd
     cost_str = f" | Koszt: ${cost_usd:.4f} ({client.usage_summary()})" if cost_usd > 0 else ""
     log(f"Gotowe: {generated} wygenerowanych | {errors} błędów | {cached_count} z cache{cost_str}")
