@@ -727,7 +727,7 @@ class App(_BaseApp):
             "Eksportuje XML do BaseLinker z kategorią Allegro i atrybutami.",
             fg_color="#1D4ED8", hover_color="#1E40AF")
         self.btn_bl_sync = _sb("  Sync stany magazynowe (BL)", self._run_bl_sync,
-            "Kopiuje stany z hurtowni (MultiStore, Kathay, ...) do katalogu Allegro Asortyment.\n"
+            "Kopiuje stany z hurtowni (MultiStore, Kathay, ...) do Marketia Katalog.\n"
             "Dla klonów `SKU-N` bierze stan rodzica `SKU`. Wymaga w .env:\n"
             "BASELINKER_SOURCE_INVENTORY_IDS + BASELINKER_TARGET_INVENTORY_ID.",
             fg_color="#0E7490", hover_color="#0C6177")
@@ -1568,7 +1568,7 @@ class App(_BaseApp):
         SettingsWindow(self)
 
     def _run_bl_sync(self) -> None:
-        """Sync stany hurtowni → target katalog (Allegro Asortyment, rodzice + klony)."""
+        """Sync stany hurtowni → target katalog (Marketia Katalog, rodzice + klony)."""
         token = os.getenv("BASELINKER_TOKEN", "").strip()
         src_raw = os.getenv("BASELINKER_SOURCE_INVENTORY_IDS", "").strip()
         tgt_raw = os.getenv("BASELINKER_TARGET_INVENTORY_ID", "").strip()
@@ -1580,7 +1580,7 @@ class App(_BaseApp):
                 "Uzupełnij w .env:\n"
                 "  BASELINKER_TOKEN=<twój token>\n"
                 "  BASELINKER_SOURCE_INVENTORY_IDS=52173,45513  (hurtownie)\n"
-                "  BASELINKER_TARGET_INVENTORY_ID=36713          (Allegro Asortyment)",
+                "  BASELINKER_TARGET_INVENTORY_ID=36715          (Marketia Katalog — klony PARENT-N)",
             )
             return
 
@@ -1597,7 +1597,7 @@ class App(_BaseApp):
         except ValueError:
             messagebox.showerror(
                 APP_NAME,
-                "BASELINKER_TARGET_INVENTORY_ID musi być liczbą (np. 36713).",
+                "BASELINKER_TARGET_INVENTORY_ID musi być liczbą (np. 36715).",
             )
             return
 

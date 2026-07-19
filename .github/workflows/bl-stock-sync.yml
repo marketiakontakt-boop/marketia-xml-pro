@@ -1,14 +1,14 @@
 name: BL Stock Sync
 
 # Uruchamia sync stocków z hurtowni (MultiStore, Kathay, JUMI...) → target katalog
-# (Allegro Asortyment: rodzice + klony `PARENT-N`) co 5 minut.
+# (Marketia Katalog: rodzice + klony `PARENT-N`) co 5 minut.
 # Zastępuje lokalny launchd — działa w chmurze GitHub, komputer może być wyłączony.
 #
 # Setup:
 #   Settings → Secrets and variables → Actions → New repository secret. Dodaj:
 #     BASELINKER_TOKEN                = <token BL>
 #     BASELINKER_SOURCE_INVENTORY_IDS = 52173,45513   (hurtownie, comma-sep)
-#     BASELINKER_TARGET_INVENTORY_ID  = 36713          (Allegro Asortyment, single int)
+#     BASELINKER_TARGET_INVENTORY_ID  = 36715          (Marketia Katalog — klony PARENT-N, single int)
 #
 # Manualny run: Actions → BL Stock Sync → Run workflow
 
