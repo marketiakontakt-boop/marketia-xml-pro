@@ -108,6 +108,45 @@ CREATE TABLE IF NOT EXISTS session_state (
     saved_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS idx_session_state_saved_at ON session_state(saved_at DESC);
+
+-- OLX integration tables (Faza 1: OAuth + kategorie + oferty)
+CREATE TABLE IF NOT EXISTS olx_oauth_tokens (
+    client_id     TEXT PRIMARY KEY,
+    access_token  TEXT NOT NULL,
+    refresh_token TEXT NOT NULL,
+    expires_at    TIMESTAMP NOT NULL,
+    updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS olx_categories (
+    id         INTEGER PRIMARY KEY,
+    parent_id  INTEGER,
+    name       TEXT NOT NULL,
+    path       TEXT NOT NULL,
+    fetched_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_olx_categories_path ON olx_categories(path);
+
+CREATE TABLE IF NOT EXISTS olx_category_attributes (
+    cat_id       INTEGER NOT NULL,
+    code         TEXT NOT NULL,
+    label        TEXT NOT NULL,
+    required     INTEGER NOT NULL DEFAULT 0,
+    attr_type    TEXT,
+    options_json TEXT,
+    fetched_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (cat_id, code)
+);
+
+CREATE TABLE IF NOT EXISTS olx_offers (
+    sku          TEXT PRIMARY KEY,
+    advert_id    TEXT,
+    status       TEXT,
+    external_url TEXT,
+    error        TEXT,
+    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 """
 
 
@@ -358,6 +397,10 @@ _CLEARABLE_TABLES = {
     "product_eans":         "Dodatkowe EAN-y (klony)",
     "product_infographics": "Infografiki parametrów (cache)",
     "session_state":        "Sesje GUI (filtry + selekcja per plik XML)",
+    "olx_oauth_tokens":     "OLX OAuth tokens",
+    "olx_categories":       "OLX kategorie (cache 7 dni)",
+    "olx_category_attributes": "OLX atrybuty kategorii (cache)",
+    "olx_offers":           "OLX oferty (advert_id + status)",
 }
 
 
@@ -477,6 +520,155 @@ def load_session_state(conn: sqlite3.Connection, xml_hash: str) -> dict | None:
         return _json_module.loads(raw)
     except (_json_module.JSONDecodeError, KeyError, IndexError):
         return None
+
+
+# --- OLX integration helpers ---
+
+def save_olx_token(
+    conn: sqlite3.Connection,
+    client_id: str,
+    access_token: str,
+    refresh_token: str,
+    expires_at: str,
+) -> None:
+    """Upsert OLX OAuth token bundle keyed by client_id.
+
+    `expires_at` should be ISO8601 UTC (str) so SQLite CURRENT_TIMESTAMP
+    comparisons work naturally.
+    """
+    conn.execute(
+        """
+        INSERT INTO olx_oauth_tokens (client_id, access_token, refresh_token, expires_at)
+        VALUES (?, ?, ?, ?)
+        ON CONFLICT(client_id) DO UPDATE SET
+            access_token  = excluded.access_token,
+            refresh_token = excluded.refresh_token,
+            expires_at    = excluded.expires_at,
+            updated_at    = CURRENT_TIMESTAMP
+        """,
+        (client_id, access_token, refresh_token, expires_at),
+    )
+
+
+def get_olx_token(conn: sqlite3.Connection, client_id: str) -> dict | None:
+    """Return {access_token, refresh_token, expires_at} or None."""
+    row = conn.execute(
+        "SELECT access_token, refresh_token, expires_at FROM olx_oauth_tokens "
+        "WHERE client_id = ?",
+        (client_id,),
+    ).fetchone()
+    if not row:
+        return None
+    return {
+        "access_token": row["access_token"],
+        "refresh_token": row["refresh_token"],
+        "expires_at": row["expires_at"],
+    }
+
+
+def save_olx_category(
+    conn: sqlite3.Connection,
+    cat_id: int,
+    parent_id: int | None,
+    name: str,
+    path: str,
+) -> None:
+    conn.execute(
+        """
+        INSERT INTO olx_categories (id, parent_id, name, path, fetched_at)
+        VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+        ON CONFLICT(id) DO UPDATE SET
+            parent_id  = excluded.parent_id,
+            name       = excluded.name,
+            path       = excluded.path,
+            fetched_at = CURRENT_TIMESTAMP
+        """,
+        (cat_id, parent_id, name, path),
+    )
+
+
+def save_olx_attribute(
+    conn: sqlite3.Connection,
+    cat_id: int,
+    code: str,
+    label: str,
+    required: bool,
+    attr_type: str | None,
+    options: list[dict] | None,
+) -> None:
+    """Upsert attribute definition. `options` serialized as JSON in options_json."""
+    options_json = _json_module.dumps(options or [], ensure_ascii=False)
+    conn.execute(
+        """
+        INSERT INTO olx_category_attributes
+            (cat_id, code, label, required, attr_type, options_json, fetched_at)
+        VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+        ON CONFLICT(cat_id, code) DO UPDATE SET
+            label        = excluded.label,
+            required     = excluded.required,
+            attr_type    = excluded.attr_type,
+            options_json = excluded.options_json,
+            fetched_at   = CURRENT_TIMESTAMP
+        """,
+        (cat_id, code, label, 1 if required else 0, attr_type, options_json),
+    )
+
+
+def get_olx_category_attributes(
+    conn: sqlite3.Connection, cat_id: int
+) -> list[dict]:
+    """Return list of attribute rows (dicts) for a category."""
+    rows = conn.execute(
+        "SELECT code, label, required, attr_type, options_json "
+        "FROM olx_category_attributes WHERE cat_id = ? ORDER BY required DESC, code",
+        (cat_id,),
+    ).fetchall()
+    result: list[dict] = []
+    for r in rows:
+        try:
+            opts = _json_module.loads(r["options_json"] or "[]")
+        except (_json_module.JSONDecodeError, TypeError):
+            opts = []
+        result.append({
+            "code": r["code"],
+            "label": r["label"],
+            "required": bool(r["required"]),
+            "attr_type": r["attr_type"],
+            "options": opts,
+        })
+    return result
+
+
+def save_olx_offer(
+    conn: sqlite3.Connection,
+    sku: str,
+    advert_id: str | None,
+    status: str,
+    external_url: str | None = None,
+    error: str | None = None,
+) -> None:
+    conn.execute(
+        """
+        INSERT INTO olx_offers (sku, advert_id, status, external_url, error, updated_at)
+        VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+        ON CONFLICT(sku) DO UPDATE SET
+            advert_id    = excluded.advert_id,
+            status       = excluded.status,
+            external_url = excluded.external_url,
+            error        = excluded.error,
+            updated_at   = CURRENT_TIMESTAMP
+        """,
+        (sku, advert_id, status, external_url, error),
+    )
+
+
+def get_olx_offer(conn: sqlite3.Connection, sku: str) -> dict | None:
+    row = conn.execute(
+        "SELECT sku, advert_id, status, external_url, error, created_at, updated_at "
+        "FROM olx_offers WHERE sku = ?",
+        (sku,),
+    ).fetchone()
+    return dict(row) if row else None
 
 
 def list_recent_sessions(conn: sqlite3.Connection, limit: int = 10) -> list[dict]:
