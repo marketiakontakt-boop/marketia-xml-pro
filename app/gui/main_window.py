@@ -55,6 +55,10 @@ from app.gui.model_audit_window import ModelAuditWindow
 from app.gui.title_edit_dialog import TitleEditDialog
 from app.gui.ean_edit_dialog import EanEditDialog
 from app.gui.sync_report_dialog import SyncReportDialog
+from app.gui.olx_dialog import OLXPublishDialog
+from app.olx.auth import OLXAuth, OLXAuthError
+from app.olx.api import OLXClient, OLXAPIError
+from app.olx.categories import refresh_categories
 from app.gui.tooltip import Tooltip
 from app.validator import validate_ean, get_label
 
@@ -727,6 +731,13 @@ class App(_BaseApp):
             "Dla klonów `SKU-N` bierze stan rodzica `SKU`. Wymaga w .env:\n"
             "BASELINKER_SOURCE_INVENTORY_IDS + BASELINKER_TARGET_INVENTORY_ID.",
             fg_color="#0E7490", hover_color="#0C6177")
+        self.btn_olx = _sb("  Wystaw na OLX", self._run_olx_publish,
+            "Wystaw wybrane produkty jako oferty OLX (wymaga OLX_CLIENT_ID w .env).",
+            fg_color="#4D7021", hover_color="#3A5518")
+        self.btn_olx_refresh = _sb("  Odśwież kategorie OLX", self._run_olx_refresh_categories,
+            "Pobiera drzewo kategorii OLX (jednorazowo, cache 7 dni).\n"
+            "Przy pierwszym uruchomieniu otwiera przeglądarkę do autoryzacji.",
+            fg_color="#4D7021", hover_color="#3A5518")
 
         # ── SYSTEM (bottom)
         ctk.CTkFrame(_sb_scroll, height=1, fg_color="#374151").pack(
@@ -1622,6 +1633,76 @@ class App(_BaseApp):
                 else:
                     msg = f"Nieoczekiwany błąd: {e}"
                 self.q.put(("bl_sync_error", msg))
+
+        threading.Thread(target=_worker, daemon=True).start()
+
+    def _run_olx_publish(self) -> None:
+        """Otwiera OLXPublishDialog dla zaznaczonych produktów.
+
+        Wymaga OLX_CLIENT_ID + OLX_CLIENT_SECRET w .env. Jeśli brak — pokazuje
+        instrukcję rejestracji aplikacji w developer.olx.pl.
+        """
+        if not os.getenv("OLX_CLIENT_ID", "").strip():
+            messagebox.showwarning(
+                APP_NAME,
+                "Brak konfiguracji OLX API.\n\n"
+                "Aby wystawiać oferty na OLX:\n"
+                "1. Zarejestruj aplikację w https://developer.olx.pl/\n"
+                "2. Ustaw redirect_uri: http://127.0.0.1:8765/callback\n"
+                "3. Uzupełnij w .env:\n"
+                "   OLX_CLIENT_ID=<twój client_id>\n"
+                "   OLX_CLIENT_SECRET=<twój client_secret>\n"
+                "   OLX_CONTACT_NAME=<imię do kontaktu>\n"
+                "   OLX_CONTACT_PHONE=<+48123456789>\n"
+                "   OLX_LOCATION_CITY_ID=<ID miasta z GET /cities>",
+            )
+            return
+
+        # Weź zaznaczone albo wszystkie widoczne po filtrach.
+        selected = getattr(self, "_selected_skus", None) or set()
+        if selected:
+            products = [p for p in self.products if p.sku in selected]
+        else:
+            products = list(getattr(self, "_filtered_products", self.products))
+
+        if not products:
+            messagebox.showinfo(APP_NAME, "Brak produktów do wystawienia.")
+            return
+
+        OLXPublishDialog(self, products=products)
+
+    def _run_olx_refresh_categories(self) -> None:
+        if not os.getenv("OLX_CLIENT_ID", "").strip() or not os.getenv("OLX_CLIENT_SECRET", "").strip():
+            messagebox.showwarning(
+                APP_NAME,
+                "Brak konfiguracji OLX API.\n\n"
+                "Uzupełnij w .env: OLX_CLIENT_ID, OLX_CLIENT_SECRET.\n"
+                "Zarejestruj aplikację: https://developer.olx.pl/",
+            )
+            return
+
+        self.btn_olx_refresh.configure(state="disabled")
+        self.status_var.set("OLX: pobieranie kategorii…")
+        self._op_start()
+        self.progress.configure(mode="indeterminate")
+        self.progress.start()
+
+        def _worker():
+            try:
+                auth = OLXAuth()
+                try:
+                    auth.get_valid_token()
+                except OLXAuthError:
+                    self.q.put(("status", "OLX: autoryzacja w przeglądarce…"))
+                    auth.interactive_login()
+                client = OLXClient(auth)
+                with open_cache() as conn:
+                    count = refresh_categories(client, conn)
+                self.q.put(("olx_refresh_done", count))
+            except (OLXAuthError, OLXAPIError) as e:
+                self.q.put(("olx_refresh_error", str(e)))
+            except Exception as e:
+                self.q.put(("olx_refresh_error", f"Nieoczekiwany błąd: {e}"))
 
         threading.Thread(target=_worker, daemon=True).start()
 
@@ -2707,6 +2788,26 @@ class App(_BaseApp):
             self._op_end()
             self.status_var.set(f"BaseLinker sync: błąd — {err}")
             messagebox.showerror(APP_NAME, f"Sync nie powiódł się:\n\n{err}")
+
+        elif tag == "olx_refresh_done":
+            _, count = msg
+            self.progress.stop()
+            self.progress.configure(mode="determinate")
+            self.progress.set(1.0)
+            self.btn_olx_refresh.configure(state="normal")
+            self._op_end()
+            self.status_var.set(f"OLX: {count} kategorii w cache")
+            messagebox.showinfo(APP_NAME, f"Pobrano {count} kategorii OLX.\nCache ważny 7 dni.")
+
+        elif tag == "olx_refresh_error":
+            _, err = msg
+            self.progress.stop()
+            self.progress.configure(mode="determinate")
+            self.progress.set(0)
+            self.btn_olx_refresh.configure(state="normal")
+            self._op_end()
+            self.status_var.set(f"OLX refresh: błąd — {err}")
+            messagebox.showerror(APP_NAME, f"Nie udało się pobrać kategorii OLX:\n\n{err}")
 
         elif tag == "cancelled":
             _, msg_text = msg
