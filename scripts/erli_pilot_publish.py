@@ -68,6 +68,35 @@ def bl(method: str, params: dict | None = None, max_retries: int = 4) -> dict:
     return last
 
 
+def fetch_all_bl_products(inv_id: int) -> list[dict]:
+    """Zwraca WSZYSTKIE produkty z inv (bez filter manufacturer). Paginate po 1000."""
+    log(f"  Fetching ALL products from inv {inv_id}...")
+    all_ids: list[str] = []
+    page = 1
+    while True:
+        r = bl("getInventoryProductsList", {"inventory_id": inv_id, "page": page})
+        products = r.get("products") or {}
+        if not products:
+            break
+        all_ids.extend(products.keys())
+        if len(products) < 1000:
+            break
+        page += 1
+        if page > 30:
+            break
+    log(f"    → {len(all_ids)} total product IDs, fetching data in batches of 100...")
+    matched = []
+    for i in range(0, len(all_ids), 100):
+        chunk = all_ids[i : i + 100]
+        r = bl("getInventoryProductsData", {"inventory_id": inv_id, "products": chunk})
+        for pid, pdata in (r.get("products") or {}).items():
+            pdata["_bl_id"] = pid
+            pdata["_bl_inventory"] = inv_id
+            matched.append(pdata)
+    log(f"  → {len(matched)} products fetched")
+    return matched
+
+
 def fetch_bl_products_for_manufacturers(inv_id: int) -> list[dict]:
     """Zwraca produkty z inv gdzie manufacturer_id ∈ TARGET_MANUFACTURERS.
 
@@ -206,6 +235,7 @@ def main() -> int:
     parser.add_argument("--limit", type=int, default=20, help="ile SKU (default 20)")
     parser.add_argument("--per-inv", type=int, default=10, help="max per inventory")
     parser.add_argument("--full", action="store_true", help="wystaw wszystkie (nadpisuje --limit/--per-inv)")
+    parser.add_argument("--inventory-id", type=int, help="override: single inventory ID, fetch WSZYSTKIE (bez filter manufacturer)")
     args = parser.parse_args()
     if args.full:
         args.limit = 100_000
@@ -237,9 +267,18 @@ def main() -> int:
     log("=== FETCH BL PRODUCTS ===")
     picked = []
     seen_sku: set[str] = set()
-    for inv_id, inv_name in INVENTORIES:
+
+    # Override: --inventory-id → single inv, wszystkie produkty (bez filter mfr)
+    if args.inventory_id:
+        target_invs = [(args.inventory_id, f"inv-{args.inventory_id}")]
+        fetch_fn = fetch_all_bl_products
+    else:
+        target_invs = INVENTORIES
+        fetch_fn = fetch_bl_products_for_manufacturers
+
+    for inv_id, inv_name in target_invs:
         log(f"Inventory: {inv_name} ({inv_id})")
-        prods = fetch_bl_products_for_manufacturers(inv_id)
+        prods = fetch_fn(inv_id)
         # Deduplikacja po (inv, bl_id) — ten sam BL id może wyskoczyć w wielu manufacturer queries
         dedup: dict[str, dict] = {}
         for p in prods:
