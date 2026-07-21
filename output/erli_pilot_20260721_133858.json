@@ -1,0 +1,4956 @@
+{
+  "timestamp": "20260721_133858",
+  "dry_run": false,
+  "results": [
+    {
+      "sku": "01LB31AA01",
+      "bl_id": "650452766",
+      "inventory": 111230,
+      "name": "Butelka Filtrująca LAICA GlaSSmart 1,1L Szklana z Filtrem FAST DISK",
+      "mapped": true,
+      "erli_status": 409,
+      "erli_response": {
+        "name": "ConflictFailure",
+        "message": "Wystąpił konflikt danych, unique key duplication",
+        "failureType": "conflict",
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "spanId": "gsw7bCaAszbvy",
+        "traceId": "gsw7bCaAszbvy"
+      }
+    },
+    {
+      "sku": "01LBR70A21",
+      "bl_id": "650452831",
+      "inventory": 111230,
+      "name": "Butelka filtrująca LAICA MyLAICA 550ml stalowa bidon z filtrem FAST DISK",
+      "mapped": true,
+      "erli_status": 409,
+      "erli_response": {
+        "name": "ConflictFailure",
+        "message": "Wystąpił konflikt danych, unique key duplication",
+        "failureType": "conflict",
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "spanId": "8gmv8oN5mUA1E",
+        "traceId": "8gmv8oN5mUA1E"
+      }
+    },
+    {
+      "sku": "01LBR70B21",
+      "bl_id": "650452837",
+      "inventory": 111230,
+      "name": "Butelka filtrująca LAICA MyLAICA 550ml stalowa bidon z filtrem FAST DISK",
+      "mapped": true,
+      "erli_status": 409,
+      "erli_response": {
+        "name": "ConflictFailure",
+        "message": "Wystąpił konflikt danych, unique key duplication",
+        "failureType": "conflict",
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "spanId": "j55zlk4iknoYZ",
+        "traceId": "j55zlk4iknoYZ"
+      }
+    },
+    {
+      "sku": "01LBR70C21",
+      "bl_id": "650452771",
+      "inventory": 111230,
+      "name": "Butelka filtrująca LAICA MyLAICA 550ml stalowa bidon z filtrem FAST DISK",
+      "mapped": true,
+      "erli_status": 409,
+      "erli_response": {
+        "name": "ConflictFailure",
+        "message": "Wystąpił konflikt danych, unique key duplication",
+        "failureType": "conflict",
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "spanId": "85gbpa_E8stlD",
+        "traceId": "85gbpa_E8stlD"
+      }
+    },
+    {
+      "sku": "01LC3M2A7ES150",
+      "bl_id": "650452751",
+      "inventory": 111230,
+      "name": "Filtr do Wody LAICA Coffee & Tea 3 szt Wkład do Dzbanków Filtrujących",
+      "mapped": true,
+      "erli_status": 409,
+      "erli_response": {
+        "name": "ConflictFailure",
+        "message": "Wystąpił konflikt danych, unique key duplication",
+        "failureType": "conflict",
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "spanId": "vvc7lvZKGOwIl",
+        "traceId": "vvc7lvZKGOwIl"
+      }
+    },
+    {
+      "sku": "01LDUF1P03",
+      "bl_id": "650452755",
+      "inventory": 111230,
+      "name": "Wkład filtrujący LAICA MikroPLASTIK-STOP filtr do dzbanków wody",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "01LF4LEU00",
+      "bl_id": "650452872",
+      "inventory": 111230,
+      "name": "Wkład filtrujący LAICA BI-FLUX Universal filtr do dzbanka wody 4 sztuki",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "01LF4SIT00",
+      "bl_id": "650452873",
+      "inventory": 111230,
+      "name": "Wkład filtrujący LAICA BI-FLUX Universal filtr do dzbanka wody 4 sztuki",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "01LFD03A21",
+      "bl_id": "650452758",
+      "inventory": 111230,
+      "name": "Filtry do Wody LAICA FAST DISK 3 szt Wkłady do Butelki Filtrującej Karafki",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "01LFD06A21",
+      "bl_id": "650452762",
+      "inventory": 111230,
+      "name": "LAICA FAST DISK 6 szt Filtr do Wody Wkłady do Butelki Filtrującej LAICA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "01LG2MES21",
+      "bl_id": "650452867",
+      "inventory": 111230,
+      "name": "Wkład filtrujący LAICA BI-FLUX MagnesiumActive filtr do dzbanków Filtrujący",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "01LJ31AD02",
+      "bl_id": "650452879",
+      "inventory": 111230,
+      "name": "Dzbanek Filtrujący LAICA Stream Line 2,3L Filtr Bi-Flux do Filtrowania Wody",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "01LJ31AF02",
+      "bl_id": "650452876",
+      "inventory": 111230,
+      "name": "Dzbanek Filtrujący LAICA Stream Line 2,3L Filtr Bi-Flux do Filtrowania Wody",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "01LJ35AD02",
+      "bl_id": "650452878",
+      "inventory": 111230,
+      "name": "Dzbanek Filtrujący LAICA Carmen 2,3L + Filtr Bi-Flux do Filtrowania Wody",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "01LJ81AA02",
+      "bl_id": "650452877",
+      "inventory": 111230,
+      "name": "Dzbanek Filtrujący LAICA BIG Milano 3,7L Filtr Bi-Flux do Filtrowania Wody",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "01LM3M2A7ES150",
+      "bl_id": "650452869",
+      "inventory": 111230,
+      "name": "Wkład filtrujący LAICA BI-FLUX MineralBalance do Dzbanków Filtrujących",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "01LUFSCE00",
+      "bl_id": "650452880",
+      "inventory": 111230,
+      "name": "Dzbanek filtrujący wody LAICA MikroPLASTIK-STOP 3L filtr mikroplastik",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "01TRIWF30-12 EPS619",
+      "bl_id": "650451106",
+      "inventory": 111230,
+      "name": "Wkład filtr Aqua Optima Evolve+ 12 szt do brita maxtra dafi unimax aquaphor",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "01TRIWF30-3 EPS619",
+      "bl_id": "650451121",
+      "inventory": 111230,
+      "name": "Wkład filtr Aqua Optima Evolve+ 3 szt do brita maxtra dafi unimax aquaphor",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "01TRIWF30-6 EPS619",
+      "bl_id": "650451110",
+      "inventory": 111230,
+      "name": "Wkład filtr Aqua Optima Evolve+ 6 szt do brita maxtra dafi unimax aquaphor",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "01TRIWF30_619",
+      "bl_id": "650451125",
+      "inventory": 111230,
+      "name": "Wkład filtr Aqua Optima Evolve+ 1 szt do brita maxtra dafi unimax aquaphor",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "02AFOKT",
+      "bl_id": "650451448",
+      "inventory": 111230,
+      "name": "FILTR ANTY TŁUSZCZOWY DO OKAPU WEBBER 57x47cm",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "02AWEB.DEZYNF.UF1170",
+      "bl_id": "650452566",
+      "inventory": 111230,
+      "name": "PŁYN DO DEZYNFEKCJI RĄK SPRAY WEBBER 50ML",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "02AWKLAD16X16",
+      "bl_id": "650451999",
+      "inventory": 111230,
+      "name": "50X WKŁAD AIR FRYER PAPIER WKŁADY PAPIEROWE DO FRYTKOWNICY BEZTŁUSZCZOWEJ",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "02AWKLAD20X20",
+      "bl_id": "650452001",
+      "inventory": 111230,
+      "name": "60X WKŁAD AIR FRYER PAPIER WKŁADY PAPIEROWE DO FRYTKOWNICY BEZTŁUSZCZOWEJ",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "02WAODK.EKSPRES",
+      "bl_id": "650451327",
+      "inventory": 111230,
+      "name": "Odkamieniacz do ekspresu Webber 250ml",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "02WEBODKAM2L",
+      "bl_id": "650452474",
+      "inventory": 111230,
+      "name": "MOCNY Odkamieniacz w Płynie 2L UNIWERSALNY DUŻY WEBBER do Ekspresu -2000ml",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "02WEBODKAM4X250ML",
+      "bl_id": "650452470",
+      "inventory": 111230,
+      "name": "MOCNY Odkamieniacz w Płynie 1L UNIWERSALNY DUŻY WEBBER do Ekspresu -1000ml",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "02WEBTABL",
+      "bl_id": "650451202",
+      "inventory": 111230,
+      "name": "WEBBER TABLETKI DO ZMYWAREK 40 SZT",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "02WNUNIBAG",
+      "bl_id": "650452479",
+      "inventory": 111230,
+      "name": "Worek do odkurzacza syntetyczny S-BAG 4 szt. ELECTROLUX, PHILIPS, AEG,",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04 F-05",
+      "bl_id": "650451865",
+      "inventory": 111230,
+      "name": "POKROWIEC NA FOTEL WISZĄCY KOSZ KOKON OGRODOWY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04 KJFQ006BR",
+      "bl_id": "650453050",
+      "inventory": 111230,
+      "name": "ZESTAW MEBLI OGRODOWYCH STOLIK KRZESŁA KOMPLET MEBLI TARAS Z TECHNORATANU",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K 310",
+      "bl_id": "650451949",
+      "inventory": 111230,
+      "name": "STÓŁ STOLIK KAWOWY DREWNIANY z 2 BLATAMI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K 8055C",
+      "bl_id": "650451812",
+      "inventory": 111230,
+      "name": "Krzesło Nowoczesne Wygodne DREWNIANE NOGI Czarne",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K 8086B",
+      "bl_id": "650451822",
+      "inventory": 111230,
+      "name": "Krzesło nowoczense TARCENTO białe + Drewniane Nogi",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K 8096B",
+      "bl_id": "650451831",
+      "inventory": 111230,
+      "name": "KRZESŁO KRZESŁA BELLUNO NOWOCZESNE ażurowe białe",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K 8128B",
+      "bl_id": "650451838",
+      "inventory": 111230,
+      "name": "Krzesło ogrodowe na Taras Balkon Ogród NUFORMA nowoczesne plastikowe białe",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K 8618",
+      "bl_id": "650451892",
+      "inventory": 111230,
+      "name": "KRZESŁO FOTEL KUBEŁKOWE WYGODNY METALOWE NOGI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K 8701HCLEAR",
+      "bl_id": "650452982",
+      "inventory": 111230,
+      "name": "Hoker transparentny stołek barowy glamour do wyspy kuchennej 76 cm",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K D-009D",
+      "bl_id": "650451945",
+      "inventory": 111230,
+      "name": "Fotel tapicerowany nowoczesny z 2 poduszkami",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K D-009DMiękki",
+      "bl_id": "650451940",
+      "inventory": 111230,
+      "name": "Fotel tapicerowany PIKOWANY szary NUVOLA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K F-03/F03W SMALL POKROWIEC",
+      "bl_id": "650451936",
+      "inventory": 111230,
+      "name": "POKROWEIC NA FOTEL WISŻACY KOKON KOSZ OGRODOWY",
+      "mapped": true,
+      "erli_status": 404,
+      "erli_response": {
+        "message": "No route",
+        "spanId": "lxdk4gRb0PL79",
+        "traceId": "lxdk4gRb0PL79"
+      }
+    },
+    {
+      "sku": "04K J933Be/BK",
+      "bl_id": "650451906",
+      "inventory": 111230,
+      "name": "KRZESŁO TAPICEROWANE SALON BIURO SALERNO BEŻOWE",
+      "mapped": true,
+      "erli_status": 404,
+      "erli_response": {
+        "message": "No route",
+        "spanId": "vvc7lO8ezQKJB",
+        "traceId": "vvc7lO8ezQKJB"
+      }
+    },
+    {
+      "sku": "04K J933ZS/GD",
+      "bl_id": "650451902",
+      "inventory": 111230,
+      "name": "KRZESŁO TAPICEROWANE SALON BIURO AVELLINO SZARE",
+      "mapped": true,
+      "erli_status": 404,
+      "erli_response": {
+        "message": "No route",
+        "spanId": "44r7sEJ-0gLs9",
+        "traceId": "44r7sEJ-0gLs9"
+      }
+    },
+    {
+      "sku": "04K J933ZZ/GD",
+      "bl_id": "650451898",
+      "inventory": 111230,
+      "name": "KRZESŁO TAPICEROWANE SALON BIURO AVELLINO ZIELONE",
+      "mapped": true,
+      "erli_status": 404,
+      "erli_response": {
+        "message": "No route",
+        "spanId": "xcfq7Z7pgFACJ",
+        "traceId": "xcfq7Z7pgFACJ"
+      }
+    },
+    {
+      "sku": "04K KJ-L02B-0",
+      "bl_id": "650451760",
+      "inventory": 111230,
+      "name": "Fotel Bujany Leżak Ogrodowy Leżanka Bujana na Taras Balkon Zero",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJC3794GR",
+      "bl_id": "650453220",
+      "inventory": 111230,
+      "name": "FOTEL LEŻAK OGRODOWY PLAŻOWY KRZESŁO SKŁADANY WYGODNY ZAGŁÓWEK GRAVITY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJC810BL",
+      "bl_id": "650453167",
+      "inventory": 111230,
+      "name": "KRZESŁA OGRODOWE NA TARAS BALKON OGRÓD NOWOCZESNE KRZESŁO METALOWE 4 szt.",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJC810GR-SIL",
+      "bl_id": "650453157",
+      "inventory": 111230,
+      "name": "KRZESŁA OGRODOWE NA TARAS BALKON OGRÓD NOWOCZESNE KRZESŁO METALOWE 4 szt.",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJC819BL-GR",
+      "bl_id": "650453172",
+      "inventory": 111230,
+      "name": "KRZESŁA OGRODOWE NA TARAS BALKON OGRÓD NOWOCZESNE KRZESŁO METALOWE 4 szt.",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJCP3794GR",
+      "bl_id": "650453211",
+      "inventory": 111230,
+      "name": "PODUSZKA MATERAC NA LEŻAK KRZESŁO DUŻA MIĘKKA 160 cm SZARY BEZ STELAŻA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJCP3974BL",
+      "bl_id": "650453217",
+      "inventory": 111230,
+      "name": "PODUSZKA MATERAC NA LEŻAK KRZESŁO DUŻA MIĘKKA 160 cm CZARNA BEZ STELAŻA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF-203C",
+      "bl_id": "650451757",
+      "inventory": 111230,
+      "name": "Zestaw Mebli Ogrodowych Aluminiowych Narożnik Stolik Taras Wodoodporny",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF-203SZ",
+      "bl_id": "650451752",
+      "inventory": 111230,
+      "name": "ZESTAW MEBLI OGRODOWYCH narożnik sofa stolik LEKKI komplet gród ALUMINIUM",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF15419BL",
+      "bl_id": "650453204",
+      "inventory": 111230,
+      "name": "ZESTAW MEBLI OGRODOWYCH 6 STÓŁ 4 KRZESŁA PARASOL CZARNY TARAS BALKON OGRÓD",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF15424 BL",
+      "bl_id": "650453137",
+      "inventory": 111230,
+      "name": "ZESTAW MEBLI OGRODOWYCH 7W1 STÓŁ 150 CM 6 KRZESEŁ CZARNY DREWNO TARAS OGRÓD",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF15424 GR",
+      "bl_id": "650453147",
+      "inventory": 111230,
+      "name": "ZESTAW MEBLI OGRODOWYCH 7W1 STÓŁ 150 CM 6 KRZESEŁ GRAFIT DREWNO TARAS OGRÓD",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF2532BE",
+      "bl_id": "650451750",
+      "inventory": 111230,
+      "name": "Komplet mebli ogrodowych stolik 2 krzesła fotele aluminiowe z technorattanu",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF2532SZ",
+      "bl_id": "650451745",
+      "inventory": 111230,
+      "name": "Komplet mebli ogrodowych stolik + 2 fotele aluminiowe z technorattanu",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF2613",
+      "bl_id": "650451742",
+      "inventory": 111230,
+      "name": "ZESTAW MEBLI OGRODOWYCH STOLIK KRZESŁA KOMPLET MEBLI NA TARAS OGRÓD BALKON",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3298-1CZ",
+      "bl_id": "650451689",
+      "inventory": 111230,
+      "name": "ZESTAW MEBLI OGRODOWYCH KRZESŁA KANAPA STOLIK KOMPLET MEBLI Z TECHNORATANU",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3298-1SZ",
+      "bl_id": "650451684",
+      "inventory": 111230,
+      "name": "ZESTAW MEBLI OGRODOWYCH KRZESŁA KANAPA STOLIK KOMPLET MEBLI Z TECHNORATANU",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3549 KPL.SZ",
+      "bl_id": "650453060",
+      "inventory": 111230,
+      "name": "Parasol ogrodowy boczny 3 m z podstawą obrotowy 360° szary wysięgnik taras",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3583",
+      "bl_id": "650451736",
+      "inventory": 111230,
+      "name": "ZESTAW MEBLI OGRODOWYCH DREWNIANYCH STOLIK KRZESŁA I NA TARAS OGRÓD BALKON",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3587BE",
+      "bl_id": "650451808",
+      "inventory": 111230,
+      "name": "PARASOL OGRODOWY DUŻY SOLIDNY SKŁADANY 3 M Z WYSIĘGNIKIEM REGULACJA XXXL",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3587SZ",
+      "bl_id": "650451800",
+      "inventory": 111230,
+      "name": "PARASOL OGRODOWY DUŻY SOLIDNY SKŁADANY 3 M Z WYSIĘGNIKIEM REGULACJA XXXL",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3587Z",
+      "bl_id": "650451803",
+      "inventory": 111230,
+      "name": "PARASOL OGRODOWY DUŻY SOLIDNY SKŁADANY 3 M Z WYSIĘGNIKIEM REGULACJA XXXL",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3589SZ",
+      "bl_id": "650453247",
+      "inventory": 111230,
+      "name": "PARASOL OGRODOWY DUŻY SOLIDNY SKŁADANY 3 M Z KORBKĄ REGULACJA XL SZARY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3589Z",
+      "bl_id": "650453248",
+      "inventory": 111230,
+      "name": "PARASOL OGRODOWY DUŻY SOLIDNY SKŁADANY 3 M Z KORBKĄ REGULACJA XL ZIELONY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3590BE",
+      "bl_id": "650453249",
+      "inventory": 111230,
+      "name": "PARASOL OGRODOWY ŚCIENNY DUŻY SOLIDNY SKŁADANY 2,7 M Z KORBKĄ BEŻOWY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3590SZ",
+      "bl_id": "650453250",
+      "inventory": 111230,
+      "name": "PARASOL OGRODOWY ŚCIENNY DUŻY SOLIDNY SKŁADANY 2,7 M Z KORBKĄ SZARY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3612BE",
+      "bl_id": "650451796",
+      "inventory": 111230,
+      "name": "PARASOL OGRODOWY DUŻY SOLIDNY SKŁADANY 2,7 M Z WYSIĘGNIKIEM REGULACJA XXL",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3612SZ",
+      "bl_id": "650451791",
+      "inventory": 111230,
+      "name": "PARASOL OGRODOWY DUŻY SOLIDNY SKŁADANY 2,7 M Z WYSIĘGNIKIEM REGULACJA XXL",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3644BR",
+      "bl_id": "650451698",
+      "inventory": 111230,
+      "name": "ZESTAW MEBLI OGRODOWYCH STOLIK KRZESŁA KOMPLET MEBLI TARAS Z TECHNORATANU",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3644C",
+      "bl_id": "650451707",
+      "inventory": 111230,
+      "name": "ZESTAW MEBLI OGRODOWYCH STOLIK KRZESŁA KOMPLET MEBLI TARAS Z TECHNORATANU",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3644POP",
+      "bl_id": "650451704",
+      "inventory": 111230,
+      "name": "ZESTAW MEBLI OGRODOWYCH STOLIK KRZESŁA KOMPLET MEBLI TARAS Z TECHNORATANU",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3790CN",
+      "bl_id": "650453236",
+      "inventory": 111230,
+      "name": "LEŻAK OGRODOWY SKŁADANY ZERO GRAVITY 2w1 FOTEL PLAŻOWY KRZESŁO TARASOWE",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3790CZ",
+      "bl_id": "650453243",
+      "inventory": 111230,
+      "name": "LEŻAK OGRODOWY SKŁADANY ZERO GRAVITY 2w1 FOTEL PLAŻOWY KRZESŁO TARASOWE",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3791- 1CZ",
+      "bl_id": "650452917",
+      "inventory": 111230,
+      "name": "Leżak Ogrodowy Składany 2w1 z Zagłówkiem Stolikiem Na Napój Relaks 120 kg",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3791-1SZ",
+      "bl_id": "650452913",
+      "inventory": 111230,
+      "name": "Leżak Ogrodowy Składany 2w1 z Zagłówkiem Stolikiem Na Napój Relaks 120 kg",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3791CZ",
+      "bl_id": "650452920",
+      "inventory": 111230,
+      "name": "FOTEL LEŻAK OGRODOWY PLAŻOWY KRZESŁO SKŁADANY WYGODNY ZAGŁÓWEK GRAVITY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF3791SZ",
+      "bl_id": "650452909",
+      "inventory": 111230,
+      "name": "FOTEL LEŻAK OGRODOWY PLAŻOWY KRZESŁO SKŁADANY WYGODNY ZAGŁÓWEK GRAVITY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF4931-DN",
+      "bl_id": "650451665",
+      "inventory": 111230,
+      "name": "FOTEL WISZĄCY BUJANY OGRODOWY KOSZ HUŚTAWKA JAJO KOKON 2 osobowy + PODUSZKI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF4931-DSZ",
+      "bl_id": "650451662",
+      "inventory": 111230,
+      "name": "FOTEL WISZĄCY BUJANY OGRODOWY KOSZ HUŚTAWKA JAJO KOKON 2 osobowy + PODUSZKI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF4931N",
+      "bl_id": "650451668",
+      "inventory": 111230,
+      "name": "FOTEL WISZĄCY BUJANY OGRODOWY KOSZ HUŚTAWKA JAJO KOKON PREMIUM + PODUSZKI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJF4931SZ",
+      "bl_id": "650451673",
+      "inventory": 111230,
+      "name": "FOTEL WISZĄCY BUJANY OGRODOWY KOSZ HUŚTAWKA JAJO KOKON PREMIUM + PODUSZKI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJFQ006SZ",
+      "bl_id": "650451691",
+      "inventory": 111230,
+      "name": "ZESTAW MEBLI OGRODOWYCH STOLIK KRZESŁA KOMPLET MEBLI TARAS Z TECHNORATANU",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJFR009BR",
+      "bl_id": "650451869",
+      "inventory": 111230,
+      "name": "Komplet mebli ogrodowych rattanu 4 krzesła stolik",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJFR036",
+      "bl_id": "650451676",
+      "inventory": 111230,
+      "name": "ZESTAW MEBLI OGRODOWYCH KRZESŁA KANAPA STOLIK KOMPLET MEBLI Z TECHNORATANU",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJFR077 AER",
+      "bl_id": "650451680",
+      "inventory": 111230,
+      "name": "ZESTAW MEBLI OGRODOWYCH KRZESŁA KRZESŁO STOLIK KOMPLET MEBLI Z TECHNORATANU",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJL01AOBE",
+      "bl_id": "650451765",
+      "inventory": 111230,
+      "name": "Fotel Bujany Leżak Ogrodowy Leżanka Bujana na Taras Balkon Zero",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJL01AOC",
+      "bl_id": "650451780",
+      "inventory": 111230,
+      "name": "Fotel Bujany Leżak Ogrodowy Leżanka Bujana na Taras Balkon Zero",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJL01AOSZ",
+      "bl_id": "650451773",
+      "inventory": 111230,
+      "name": "Fotel Bujany Leżak Ogrodowy Leżanka Bujana na Taras Balkon Zero",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJL02BOBE",
+      "bl_id": "650451873",
+      "inventory": 111230,
+      "name": "Fotel Bujany Leżak Ogrodowy Leżanka Bujana na Taras Balkon Zero",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJL02BOSZ",
+      "bl_id": "650451769",
+      "inventory": 111230,
+      "name": "Fotel Bujany Leżak Ogrodowy Leżanka Bujana na Taras Balkon Zero",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJT11655K",
+      "bl_id": "650451508",
+      "inventory": 111230,
+      "name": "FOTEL WISZĄCY BUJANY OGRODOWY KOSZ HUŚTAWKA JAJO KOKON PREMIUM + PODUSZKI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJT11655SZ",
+      "bl_id": "650451503",
+      "inventory": 111230,
+      "name": "FOTEL WISZĄCY BUJANY OGRODOWY KOSZ HUŚTAWKA JAJO KOKON PREMIUM + PODUSZKI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJT11656CZ",
+      "bl_id": "650451518",
+      "inventory": 111230,
+      "name": "FOTEL WISZĄCY BUJANY OGRODOWY KOSZ HUŚTAWKA JAJO KOKON PREMIUM + PODUSZKI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJT11656K",
+      "bl_id": "650451514",
+      "inventory": 111230,
+      "name": "FOTEL WISZĄCY BUJANY OGRODOWY KOSZ HUŚTAWKA JAJO KOKON PREMIUM + PODUSZKI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJT11656SZ",
+      "bl_id": "650451511",
+      "inventory": 111230,
+      "name": "FOTEL WISZĄCY BUJANY OGRODOWY KOSZ HUŚTAWKA JAJO KOKON PREMIUM + PODUSZKI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJT7127BL",
+      "bl_id": "650453187",
+      "inventory": 111230,
+      "name": "STÓŁ OGRODOWY TARASOWY CZARNY 150x90 CM SZKLANY BLAT HARTOWANY METALOWY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K KJT7128BL",
+      "bl_id": "650453191",
+      "inventory": 111230,
+      "name": "STÓŁ OGRODOWY TARASOWY CZARNY 150x90 CM SZKLANY BLAT HARTOWANY METALOWY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K NIC-Y57H",
+      "bl_id": "650452886",
+      "inventory": 111230,
+      "name": "Hoker KRZESŁO Cateringowy Składany NUFORMA 70 cm Krzesło Barowe z Oparciem",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K POD.KJF-SX19CZ",
+      "bl_id": "650451787",
+      "inventory": 111230,
+      "name": "PODSTAWA POD PARASOL OGRODOWY BAZA OBCIĄŻNIK OBCIĄŻENIE 20 KG",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K POD.KJF-SX26CZ",
+      "bl_id": "650453246",
+      "inventory": 111230,
+      "name": "Podstawa do parasola ogrodowego 9 kg taras ogród balkon 38/48 stabilna HDPE",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K POD.KJF-SX27CZ",
+      "bl_id": "650453056",
+      "inventory": 111230,
+      "name": "Podstawa do parasola ogrodowego napełniana wodą 25 l 28 kg taras ogród HDPE",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K POD.KJF-SX28CZ",
+      "bl_id": "650453245",
+      "inventory": 111230,
+      "name": "Podstawa do parasola ogrodowego napełniana wodą 25 l 28 kg taras ogród HDPE",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K XJ-72C",
+      "bl_id": "650451915",
+      "inventory": 111230,
+      "name": "KRZESŁO TAPICEROWANE SALON BIURO VELVO CZARNE",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K XJ-72S",
+      "bl_id": "650451912",
+      "inventory": 111230,
+      "name": "KRZESŁO TAPICEROWANE SALON BIURO VELVO SZARE",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K-8617C",
+      "bl_id": "650451818",
+      "inventory": 111230,
+      "name": "Krzesło nowoczesne skandynawskie CAMPO czarne",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K-8617SZ",
+      "bl_id": "650451815",
+      "inventory": 111230,
+      "name": "Krzesło nowoczesne skandynawskie CAMPO szare",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K-8636CZ",
+      "bl_id": "650451827",
+      "inventory": 111230,
+      "name": "KRZESŁO KRZESŁA CORVARA NOWOCZESNE Z polycarbonatu",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K-C038-ACAPULCO-B",
+      "bl_id": "650451645",
+      "inventory": 111230,
+      "name": "FOTEL OGRODOWY NA BALKON TARAS KRZESŁO OGRODOWE RATTAN ACAPULCO NOWOCZESNE",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K-C038-ACAPULCO-N",
+      "bl_id": "650451632",
+      "inventory": 111230,
+      "name": "FOTEL OGRODOWY NA BALKON TARAS KRZESŁO OGRODOWE RATTAN ACAPULCO NOWOCZESNE",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K-C038-ACAPULCO-S",
+      "bl_id": "650451639",
+      "inventory": 111230,
+      "name": "FOTEL OGRODOWY NA BALKON TARAS KRZESŁO OGRODOWE RATTAN ACAPULCO NOWOCZESNE",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K-C038-ACAPULCO-Z",
+      "bl_id": "650451843",
+      "inventory": 111230,
+      "name": "Krzesło Ogrodowe na balkon taras Fotel żyłkowy Nowoczesny NUFORMA zielone",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K-C038-ACAPULCO-Ż",
+      "bl_id": "650451626",
+      "inventory": 111230,
+      "name": "FOTEL OGRODOWY NA BALKON TARAS KRZESŁO OGRODOWE RATTAN ACAPULCO NOWOCZESNE",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K-HT301KB",
+      "bl_id": "650451713",
+      "inventory": 111230,
+      "name": "PODUSZKA NA FOTEL ŻYŁKOWY KRZESŁO OGRODOWE ACAPULCO WODOODPORNA WYGODNA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K-HT303B",
+      "bl_id": "650451716",
+      "inventory": 111230,
+      "name": "PODUSZKA NA FOTEL ŻYŁKOWY KRZESŁO OGRODOWE ACAPULCO WODOODPORNA WYGODNA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K-J004B-MEL FI-C",
+      "bl_id": "650451859",
+      "inventory": 111230,
+      "name": "KRZESŁO BAROWE HOKER WYSOKIE KRZESŁO CZARNE LOFT",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K-J004B-MEL FI-S",
+      "bl_id": "650451856",
+      "inventory": 111230,
+      "name": "KRZESŁO BAROWE HOKER WYSOKIE KRZESŁO SREBRNE LOFT",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K-J005-RAPALLO-B",
+      "bl_id": "650451847",
+      "inventory": 111230,
+      "name": "KRZESŁO BAROWE HOKER WYSOKIE KRZESŁO BIAŁE LOFT",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K-J005-RAPALLO-C",
+      "bl_id": "650451853",
+      "inventory": 111230,
+      "name": "KRZESŁO BAROWE HOKER WYSOKIE KRZESŁO CZARNE LOFT",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K-J005-RAPALLO-S",
+      "bl_id": "650451849",
+      "inventory": 111230,
+      "name": "KRZESŁO BAROWE HOKER WYSOKIE KRZESŁO SREBRNE LOFT",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04K8618C",
+      "bl_id": "650451885",
+      "inventory": 111230,
+      "name": "KRZESŁO FOTEL KUBEŁKOWE WYGODNY METALOWE NOGI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KEB-32RB",
+      "bl_id": "650451862",
+      "inventory": 111230,
+      "name": "POKROWIEC OBRUS NA OKRĄGŁY STÓŁ CATERINGOWY 80CM",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KEB-32RC",
+      "bl_id": "650452897",
+      "inventory": 111230,
+      "name": "Pokrowiec na Stół Okrągły 80 cm Elastyczny NUFORMA Bankietowy Czarny",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KEB154RFH",
+      "bl_id": "650451501",
+      "inventory": 111230,
+      "name": "STÓŁ OGRODOWY CATERINGOWY SKŁADANY ROZKŁADANY TURYSTYCZNY WALIZKA 150 cm",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KEB2971FH-RESB",
+      "bl_id": "650451933",
+      "inventory": 111230,
+      "name": "POKROWIEC OBRUS NA STÓŁ CATERINGOWY OGRODOWY BIAŁY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KEB2971FH-RESC",
+      "bl_id": "650451497",
+      "inventory": 111230,
+      "name": "POKROWIEC OBRUS NA STÓŁ CATERINGOWY OGRODOWY 180 CZARNY ELASTYCZNY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KEB2971RES",
+      "bl_id": "650451732",
+      "inventory": 111230,
+      "name": "STÓŁ OGRODOWY CATERINGOWY SKŁADANY ROZKŁADANY TURYSTYCZNY WALIZKA 180 cm",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KEB2971WG",
+      "bl_id": "650451651",
+      "inventory": 111230,
+      "name": "STÓŁ OGRODOWY CATERINGOWY SKŁADANY ROZKŁADANY TURYSTYCZNY WALIZKA 180 cm",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KEB3096",
+      "bl_id": "650452900",
+      "inventory": 111230,
+      "name": "STÓŁ OGRODOWY CATERINGOWY SKŁADANY ROZKŁADANY TURYSTYCZNY WALIZKA 240 cm",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KEB3096FH-RESB",
+      "bl_id": "650451928",
+      "inventory": 111230,
+      "name": "POKROWIEC OBRUS NA STÓŁ CATERINGOWY OGRODOWY 240",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KEB3096FH-RESC",
+      "bl_id": "650452894",
+      "inventory": 111230,
+      "name": "POKROWIEC OBRUS NA STÓŁ CATERINGOWY OGRODOWY 240 CZARNY ELASTYCZNY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KEB32RB",
+      "bl_id": "650453012",
+      "inventory": 111230,
+      "name": "STÓŁ CATERINGOWY KOKTAJLOWY SKŁADANY 80 CM OGRODOWY BAROWY NUFORMA OKRĄGŁY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KEBB1172WG",
+      "bl_id": "650453022",
+      "inventory": 111230,
+      "name": "ŁAWKA ŁAWA SKŁADANA CATERINGOWA STÓŁ CATERINGOWY 183 cm Walizka HDPE Mocna",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KEBB1272",
+      "bl_id": "650452905",
+      "inventory": 111230,
+      "name": "ŁAWKA ŁAWA SKŁADANA CATERINGOWA STÓŁ CATERINGOWY 183 cm Walizka HDPE Mocna",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KEBC07",
+      "bl_id": "650452890",
+      "inventory": 111230,
+      "name": "KRZESŁO CATERINGOWE SKŁADANE OGRODOWE TURYSTYCZNE BRĄZOWE NA TARAS",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KEBY57",
+      "bl_id": "650451722",
+      "inventory": 111230,
+      "name": "KRZESŁO SKŁADANE OGRODOWE TURYSTYCZNE WĘDKARSKIE CATERINGOWE BIAŁE NA TARAS",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KJC3794BL",
+      "bl_id": "650453229",
+      "inventory": 111230,
+      "name": "FOTEL LEŻAK OGRODOWY PLAŻOWY KRZESŁO SKŁADANY WYGODNY ZAGŁÓWEK GRAVITY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KLG-8072-BLACK",
+      "bl_id": "650452972",
+      "inventory": 111230,
+      "name": "Krzesło LOUIS czarne z podłokietnikami glamour połysk do jadalni toaletki",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KLG-8072-SMOKE",
+      "bl_id": "650452968",
+      "inventory": 111230,
+      "name": "Krzesło LOUIS dymione transparentne z podłokietnikami glamour smoke salonu",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KLG-8072-TRANS",
+      "bl_id": "650452976",
+      "inventory": 111230,
+      "name": "Krzesło transparentne LOUIS z podłokietnikami glamour przezroczyste jadalni",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KNIC152FH",
+      "bl_id": "650453020",
+      "inventory": 111230,
+      "name": "STÓŁ CATERINGOWY SKŁADANY OGRODOWY 152x70 CM TURYSTYCZNY WALIZKA NUFORMA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KNIC180FH RA",
+      "bl_id": "650451658",
+      "inventory": 111230,
+      "name": "STÓŁ OGRODOWY CATERINGOWY SKŁADANY ROZKŁADANY TURYSTYCZNY WALIZKA 180 cm",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KNICB183FH RA",
+      "bl_id": "650451877",
+      "inventory": 111230,
+      "name": "ŁAWKA ŁAWA CATERINGOWA STÓŁ CATERINGOWY 180cm TECHNORATAN",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KNICC120",
+      "bl_id": "650453016",
+      "inventory": 111230,
+      "name": "STÓŁ CATERINGOWY OGRODOWY SKŁADANY 120x60 CM STOLIK TARASOWY NUFORMA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KNICD31HB",
+      "bl_id": "650452887",
+      "inventory": 111230,
+      "name": "Hoker Cateringowy Składany NUFORMA 70 cm Krzesło Barowe HDPE Biały",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KNICR60H",
+      "bl_id": "650453031",
+      "inventory": 111230,
+      "name": "STÓŁ KOKTAJLOWY BAROWY CATERINGOWY 110CM X 60 CM SKŁADANY BANKIETOWY BIAŁY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KNICR80",
+      "bl_id": "650453023",
+      "inventory": 111230,
+      "name": "STÓŁ CATERINGOWY BANKIETOWY SKŁADANY OGRODOWY 80CM OKRĄGŁY NUFORMA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KNICY49B",
+      "bl_id": "650451725",
+      "inventory": 111230,
+      "name": "Krzesło Ogrodowe Cateringowe Składane 44x50x80cm Krzesło Biurowe Bankietowe",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KNICY49C",
+      "bl_id": "650452979",
+      "inventory": 111230,
+      "name": "Krzesło Ogrodowe Cateringowe Składane 44x50x80cm Krzesło Biurowe Bankietowe",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KVG-8071-BLACK",
+      "bl_id": "650452961",
+      "inventory": 111230,
+      "name": "Krzesło LOUIS czarne połysk bez podłokietników glamour do jadalni eventów",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04KVG-8071-trans",
+      "bl_id": "650452964",
+      "inventory": 111230,
+      "name": "Krzesło transparentne LOUIS ghost chair bez podłokietników glamour do wesel",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04PK-55B",
+      "bl_id": "650452957",
+      "inventory": 111230,
+      "name": "Pokrowiec na Krzesło Bankietowe Biały uniwersalny Elastyczny GRUBY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04PK-55C",
+      "bl_id": "650452954",
+      "inventory": 111230,
+      "name": "Pokrowiec na Krzesło Bankietowe Czarny uniwersalny Elastyczny GRUBY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04S Z-295 WHITE",
+      "bl_id": "650451951",
+      "inventory": 111230,
+      "name": "STÓŁ STOLICZEK KAWOWY SALONU JADALNI SKANDYNAWSKI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04SRDC01SPARKS",
+      "bl_id": "650451881",
+      "inventory": 111230,
+      "name": "Pokrowiec osłona na grilla 62 x 80 cm SPARKS",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04Z 102018 TL45005P KOLEJKA ZOO",
+      "bl_id": "650451954",
+      "inventory": 111230,
+      "name": "Drewniana kolejka dla dzieci 20 el. - tory, wagoniki, zwierzątka, wiaderko",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04Z102011",
+      "bl_id": "650451955",
+      "inventory": 111230,
+      "name": "Posterunek policji drewniany 2 piętra - helikopter, 3 figurki, zestaw ECO",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04k 8625PU",
+      "bl_id": "650451888",
+      "inventory": 111230,
+      "name": "KRZESŁO FOTEL Z AKSAMITU WYGODNE METALOWE NOGI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "04kVG-8071-SMOKE",
+      "bl_id": "650452885",
+      "inventory": 111230,
+      "name": "Krzesło LOUIS dymione transparentne bez podłokietników glamour smoke event",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05A11",
+      "bl_id": "650452279",
+      "inventory": 111230,
+      "name": "CIŚNIENIOMIERZ NADGARSTKOWY CZYTELNY DUŻY EKRAN ARYTMIA Webber Med A11",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05A7VENETO",
+      "bl_id": "650452448",
+      "inventory": 111230,
+      "name": "EKSPRES DO KAWY CIŚNIENIOWY AUTOMATYCZNY WEBBER 19 BAR A7 VENETO",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AC-163080B",
+      "bl_id": "650453114",
+      "inventory": 111230,
+      "name": "Klimatyzator przenośny Webber 16000BTU 4w1 WiFi grzanie osuszacz do 59m2",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AC-7202CZ",
+      "bl_id": "650453091",
+      "inventory": 111230,
+      "name": "Klimatyzator przenośny Webber 7000BTU 3w1 WiFi osuszacz Swing pilot 32m2",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AC-92013B",
+      "bl_id": "650453102",
+      "inventory": 111230,
+      "name": "Klimatyzator przenośny Webber 9000BTU 3w1 WiFi osuszacz Swing pilot 43m2",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AC-H025A2H",
+      "bl_id": "650452406",
+      "inventory": 111230,
+      "name": "Klimatyzator przenośny cichy 3w1 Webber 1,7kW WiFi Pompa ciepła grzanie",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AC-H93033CZ",
+      "bl_id": "650453125",
+      "inventory": 111230,
+      "name": "Klimatyzator przenośny Webber 9000BTU 4w1 WiFi grzanie osuszacz pilot 43m2",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AC123030BLACK",
+      "bl_id": "650453063",
+      "inventory": 111230,
+      "name": "Klimatyzator przenośny Webber 12000BTU 4w1 WiFi grzanie osuszacz pilot 49m2",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AC123030WHITE",
+      "bl_id": "650453086",
+      "inventory": 111230,
+      "name": "Klimatyzator przenośny Webber 12000BTU 4w1 WiFi grzanie osuszacz pilot 49m2",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AF800",
+      "bl_id": "650452184",
+      "inventory": 111230,
+      "name": "Frytkownica beztłuszczowa 8L Air Fryer Webber 1800W +WIFI +8 programów PARA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AF801",
+      "bl_id": "650452172",
+      "inventory": 111230,
+      "name": "FRYTKOWNICA BEZTŁUSZCZOWA AIR FRYER 8,8L NIEPRZYWIERAJĄCA WEBBER 10 P 2200W",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AF900",
+      "bl_id": "650452176",
+      "inventory": 111230,
+      "name": "FRYTKOWNICA BEZTŁUSZCZOWA PODWÓJNA AIR FRYER DWUKOMOROWA Ceramiczna WEBBER",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AF901",
+      "bl_id": "650452174",
+      "inventory": 111230,
+      "name": "FRYTKOWNICA PODWÓJNA PIONOWA BEZTŁUSZCZOWA AIR FRYER 2800W 11L XXL WEBBER",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AF938TFT",
+      "bl_id": "650451969",
+      "inventory": 111230,
+      "name": "FRYTKOWNICA BEZTŁUSZCZOWA AIR FRYER 8L WIFI NIEPRZYWIERAJĄCA 10 P 2200W",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AOW09B",
+      "bl_id": "650452459",
+      "inventory": 111230,
+      "name": "IRYGATOR DO ZĘBÓW BEZPRZEWODOWY DENTYSTYCZNY MOCNY 6 DYSZ 5 TRYBÓW WEBBER",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AOW09W",
+      "bl_id": "650452464",
+      "inventory": 111230,
+      "name": "IRYGATOR DO ZĘBÓW BEZPRZEWODOWY DENTYSTYCZNY MOCNY 5 DYSZ 5 TRYBÓW WEBBER",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AP8400H13",
+      "bl_id": "650452156",
+      "inventory": 111230,
+      "name": "Filtr powietrza 3w1 do Webber AP8400 AP8410 HEPA 13 oryginał",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AP8550",
+      "bl_id": "650451995",
+      "inventory": 111230,
+      "name": "Oczyszczacz powietrza Webber AP8550 HEPA H13 WiFi UV-C Jonizacja Smart AI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AP8700F H13",
+      "bl_id": "650452013",
+      "inventory": 111230,
+      "name": "Filtr powietrzny do oczysczacza powietrza Webber AP8700 HEPA 13",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AP8800F",
+      "bl_id": "650452438",
+      "inventory": 111230,
+      "name": "Filtr powietrzny do oczysczacza powietrza Webber AP8800",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AP9405H13",
+      "bl_id": "650452442",
+      "inventory": 111230,
+      "name": "Oczyszczacz nawilżacz powietrza Webber AP9405 HEPA 13 Z NAWILŻACZEM",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AP9650CODYPRO",
+      "bl_id": "650451997",
+      "inventory": 111230,
+      "name": "Oczyszczacz powietrza Webber AP9650 WIFI HEPA 13 UV Jonizator Nawilżacz",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AP9650FAP",
+      "bl_id": "650452526",
+      "inventory": 111230,
+      "name": "Filtr powietrzny do oczyszczacza powietrza Webber AP9650",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AP9650FWAP",
+      "bl_id": "650452521",
+      "inventory": 111230,
+      "name": "Filtr wodny do oczyszczacza powietrza Webber AP9650",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AP9700BLACK",
+      "bl_id": "650452225",
+      "inventory": 111230,
+      "name": "Oczyszczacz powietrza Webber AP9700 WIFI HEPA13 UV Jonizator Nawilżacz",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AP9700F H13",
+      "bl_id": "650451987",
+      "inventory": 111230,
+      "name": "Filtr powietrzny do oczysczacza powietrza Webber AP9700 HEPA 12",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AP9700FW",
+      "bl_id": "650451989",
+      "inventory": 111230,
+      "name": "Filtr wodny do oczysczacza powietrza Webber AP9700 ORGINALNY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AP9700P7",
+      "bl_id": "650452556",
+      "inventory": 111230,
+      "name": "Pokrywa do oczyszczacza powietrza Webber AP9700 P7",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AP9700P9",
+      "bl_id": "650452543",
+      "inventory": 111230,
+      "name": "Pokrywa do oczyszczacza powietrza Webber AP9700 P9",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AP9700WIFI",
+      "bl_id": "650452162",
+      "inventory": 111230,
+      "name": "Oczyszczacz powietrza Webber AP9700 WIFI HEPA13 UV Jonizator Nawilżacz",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AP9700WIFI-S",
+      "bl_id": "650452440",
+      "inventory": 111230,
+      "name": "Oczyszczacz powietrza Webber AP9700 WIFI HEPA13 UV Jonizator Nawilżacz",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AP9750",
+      "bl_id": "650452245",
+      "inventory": 111230,
+      "name": "Oczyszczacz powietrza nawilżacz Webber AP9750 SMART AI WIFI 100W 57m",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AP9750F",
+      "bl_id": "650452241",
+      "inventory": 111230,
+      "name": "Fiiltr do Oczyszczacza powietrza nawilżacza Webber AP9750 SMART HEPA 13 PRO",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AP9750FW",
+      "bl_id": "650452235",
+      "inventory": 111230,
+      "name": "Fiiltr Wodny do Oczyszczacza powietrza Webber AP9750 SMART HEPA 13 PRO",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05APEH11003",
+      "bl_id": "650452161",
+      "inventory": 111230,
+      "name": "Oczyszczacz powietrza Webber APEH11003 WIFI HEPA 12 UV Jonizator Nawilżacz",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05APG7800",
+      "bl_id": "650452534",
+      "inventory": 111230,
+      "name": "Oczyszczacz powietrza WiFi 20m² Wentylator termowentylator Webber APG7800",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AX7",
+      "bl_id": "650452804",
+      "inventory": 111230,
+      "name": "PROFESJONALNY ALKOMAT METEO AX7 5 USTNIKÓW",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05AX7kpl.2",
+      "bl_id": "650452799",
+      "inventory": 111230,
+      "name": "Profesjonalny Alkomat METEO AX7 +17 USTNIKÓW",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05B18",
+      "bl_id": "650452287",
+      "inventory": 111230,
+      "name": "CIŚNIENIOMIERZ NARAMIENNY CZYTELNY DUŻY EKRAN ARYTMIA Webber Med B18",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05BG600",
+      "bl_id": "650452855",
+      "inventory": 111230,
+      "name": "Trymer Męski Webber BG-600 8w1 Do Włosów Brody Ciała Wet&Dry IPX7 LED PRO",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05BL210",
+      "bl_id": "650451477",
+      "inventory": 111230,
+      "name": "BLENDER RĘCZNY MIKSER DO KOKTAJLI SMOOTHIE 1000W",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05BLN700",
+      "bl_id": "650451493",
+      "inventory": 111230,
+      "name": "Nutri Blender kielichowy ELDOM BLN700 ekstraktor",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05BT700",
+      "bl_id": "650452865",
+      "inventory": 111230,
+      "name": "Trymer Męski Do Brody Webber BT700 MULTIBLADE Precyzyjny Do Zarostu 0,5mm",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05C225C",
+      "bl_id": "650451271",
+      "inventory": 111230,
+      "name": "Czajnik elektryczny bezprzewodowy C225 C ELDOM",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05C280C",
+      "bl_id": "650451290",
+      "inventory": 111230,
+      "name": "Czajnik elektryczny bezprzewodowy C280 C ELDOM",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05C290S",
+      "bl_id": "650451264",
+      "inventory": 111230,
+      "name": "Czajnik elektryczny bezprzewodowy C290 S ELDOM",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05C315M",
+      "bl_id": "650451192",
+      "inventory": 111230,
+      "name": "Czajnik Elektryczny Bezprzewodowy ELDOM C315M 1,7L 2200W Biały",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05C510B",
+      "bl_id": "650451416",
+      "inventory": 111230,
+      "name": "Czajnik elektryczny Eldom C510B 2200 W biały",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05C520",
+      "bl_id": "650451259",
+      "inventory": 111230,
+      "name": "CZAJNIK ELEKTRYCZNY Z REGULACJĄ TEMPERATURY 1,8L BEZPRZEWODOWY 2200W",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05CG6",
+      "bl_id": "650452169",
+      "inventory": 111230,
+      "name": "Elektryczny młynek żarnowy do kawy Webber CG6 25 ustawień V-Cone Tech PRO",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05CN356",
+      "bl_id": "650452561",
+      "inventory": 111230,
+      "name": "PULSOKSYMETR Z CERTYFIKATEM MEDYCZNYM NAPALCOWY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05CS20",
+      "bl_id": "650451277",
+      "inventory": 111230,
+      "name": "Czajnik elektryczny bezprzewodowy CS20 INOX ELDOM",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05CS25",
+      "bl_id": "650451284",
+      "inventory": 111230,
+      "name": "Czajnik elektryczny bezprzewodowy CS25 INOX ELDOM",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05DEC500",
+      "bl_id": "650452494",
+      "inventory": 111230,
+      "name": "Osuszacz powietrza WiFi Timer 12l/24h Webber DEC500 pochłaniacz wilgoci",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05DEC500FILTR",
+      "bl_id": "650452503",
+      "inventory": 111230,
+      "name": "Filtr do osuszacza powietrza Webber Vich DEC500 HEPA11",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05DEQ1",
+      "bl_id": "650452432",
+      "inventory": 111230,
+      "name": "Osuszacz powietrza Pochłaniacz wilgoci Webber Q1 przenośny super wydajny",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05DEQ10",
+      "bl_id": "650452430",
+      "inventory": 111230,
+      "name": "Osuszacz Powietrza Webber DEQ10 pochłaniacz WIFI Cichy HEPA LED 20m²",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05DEX1",
+      "bl_id": "650452428",
+      "inventory": 111230,
+      "name": "Osuszacz Powietrza Webber DEX 1 pochłaniacz 3 L / 24H Cichy HEPA LED 20m² D",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05DT605T",
+      "bl_id": "650452192",
+      "inventory": 111230,
+      "name": "Klasyczna Waga Łazienkowa MECHANICZNA Analogowa do 180 KG CZARNA WEBBER BMI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05DWK200",
+      "bl_id": "650451252",
+      "inventory": 111230,
+      "name": "WAGA KUCHENNA ELEKTRONICZNA LCD PRECYZYJNA ELDOM",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05EK4390",
+      "bl_id": "650452131",
+      "inventory": 111230,
+      "name": "Waga kuchenna WEBBER EK4390 INOX stal nierdzewna LCD 5kg 1g misa tarowanie",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05EK4390H",
+      "bl_id": "650451127",
+      "inventory": 111230,
+      "name": "Waga kuchenna WEBBER EK4390 INOX stal nierdzewna LCD 5kg 1g misa tarowanie",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05EK8880R",
+      "bl_id": "650452136",
+      "inventory": 111230,
+      "name": "Waga kuchenna WEBBER INOX elektroniczna precyzyjna LCD 10kg USB tarowanie",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05FF400A",
+      "bl_id": "650452423",
+      "inventory": 111230,
+      "name": "WENTYLATOR Cyrkulator Powietrza PODŁOGOWY DUŻY Wiatrak 40 cm WEBBER CICHY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05FF430D",
+      "bl_id": "650453039",
+      "inventory": 111230,
+      "name": "WENTYLATOR Cyrkulator Powietrza PODŁOGOWY DUŻY Wiatrak 40 cm WEBBER CICHY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05FF450BL",
+      "bl_id": "650453035",
+      "inventory": 111230,
+      "name": "WENTYLATOR Cyrkulator Powietrza PODŁOGOWY DUŻY Wiatrak 40 cm WEBBER CICHY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05FF500-A",
+      "bl_id": "650452312",
+      "inventory": 111230,
+      "name": "WENTYLATOR Cyrkulator Powietrza PODŁOGOWY DUŻY Wiatrak 50 cm WEBBER CICHY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05FP11003",
+      "bl_id": "650452158",
+      "inventory": 111230,
+      "name": "Filtr powietrzny do oczysczacza powietrza Webber APEH11003 HEPA 12",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05FP8550",
+      "bl_id": "650451993",
+      "inventory": 111230,
+      "name": "Fiiltr do Oczyszczacza powietrza Webber AP8550 HEPA 13 PRO 5 PureAir",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05FR35",
+      "bl_id": "650451131",
+      "inventory": 111230,
+      "name": "Frytkownica beztłuszczowa Eldom FR35 1300 W 3,5 l",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05FW11003",
+      "bl_id": "650452157",
+      "inventory": 111230,
+      "name": "Filtr wodny do oczysczacza powietrza Webber APEH11003 ORGINALNY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05GDS8",
+      "bl_id": "650451074",
+      "inventory": 111230,
+      "name": "DUŻA GOLARKA DO UBRAŃ SWETRÓW ELDOM GDS8 Eldom Lia",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05GDS9",
+      "bl_id": "650451069",
+      "inventory": 111230,
+      "name": "GOLARKA DO UBRAŃ ODZIEŻY TKANIN ELDOM GDS9 CZARNA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05GK1400",
+      "bl_id": "650452860",
+      "inventory": 111230,
+      "name": "Trymer Męski 14w1 Webber - Golarka + Broda + Włosy + Nos Wet&Dry Zestaw PRO",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05GK150",
+      "bl_id": "650451212",
+      "inventory": 111230,
+      "name": "Grill elektryczny kontaktowy ELDOM GK150 2000W",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05GWO250B",
+      "bl_id": "650451470",
+      "inventory": 111230,
+      "name": "ELEKTRONICZNA WAGA ŁAZIENKOWA ELDOM GWO250 LCD",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05GWO250C",
+      "bl_id": "650451409",
+      "inventory": 111230,
+      "name": "ELEKTRONICZNA WAGA ŁAZIENKOWA ELDOM GWO250",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05GWO260B",
+      "bl_id": "650451187",
+      "inventory": 111230,
+      "name": "Waga elektroniczna łazienkowa ELDOM Cyfrowa LCD szklana 150 kg biała",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05GWO260C",
+      "bl_id": "650451183",
+      "inventory": 111230,
+      "name": "Waga łazienkowa Eldom 150 kg czarna",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05GWO260R",
+      "bl_id": "650451178",
+      "inventory": 111230,
+      "name": "Waga łazienkowa elektroniczna LCD SZKLANA 150 kg Eldom",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05H5 EKSPRES",
+      "bl_id": "650452171",
+      "inventory": 111230,
+      "name": "EKSPRES DO KAWY CIŚNIENIOWY KOLBOWY PÓŁAUTOMATYCZNY WEBBER 20 BAR H5",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05HD-1298",
+      "bl_id": "650453182",
+      "inventory": 111230,
+      "name": "SUSZARKA I STYLIZATOR DO WŁOSÓW WEBBER 10W1 CELIA HD-1298",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05HD-1698",
+      "bl_id": "650452436",
+      "inventory": 111230,
+      "name": "Suszarka do włosów 3w1 VENTA WEBBER 1600W z JONIZACJĄ I REGULACJĄ",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05HD-1998F",
+      "bl_id": "650452385",
+      "inventory": 111230,
+      "name": "Suszarka do włosów 4w1 STELLA WEBBER 2000W z JONIZACJĄ I REGULACJĄ",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05HD4PRONAKŁ",
+      "bl_id": "650453005",
+      "inventory": 111230,
+      "name": "KOŃCÓWKI DO SUSZARKI HD4 WEBBER SZCZOTKI STYLIZUJĄCE DO WŁOSÓW 2SZT",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05HD4RED",
+      "bl_id": "650452391",
+      "inventory": 111230,
+      "name": "Suszarka do włosów 5w1 WEBBER HD4 1300W z JONIZACJĄ I REGULACJĄ 5 końcówek",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05HH10001F",
+      "bl_id": "650452509",
+      "inventory": 111230,
+      "name": "FILTR DO NAWILŻACZA POWIETRZA WEBBER HH10001",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05HH1002",
+      "bl_id": "650452201",
+      "inventory": 111230,
+      "name": "Nawilżacz ewaporacyjny Webber HH1002 8W Higrostat do 30m2 Biały",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05HH1002FILTR",
+      "bl_id": "650452530",
+      "inventory": 111230,
+      "name": "FILTR DO NAWILŻACZA POWIETRZA WEBBER HH1002",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05HH3002F",
+      "bl_id": "650453048",
+      "inventory": 111230,
+      "name": "FILTR DO NAWILŻACZA POWIETRZA WEBBER HH3002 ORYGINALNY EWAPORACYJNY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05HL12",
+      "bl_id": "650451222",
+      "inventory": 111230,
+      "name": "Grzejnik elektryczny Termowentylator Farelka Piecyk Eldom HL12 1800 W",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05HS700",
+      "bl_id": "650452380",
+      "inventory": 111230,
+      "name": "PROSTOWNICA DO WŁOSÓW WEBBER CERAMICZNA JONIZACJA + LCD + AEROPROSTOWNICA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05HT92",
+      "bl_id": "650451239",
+      "inventory": 111230,
+      "name": "SUSZARKA DO WŁOSÓW 1600W Z JONIZACJĄ MAŁA ZIMNY NAWIEW DYFUZOR KONCENTRATOR",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05HTS20",
+      "bl_id": "650451231",
+      "inventory": 111230,
+      "name": "SUSZARKO LOKÓWKA SZCZOTKA DO WŁOSÓW 4w1 ELDOM 1000W ZESTAW",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05ID2501",
+      "bl_id": "650451033",
+      "inventory": 111230,
+      "name": "WIATRAK WENTYLATOR PODŁOGOWY STOJĄCY REGULACJA OSCYLACJA CICHY 40CM MOCNY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05ID5501",
+      "bl_id": "650451226",
+      "inventory": 111230,
+      "name": "LODÓWKA TURYSTYCZNA PRZENOŚNA SAMOCHODOWA 29L 12V/230V FUNKCJA GRZANIA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05ID5901",
+      "bl_id": "650451153",
+      "inventory": 111230,
+      "name": "Odkurzacz BEZWORKOWY cyklonowy domowy HEPA Ideal 700W Mały Mocny Lekki 1,5L",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05ID6501",
+      "bl_id": "650451043",
+      "inventory": 111230,
+      "name": "CICHY WENTYLATOR KOLUMNOWY CICHY WIATRAK PODŁOGOWY STOJĄCY IDEAL ID6501",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05IF1320B",
+      "bl_id": "650452347",
+      "inventory": 111230,
+      "name": "Waga Łazienkowa Analityczna 16 Parametrów Apple Health, Google Fit, IF1320B",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05IF1320C",
+      "bl_id": "650452342",
+      "inventory": 111230,
+      "name": "Waga Łazienkowa Analityczna 16 Parametrów Apple Health, Google Fit, IF1320C",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05IF1321B",
+      "bl_id": "650452352",
+      "inventory": 111230,
+      "name": "Waga Łazienkowa Analityczna 16 Parametrów Apple Health, Google Fit, IF1321B",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05IF1321C",
+      "bl_id": "650452357",
+      "inventory": 111230,
+      "name": "Waga Łazienkowa Analityczna 16 Parametrów Apple Health, Google Fit, IF1321C",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05IF2825A",
+      "bl_id": "650452337",
+      "inventory": 111230,
+      "name": "Waga Łazienkowa Analityczna 15 Parametrów Apple Health, Google Fit, IF2825A",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05IK1001",
+      "bl_id": "650451217",
+      "inventory": 111230,
+      "name": "Blender ręczny Stalowe ostrza 800W Tryb PULSACYJNY Ideal IK1001 czarny",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05IK1602",
+      "bl_id": "650451209",
+      "inventory": 111230,
+      "name": "GOFROWNICA ELDOM SOLIDNA 4 DUŻE GOFRY SUPER MOC 2000W",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05IK2002",
+      "bl_id": "650451141",
+      "inventory": 111230,
+      "name": "Kostkarka do lodu IDEAL domowa maszyna do kostek 12kg 100W ekspresowy lód",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05IK3301",
+      "bl_id": "650451136",
+      "inventory": 111230,
+      "name": "DUŻA Suszarka do Grzybów Owoców Warzyw IDEAL INOX +Termoobieg 400W +Timer",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05IM-001",
+      "bl_id": "650452991",
+      "inventory": 111230,
+      "name": "KOSTKARKA DO LODU WEBBER RANUA IM-001 ICE MASTER 12KG/24H 165W CZARNA 2",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05IM-002S",
+      "bl_id": "650453000",
+      "inventory": 111230,
+      "name": "KOSTKARKA DO LODU WEBBER RUKA IM-002 INOX 13KG 165W 2 ROZMIARY KOSTEK 1,5 L",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05IM-003",
+      "bl_id": "650452325",
+      "inventory": 111230,
+      "name": "Kostkarka do lodu WEBBER domowa maszyna do kostek 10kg 165W ekspresowy lód",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05IM-003BL",
+      "bl_id": "650453043",
+      "inventory": 111230,
+      "name": "Kostkarka do lodu WEBBER domowa maszyna do kostek 10kg 165W ekspresowy lód",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05IM-004",
+      "bl_id": "650452995",
+      "inventory": 111230,
+      "name": "KOSTKARKA DO LODU WEBBER KEMI ICE MASTER 10KG/24H 165W 7 KOSTEK 2 ROZMIARY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05IM-101",
+      "bl_id": "650452331",
+      "inventory": 111230,
+      "name": "Kostkarka do lodu 3w1 Dystrybutor wody Kruszarka WEBBER 200W 20kg/24h 6 L",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05IM-201",
+      "bl_id": "650452986",
+      "inventory": 111230,
+      "name": "KOSTKARKA DO LODU WEBBER FRIO IM-201 25KG LCD 3 TRYBY WODY INOX 24 KOSTKI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05IZ8701",
+      "bl_id": "650451322",
+      "inventory": 111230,
+      "name": "Maszynka do strzyżenia włosów GOLENIA zarostu Trymer +3 GŁOWICE",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05IZ9202C",
+      "bl_id": "650451150",
+      "inventory": 111230,
+      "name": "MECHANICZNA WAGA ŁAZIENKOWA KLASYCZNA ANALOGOWA DO 130KG IZ9202 CZARNA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05IZ9202SZ",
+      "bl_id": "650451146",
+      "inventory": 111230,
+      "name": "MECHANICZNA WAGA ŁAZIENKOWA KLASYCZNA ANALOGOWA DO 130KG IZ9202",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05JZE002",
+      "bl_id": "650452215",
+      "inventory": 111230,
+      "name": "KRAJALNICA ELEKTRYCZNA WEBBER INOX 160W DO CHLEBA WĘDLIN SERA REGULACJA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05KR100",
+      "bl_id": "650451368",
+      "inventory": 111230,
+      "name": "KRAJALNICA ELEKTRYCZNA ELDOM KR100 100 W biała",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05KT100",
+      "bl_id": "650451353",
+      "inventory": 111230,
+      "name": "KOC ELEKTRYCZNY MATA GRZEWCZA KT100 ELDOM",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05L7CALDAS",
+      "bl_id": "650452451",
+      "inventory": 111230,
+      "name": "EKSPRES DO KAWY CIŚNIENIOWY KOLBOWY PÓŁAUTOMATYCZNY WEBBER 20 BAR L7",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05LG400",
+      "bl_id": "650452884",
+      "inventory": 111230,
+      "name": "Golarka Damska Webber LG400 Trymer Depilator Wet&Dry Do Ciała Twarzy 4w1",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05LK020",
+      "bl_id": "650453251",
+      "inventory": 111230,
+      "name": "LODÓWKA TURYSTYCZNA KOMPRESOROWA ZAMRAŻARKA SAMOCHODOWA 12/24V 230V 20L",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05LK032",
+      "bl_id": "650452374",
+      "inventory": 111230,
+      "name": "LODÓWKA KOMPRESOROWA ZAMRAŻARKA TURYSTYCZNA SAMOCHODOWA 12V/230V 32L SMART",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05LK040",
+      "bl_id": "650452367",
+      "inventory": 111230,
+      "name": "LODÓWKA KOMPRESOROWA ZAMRAŻARKA TURYSTYCZNA SAMOCHODOWA 12V/230V 40L SMART",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05M5",
+      "bl_id": "650452446",
+      "inventory": 111230,
+      "name": "EKSPRES DO KAWY CIŚNIENIOWY KOLBOWY PÓŁAUTOMATYCZNY WEBBER 15 BAR M5",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05MB3",
+      "bl_id": "650453258",
+      "inventory": 111230,
+      "name": "OPIEKACZ WIELOFUNKCYJNY GRILL TOSTER 1200W DUAL COOK 180 CERAMICZNY INOX",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05ME15A",
+      "bl_id": "650451984",
+      "inventory": 111230,
+      "name": "Nawilżacz ewaporacyjny Webber EH9004 TAUPE UV-C WiFi ULTRA-HUMI AIR 360° 8L",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05ME15AFILTR",
+      "bl_id": "650451957",
+      "inventory": 111230,
+      "name": "Filtr wodny do nawilżacza powietrza Webber EH9004 ORGINALNY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05ME2D50B",
+      "bl_id": "650451986",
+      "inventory": 111230,
+      "name": "Nawilżacz ewaporacyjny Webber COMO EH4001 UV-C WiFi ATR 360° 5L LAMPA UVC",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05ME2D50BFILTR",
+      "bl_id": "650451992",
+      "inventory": 111230,
+      "name": "Filtr wodny do nawilżacza powietrza Webber EH4001 ORGINALNY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05MK.ZASILACZ",
+      "bl_id": "650452257",
+      "inventory": 111230,
+      "name": "ŁADOWARKA SIECIOWA UNIWERSALNA USB WTYCZKA DO MŁYNKÓW WEBBER 5V 1A",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05MK20B",
+      "bl_id": "650452444",
+      "inventory": 111230,
+      "name": "MŁYNEK DO PIEPRZU LUB SOLI ELEKTRYCZNY na BATERIE MŁYNEK",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05MK20Z",
+      "bl_id": "650452168",
+      "inventory": 111230,
+      "name": "MŁYNEK DO PIEPRZU I SOLI ELEKTRYCZNY na BATERIE MŁYNEK DO SOLI 2 SZT WEBBER",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05MK30",
+      "bl_id": "650452396",
+      "inventory": 111230,
+      "name": "MŁYNEK DO PIEPRZU I SOLI ELEKTRYCZNY AKUMULATOROWY USB MŁYNEK DO SOLI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05MK40A",
+      "bl_id": "650452883",
+      "inventory": 111230,
+      "name": "MŁYNEK DO PIEPRZU I SOLI ELEKTRYCZNY AKUMULATOROWY USB 2 SZT WEBBER PREMIUM",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05MK41",
+      "bl_id": "650452401",
+      "inventory": 111230,
+      "name": "MŁYNEK DO PIEPRZU I SOLI ELEKTRYCZNY AKUMULATOROWY USB MŁYNEK DO SOLI 2 SZT",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05MK42",
+      "bl_id": "650452882",
+      "inventory": 111230,
+      "name": "MŁYNEK DO PIEPRZU I SOLI ELEKTRYCZNY AKUMULATOROWY USB MŁYNEK DO SOLI 2 SZT",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05MK43",
+      "bl_id": "650452166",
+      "inventory": 111230,
+      "name": "MŁYNEK DO PIEPRZU I SOLI ELEKTRYCZNY AKUMULATOROWY USB 2 SZT INOX WEBBER",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05MS02OSTRZE",
+      "bl_id": "650452208",
+      "inventory": 111230,
+      "name": "OSTRZE DO KRAJALNICY ELEKTRYCZNA WEBBER INOX 160W DO CHLEBA WĘDLIN SERA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05MT500U",
+      "bl_id": "650451100",
+      "inventory": 111230,
+      "name": "GOLARKA TRYMER Maszynka Do Strzyżenia Włosów, Brody 3w1 Trymer Eldom MT500",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05NU10",
+      "bl_id": "650451347",
+      "inventory": 111230,
+      "name": "Ultradźwiękowy nawilżacz powietrza ELDOM NU10 roll",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05OB20B",
+      "bl_id": "650451164",
+      "inventory": 111230,
+      "name": "ODKURZACZ BEZPRZEWODOWY PIONOWY BEZWORKOWY OB20 ELDOM MOCNY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05OB90",
+      "bl_id": "650451173",
+      "inventory": 111230,
+      "name": "MOCNY ODKURZACZ ELDOM BEZPRZEWODOWY PIONOWY CYKLON 2W1 TURBOSZCZOTKA LED",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05OBZ100",
+      "bl_id": "650451399",
+      "inventory": 111230,
+      "name": "NAKŁADKA NASADKA MOPUJĄCA NA MOKRO ELDOM OB100",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05OCF600",
+      "bl_id": "650451161",
+      "inventory": 111230,
+      "name": "Filtr HEPA do odkurzacza Eldom OC600",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05OKF101",
+      "bl_id": "650451360",
+      "inventory": 111230,
+      "name": "FILTR HEPA DO ODKURZACZA OK100 COLUMBIAVAC",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05OKF102",
+      "bl_id": "650451365",
+      "inventory": 111230,
+      "name": "FILTR PŁÓCIENNY DO ODKURZACZA OK100 COLUMBIAVAC",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05OS900",
+      "bl_id": "650451294",
+      "inventory": 111230,
+      "name": "ODKURZACZ WORKOWY ELDOM OS900 PEGAZ HEPA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05OSC3100",
+      "bl_id": "650451197",
+      "inventory": 111230,
+      "name": "Cichy ODKURZACZ COLUMBIAVAC ULTRA MOCNY INTELIGENTNY TURBOSZCZOTKA 4200W",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05OW4",
+      "bl_id": "650451490",
+      "inventory": 111230,
+      "name": "Automatyczny otwieracz do wina korkociąg OW4",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05OW5",
+      "bl_id": "650451491",
+      "inventory": 111230,
+      "name": "Automatyczny otwieracz do wina korkociąg OW5",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05OW6",
+      "bl_id": "650452874",
+      "inventory": 111230,
+      "name": "Automatyczny Otwieracz do Wina Webber OW6 Elektryczny Zestaw 4w1 USB Korek",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05OW7",
+      "bl_id": "650451339",
+      "inventory": 111230,
+      "name": "Automatyczny otwieracz do wina korkociąg OW7 WACO",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05PG10N",
+      "bl_id": "650451434",
+      "inventory": 111230,
+      "name": "Kuchenka elektryczna płyta grzewcza PG10N Eldom",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05PM1000",
+      "bl_id": "650451088",
+      "inventory": 111230,
+      "name": "Mop parowy MYJKA WIELOFUNKCYJNA 1300W ELDOM PM1000 MYJKA ciśnieniowa 10w1",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05PR300",
+      "bl_id": "650451206",
+      "inventory": 111230,
+      "name": "PIEKARNIK ELEKTRYCZNY ELDOM PR300 ROŻNO GRILL 28L",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05PRZYŁBICAPO01",
+      "bl_id": "650451334",
+      "inventory": 111230,
+      "name": "PRZYŁBICA OCHRONNA NA TWARZ Maska Osłona Twarzy",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05PS577",
+      "bl_id": "650452141",
+      "inventory": 111230,
+      "name": "Waga Łazienkowa Analityczna 57 Parametrów Apple Health, Google Fit, WIFI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05PS636B",
+      "bl_id": "650452148",
+      "inventory": 111230,
+      "name": "Waga Łazienkowa Analityczna 57 Parametrów Apple Health, Google Fit, WIFI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05PS636C",
+      "bl_id": "650452153",
+      "inventory": 111230,
+      "name": "Waga Łazienkowa Analityczna 57 Parametrów Apple Health, Google Fit, WIFI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05PSJG60A",
+      "bl_id": "650452547",
+      "inventory": 111230,
+      "name": "LAMPA PRZEPŁYWOWA UV-C BAKTERIOBÓJCZA OZONTATOR",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05PT4",
+      "bl_id": "650453257",
+      "inventory": 111230,
+      "name": "TERMOMETR BASENOWY METEO PT4 BEZPRZEWODOWY CZUJNIK WODY DO 60 METRÓW LCD",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05Q10FP",
+      "bl_id": "650452513",
+      "inventory": 111230,
+      "name": "Filtr do osuszacza powietrza Webber DEQ10",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05Q8FP",
+      "bl_id": "650452517",
+      "inventory": 111230,
+      "name": "Filtr do osuszacza powietrza Webber DEQ8",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05R103",
+      "bl_id": "650451388",
+      "inventory": 111230,
+      "name": "ROBOT KUCHENNY MIKSER RĘCZNY R103 ELDOM 300W 2w1",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05RW35",
+      "bl_id": "650451236",
+      "inventory": 111230,
+      "name": "PROSTOWNICA DO WŁOSÓW Z POWŁOKĄ CERAMICZNĄ ELDOM 2w1 LOKÓWKA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05RYZ101",
+      "bl_id": "650451455",
+      "inventory": 111230,
+      "name": "IRYGATOR DO ZĘBÓW ZESTAW KOŃCÓWEK RY100 2 SZT",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05S5IPL",
+      "bl_id": "650452267",
+      "inventory": 111230,
+      "name": "DEPILATOR IPL DO WŁOSÓW CIAŁA LASEROWY BIKINI NÓG BEZBOLESNY Webber S5",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05S600B",
+      "bl_id": "650452002",
+      "inventory": 111230,
+      "name": "INHALATOR NEBULIZATOR Dla Dzieci i DOROSŁYCH -PRZENOŚNY na Akumulator Cichy",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05S7IPL",
+      "bl_id": "650452261",
+      "inventory": 111230,
+      "name": "DEPILATOR IPL DO WŁOSÓW CIAŁA LASEROWY BIKINI NÓG BEZBOLESNY WEBBER IPL S 7",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SD100B",
+      "bl_id": "650451484",
+      "inventory": 111230,
+      "name": "Szczoteczka elektryczna soniczna ELDOM SD100B",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SD100C",
+      "bl_id": "650451481",
+      "inventory": 111230,
+      "name": "Szczoteczka elektryczna soniczna ELDOM SD100C",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SD200B",
+      "bl_id": "650451488",
+      "inventory": 111230,
+      "name": "Szczoteczka elektryczna soniczna ELDOM SD200B",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SD200C",
+      "bl_id": "650451487",
+      "inventory": 111230,
+      "name": "Szczoteczka elektryczna soniczna Eldom SD200C",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SD210B",
+      "bl_id": "650451242",
+      "inventory": 111230,
+      "name": "Szczoteczka elektryczna soniczna Eldom SD210B",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SD210C",
+      "bl_id": "650451247",
+      "inventory": 111230,
+      "name": "Szczoteczka elektryczna soniczna Eldom SD210C",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SD50R",
+      "bl_id": "650451426",
+      "inventory": 111230,
+      "name": "SZCZOTECZKA SONICZNA DLA DZIECI 3-6lat SD50R",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SDK50",
+      "bl_id": "650451431",
+      "inventory": 111230,
+      "name": "Końcówki do szczoteczki soniecznej ELDOM SD50",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SG500",
+      "bl_id": "650451403",
+      "inventory": 111230,
+      "name": "SUSZARKA DO GRZYBÓW OWOCÓW ELDOM WYDAJNA MOCNA HIT",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SH16STOJAK",
+      "bl_id": "650451836",
+      "inventory": 111230,
+      "name": "Stojak do lampy promiennika SH16CW",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SK9S",
+      "bl_id": "650451308",
+      "inventory": 111230,
+      "name": "Sokowirówka Eldom SK9S 700W",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SM15.16MISAS",
+      "bl_id": "650452112",
+      "inventory": 111230,
+      "name": "Misa INOX 4L do robota Webber SM15 i SM16 - Oryginalna misa, pojemna",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SM15.16MISASZKL",
+      "bl_id": "650452110",
+      "inventory": 111230,
+      "name": "Szklana misa 5L do robota Webber SM15 / SM16 - oryginalna misa zamienna",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SM17",
+      "bl_id": "650452125",
+      "inventory": 111230,
+      "name": "Robot kuchenny planetarny Webber SM17 2700W misa 7L mikser wielofunkcyjny",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SM17MISA6L",
+      "bl_id": "650452116",
+      "inventory": 111230,
+      "name": "Misa INOX 6L do robota Webber SM17 - Oryginalna misa, pojemna, zamienna",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SM17SZNAKŁ",
+      "bl_id": "650452120",
+      "inventory": 111230,
+      "name": "Zestaw akcesoriów do robota kuchennego szatkownica + 6 końcówek do makaronu",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP102",
+      "bl_id": "650452732",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA Z DCF METEO SP102 Z PROJEKTOREM",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP106",
+      "bl_id": "650452775",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA Z DCF METEO SP106 POGODYNKA 3 CZUJNIKI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP107B",
+      "bl_id": "650452746",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA Z DCF METEO SP107B POGODYNKA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP107C",
+      "bl_id": "650452741",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA Z DCF METEO SP107C POGODYNKA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP109",
+      "bl_id": "650452712",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA CYFROWA TERMOMETR METEO SP109",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP109C",
+      "bl_id": "650452714",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA CYFROWA TERMOMETR METEO SP109C",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP110B",
+      "bl_id": "650452736",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA Z DCF METEO SP110 B POGODYNKA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP110C",
+      "bl_id": "650452711",
+      "inventory": 111230,
+      "name": "Stacja pogodowa pogody METEO Higrometr Barometr Termometr Zegar SP110",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP111B",
+      "bl_id": "650452705",
+      "inventory": 111230,
+      "name": "Stacja Pogodowa Termometr zewnętrzny pokojowy wewnętrzny METEO SP111B",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP111C",
+      "bl_id": "650452706",
+      "inventory": 111230,
+      "name": "Stacja Pogodowa Termometr zewnętrzny pokojowy wewnętrzny METEO SP111C",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP112",
+      "bl_id": "650452704",
+      "inventory": 111230,
+      "name": "Stacja Pogodowa Termometr zewnętrzny pokojowy wewnętrzny METEO SP112",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP200",
+      "bl_id": "650453024",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA METEO SP200 Z POGODYNKA EKRAN LCD CZUJNIK BEZPRZEWODOWY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP202",
+      "bl_id": "650452717",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA Z DCF METEO SP202 Z POGODYNKA ORAZ CZUJNIKIEM ZEWNĘTRZNYM",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP203",
+      "bl_id": "650452703",
+      "inventory": 111230,
+      "name": "Stacja pogodowa pogody METEO Higrometr Pogodynka Termometr Zegar SP203",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP204B",
+      "bl_id": "650452701",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA METEO SP204 POGODYNKA HIGROMETR CZUJNIK ZEWNĘTRZNY DCF",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP204C",
+      "bl_id": "650452592",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA METEO SP204 POGODYNKA HIGROMETR CZUJNIK ZEWNĘTRZNY DCF",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP205",
+      "bl_id": "650452702",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA METEO SP205 POGODYNKA HIGROMETR CZUJNIK ZEWNĘTRZNY DCF",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP209",
+      "bl_id": "650453080",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA METEO SP209 BEZPRZEWODOWA CZUJNIK BAROMETR DCF TERMOMETR",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP300",
+      "bl_id": "650452584",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA Z DCF METEO SP300 POGODYNKA PROJEKTOR LASEROWY 3 CZUJNIKI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP301",
+      "bl_id": "650452710",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA Z DCF METEO SP301 POGODYNKA HIGROMETR BAROMETR 3 CZUJNIKI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP400",
+      "bl_id": "650452709",
+      "inventory": 111230,
+      "name": "MULTI STACJA POGODOWY METEO SP400 WIFI +MIERNIK POWIETRZA HIGROMETR BAROMET",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP401",
+      "bl_id": "650452727",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA METEO SP401 WIFI Z PROGNOZĄ POGODY NA 4 DNI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP600NEON",
+      "bl_id": "650452722",
+      "inventory": 111230,
+      "name": "MULTI STACJA POGODOWA METEO SP600 Z MIERNIKIEM WIATRU oraz OPADÓW",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP601KPL",
+      "bl_id": "650452707",
+      "inventory": 111230,
+      "name": "Stacja Pogodowa POGODY Bezprzewodowa METEO Higrometr Barometr WIFI SP601",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP601W",
+      "bl_id": "650452708",
+      "inventory": 111230,
+      "name": "Stacja Pogodowa POGODY Bezprzewodowa METEO Higrometr Barometr WIFI SP601",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP602",
+      "bl_id": "650452925",
+      "inventory": 111230,
+      "name": "Stacja Pogodowa POGODY Bezprzewodowa METEO Higrometr Barometr WIFI SP602",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SP99C",
+      "bl_id": "650452783",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA Z DCF METEO SP99 POGODYNKA LCD VA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SR1",
+      "bl_id": "650453253",
+      "inventory": 111230,
+      "name": "OPIEKACZ DO KANAPEK TOSTER WEBBER TIVARO SR1 750W CERAMICZNY INOX NA 2 TOS",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SR2G",
+      "bl_id": "650453252",
+      "inventory": 111230,
+      "name": "Opiekacz do kanapek toster Webber AURUM SR2-G ceramiczny 800W wyjmowane",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SR3",
+      "bl_id": "650453256",
+      "inventory": 111230,
+      "name": "OPIEKACZ TOSTER GRILL GOFROWNICA 3W1 1000W CERAMICZNE PŁYTY WYJMOWANE INOX",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SR7",
+      "bl_id": "650453254",
+      "inventory": 111230,
+      "name": "OPIEKACZ DO KANAPEK TOSTER WEBBER ARVION SR7 1400W CERAMICZNY INOX NA 8 TOS",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05ST10W",
+      "bl_id": "650451421",
+      "inventory": 111230,
+      "name": "GOFROWNICA DO GOFRÓW ELDOM ST10W SOLIDNA DWA GOFRY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05SXG500",
+      "bl_id": "650452875",
+      "inventory": 111230,
+      "name": "Golarka Męska Webber FIVER SXG500 Trymer 5w1 Brody Nosa Wet&Dry USB",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05TANGO-ZESTAW-SZCZOTKI",
+      "bl_id": "650452570",
+      "inventory": 111230,
+      "name": "Zestaw Szczotki Filtry do Robota Webber TANGO",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05TB2",
+      "bl_id": "650452944",
+      "inventory": 111230,
+      "name": "TERMOMETR BASENOWY METEO TB2N BEZPRZEWODOWY CZUJNIK WODY LCD POGODYNKA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05TB2S",
+      "bl_id": "650452949",
+      "inventory": 111230,
+      "name": "TERMOMETR BASENOWY METEO TB2S BEZPRZEWODOWY CZUJNIK WODY LCD POGODYNKA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05TB3N",
+      "bl_id": "650452600",
+      "inventory": 111230,
+      "name": "TERMOMETR BASENOWY PŁYWAJĄCY METEO STACJA POGODY TB3 POMIAR W TELEFONIE",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05TCN-01WB",
+      "bl_id": "650452008",
+      "inventory": 111230,
+      "name": "Inhalator Nebulizator Kompresorowy Pneumatyczny Webber Dla Dzieci Dorosłych",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05TH2200B",
+      "bl_id": "650451924",
+      "inventory": 111230,
+      "name": "TERMOWENTYLATOR Grzejnik ceramiczny Kolumnowy Webber 2200W z nawilżaczem",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05TH2200G",
+      "bl_id": "650451918",
+      "inventory": 111230,
+      "name": "TERMOWENTYLATOR Grzejnik ceramiczny Kolumnowy Webber 2200W z nawilżaczem",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05TO245B",
+      "bl_id": "650451461",
+      "inventory": 111230,
+      "name": "Eldom Toster opiekacz TO245 DOTTY biały ruszt",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05TO245C",
+      "bl_id": "650451382",
+      "inventory": 111230,
+      "name": "Eldom Toster opiekacz TO245 DOTTY czarny ruszt",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05TO265B",
+      "bl_id": "650451059",
+      "inventory": 111230,
+      "name": "TOSTER OPIEKACZ KANAPEK 930W ELDOM TO26 BIAŁY NELE",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05TR02",
+      "bl_id": "650452294",
+      "inventory": 111230,
+      "name": "TERMOMETR BEZDOTYKOWY MEDYCZNY NA PODCZERWIEŃ ALARM GORĄCZKI WEBBER TR02",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05TR15",
+      "bl_id": "650452305",
+      "inventory": 111230,
+      "name": "TERMOMETR BEZDOTYKOWY MEDYCZNY NA PODCZERWIEŃ ALARM GORĄCZKI WEBBER TR15",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05TWB1830NEW",
+      "bl_id": "650452434",
+      "inventory": 111230,
+      "name": "Termowentylator ceramiczny farelka 3 TRYBY Webber wentylator 2000W grzejnik",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05TWO130B",
+      "bl_id": "650451412",
+      "inventory": 111230,
+      "name": "WAGA ŁAZIENKOWA ELDOM TWO130 BMI Biała",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05TWO140C",
+      "bl_id": "650451468",
+      "inventory": 111230,
+      "name": "ELEKTRONICZNA WAGA ŁAZIENKOWA ELDOM TWO140 BMI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05TWO500b",
+      "bl_id": "650451464",
+      "inventory": 111230,
+      "name": "WAGA ŁAZIENKOWA INTELIGENTNA SMART BLUETOOTH ELDOM",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05UP900",
+      "bl_id": "650452164",
+      "inventory": 111230,
+      "name": "Stacja Jakości Powietrza UP900 7w1 PM2.5 PM10 HCHO TVOC USB Webber",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05V168B",
+      "bl_id": "650452417",
+      "inventory": 111230,
+      "name": "ZGRZEWARKA PRÓŻNIOWA DO FOLII PAKOWARKA ŻYWNOŚCI WEBBER V168B AUTOMATYCZNA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05V168C",
+      "bl_id": "650452412",
+      "inventory": 111230,
+      "name": "ZGRZEWARKA PRÓŻNIOWA DO FOLII PAKOWARKA ŻYWNOŚCI WEBBER V168C AUTOMATYCZNA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05V217",
+      "bl_id": "650452421",
+      "inventory": 111230,
+      "name": "ZGRZEWARKA PRÓŻNIOWA DO FOLII PAKOWARKA ŻYWNOŚCI WEBBER V217 AUTOMATYCZNA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WA100S",
+      "bl_id": "650451302",
+      "inventory": 111230,
+      "name": "Gofrownica do gofrów ELDOM WA100S mocna 1000W 2 gofry",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WB1820B",
+      "bl_id": "650452848",
+      "inventory": 111230,
+      "name": "Bezłopatkowy wentylator z nawilżaczem podłogowy WEBBER WB1820 biały CICHY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WB1820C",
+      "bl_id": "650452841",
+      "inventory": 111230,
+      "name": "Bezłopatkowy wentylator z nawilżaczem podłogowy WEBBER WB1820 czarny CICHY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WB1840B",
+      "bl_id": "650453034",
+      "inventory": 111230,
+      "name": "WENTYLATOR BEZŁOPATKOWY WEBBER WB1840B CHŁODZENIE NAWILŻANIE JONIZACJA 4w1",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WB1840FILTR",
+      "bl_id": "650453009",
+      "inventory": 111230,
+      "name": "FILTR WEBBER WB1840 DO WENTYLATORA EWAPORACYJNEGO ORYGINALNY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WB1840G",
+      "bl_id": "650453033",
+      "inventory": 111230,
+      "name": "WENTYLATOR BEZŁOPATKOWY WEBBER WB1840G CHŁODZENIE NAWILŻANIE JONIZACJA 4w1",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WEBFOLIA28X300",
+      "bl_id": "650452825",
+      "inventory": 111230,
+      "name": "Folia Próżniowa 28x300 cm Rolka do Zgrzewarki Sous-Vide Bez BPA Mocna",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WEBLB1",
+      "bl_id": "650451990",
+      "inventory": 111230,
+      "name": "Pojemniki Próżniowe Webber+ 3x 0,7L Do Żywności BPA DO LODÓWKI MIKROFALI",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WEBV104B",
+      "bl_id": "650452455",
+      "inventory": 111230,
+      "name": "ZGRZEWARKA PRÓŻNIOWA DO FOLII PAKOWARKA WEBBER V104B",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WGC40",
+      "bl_id": "650451376",
+      "inventory": 111230,
+      "name": "WENTYLATOR WIATRAK BIURKOWY WGC40 Columbia Vac",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WK-330",
+      "bl_id": "650452362",
+      "inventory": 111230,
+      "name": "Czajnik elektryczny bezprzewodowe Webber WK-330 2200 W 1,7 l czarny INOX",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WK-717",
+      "bl_id": "650452193",
+      "inventory": 111230,
+      "name": "Czajnik elektryczny bezprzewodowy REGULACJA TEMPERATURY Webber 1.7L 1800W",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WK-717N",
+      "bl_id": "650451972",
+      "inventory": 111230,
+      "name": "Czajnik elektryczny bezprzewodowy REGULACJA TEMPERATURY Webber 1.7L 1800W",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WK110",
+      "bl_id": "650451980",
+      "inventory": 111230,
+      "name": "Czajnik elektryczny Webber ELIYA WK110 1,5L Regulacja tem Keep Warm LED",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WK115",
+      "bl_id": "650451977",
+      "inventory": 111230,
+      "name": "Czajnik elektryczny Webber WK115 WIFI 1,5L Szklane wnętrze Smart Keep Warm",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WK310",
+      "bl_id": "650451393",
+      "inventory": 111230,
+      "name": "Elektroniczna waga kuchenna ELDOM WK310 LCD",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WM16",
+      "bl_id": "650453255",
+      "inventory": 111230,
+      "name": "GOFROWNICA WEBBER WM16 1600W CERAMICZNA XXL INOX REGULACJA TEMPERATURY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WM169",
+      "bl_id": "650452486",
+      "inventory": 111230,
+      "name": "Myjka automatyczna robot do okien WM 169 Webber",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WM170",
+      "bl_id": "650452426",
+      "inventory": 111230,
+      "name": "Myjka automatyczna robot do okien WM 170 Webber",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WRK2500",
+      "bl_id": "650451438",
+      "inventory": 111230,
+      "name": "ROBOT KUCHENNY PLANETARNY MIKSER BLENDER ELDOM MOC",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WS206",
+      "bl_id": "650452935",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA WEBBER WS206 DCF TERMOMETR ZEWNĘTRZNY CIŚNIENIE BUDZIK POG",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WS207",
+      "bl_id": "650452789",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA Z DCF METEO WEBBER WS207 POGODYNKA PROJEKTOR LASEROWY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WS302",
+      "bl_id": "650452930",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA WEBBER WS302 3 CZUJNIKI ZEWNĘTRZNE DCF TERMOMETR HIGROMETR",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WS303",
+      "bl_id": "650453074",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA WEBBER WS303 POGODYNKA CZUJNIK BAROMETR DCF FAZY KSIĘŻYCA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WS305C",
+      "bl_id": "650453069",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA WEBBER WS305C BEZPRZEWODOWA CZUJNIK BAROMETR DCF POGODYNKA",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05WS603",
+      "bl_id": "650452940",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA WEBBER WS603 WIFI TUYA MULTISENSOR CZUJNIK WIATRU DESZCZU",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05X580",
+      "bl_id": "650452574",
+      "inventory": 111230,
+      "name": "Odkurzacz robot sprzątający mop WEBBER TANGO Star",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05XEF900",
+      "bl_id": "650451964",
+      "inventory": 111230,
+      "name": "Robot kuchenny planetarny Webber XEF900 1800W misa 7L mikser wielofunkcyjny",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05XEF900M",
+      "bl_id": "650451958",
+      "inventory": 111230,
+      "name": "Robot kuchenny planetarny Webber XEF900 1800W misa 7L mikser wielofunkcyjny",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05ZMG20",
+      "bl_id": "650451315",
+      "inventory": 111230,
+      "name": "Maszynka do strzyżenia włosów Eldom ZMG20 maszynka bezprzewodowa +TRYMER",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05ZP28B",
+      "bl_id": "650452818",
+      "inventory": 111230,
+      "name": "ZEGAR BUDZIK METEO SP28 Z POMIAREM TEMPERATURY",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05ZP31",
+      "bl_id": "650452811",
+      "inventory": 111230,
+      "name": "Zegar ścienny ZP31 30 cm LCD z bezprzewodowym czujnikiem tem kwarcowy METEO",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05ZP33",
+      "bl_id": "650452814",
+      "inventory": 111230,
+      "name": "Zegar METEO z projektorem i DCF ZP33",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05ZP8",
+      "bl_id": "650452808",
+      "inventory": 111230,
+      "name": "Zegar ścienny METEO ZP8 z termometrem i datownikiem LCD aluminiowy",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05ZP9 S",
+      "bl_id": "650452779",
+      "inventory": 111230,
+      "name": "Zegar METEO ZP9 S z Projektorem + DCF",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05hm1300",
+      "bl_id": "650451086",
+      "inventory": 111230,
+      "name": "Grzejnik elektryczny radiacyjno - konwektorowy Eldom HM1300 STAR",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05kcF100",
+      "bl_id": "650451445",
+      "inventory": 111230,
+      "name": "Filtry do klimatora COLUMBIAVAC KC100",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05kcF500",
+      "bl_id": "650451443",
+      "inventory": 111230,
+      "name": "Filtry do klimatora COLUMBIAVAC KC500",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "05ob200filtr",
+      "bl_id": "650451054",
+      "inventory": 111230,
+      "name": "Filtr do odkurzacza Eldom OBF200 Odkurzacz OB200",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "0SSP208",
+      "bl_id": "650452794",
+      "inventory": 111230,
+      "name": "STACJA POGODOWA Z DCF METEO SP208 POGODYNKA PROJEKTOR LASEROWY CZUJNIK ZEW",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "DZBANEK FILTRUJĄCY TRIWATER ORIA EJ630 W",
+      "bl_id": "650451457",
+      "inventory": 111230,
+      "name": "Dzbanek do wody Aqua Optima 2,8l + FILTR 30 dni",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "MK20A",
+      "bl_id": "650452881",
+      "inventory": 111230,
+      "name": "MŁYNEK DO PIEPRZU I SOLI ELEKTRYCZNY na BATERIE MŁYNEK DO SOLI 1 SZT",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "O4K KJF15420GR",
+      "bl_id": "650453201",
+      "inventory": 111230,
+      "name": "ZESTAW MEBLI OGRODOWYCH 6W1 STÓŁ 4 KRZESŁA PARASOL SZARY TARAS BALKON OGRÓD",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "WACO.CANISTER",
+      "bl_id": "650451452",
+      "inventory": 111230,
+      "name": "ZESTAW DO PRÓŻNIOWEGO PAKOWANIA ŻYWNOŚCI 2SZT WACO POJEMNIKI PRÓŻNIOWE",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    }
+  ]
+}

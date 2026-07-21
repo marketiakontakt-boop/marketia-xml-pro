@@ -1,0 +1,546 @@
+{
+  "timestamp": "20260721_115446",
+  "dry_run": false,
+  "results": [
+    {
+      "sku": "1463",
+      "bl_id": "642480546",
+      "inventory": 45513,
+      "name": "STÓŁ CATERINGOWY SKŁADANY OGRODOWY BIAŁY GARDENSTEIN GRENE 180 X 74 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, description.sections.0.items: description.sections[0].items is required; description.sections.0.type: description.sections[0].type is not allowed; description.sections.0.content: description.sections[0].content is not allowed; description: description must be a string; dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "description.sections.0.items": "\"description.sections[0].items\" is required",
+            "description.sections.0.type": "\"description.sections[0].type\" is not allowed",
+            "description.sections.0.content": "\"description.sections[0].content\" is not allowed",
+            "description": "\"description\" must be a string",
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "njp9giwvJwpZS",
+        "traceId": "njp9giwvJwpZS"
+      }
+    },
+    {
+      "sku": "1463",
+      "bl_id": "642480694",
+      "inventory": 45513,
+      "name": "STÓŁ CATERINGOWY SKŁADANY OGRODOWY BIAŁY GARDENSTEIN GRENE 180 X 74 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, description.sections.0.items: description.sections[0].items is required; description.sections.0.type: description.sections[0].type is not allowed; description.sections.0.content: description.sections[0].content is not allowed; description: description must be a string; dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "description.sections.0.items": "\"description.sections[0].items\" is required",
+            "description.sections.0.type": "\"description.sections[0].type\" is not allowed",
+            "description.sections.0.content": "\"description.sections[0].content\" is not allowed",
+            "description": "\"description\" must be a string",
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "lxdk4HLwFS20n",
+        "traceId": "lxdk4HLwFS20n"
+      }
+    },
+    {
+      "sku": "1463",
+      "bl_id": "642480546",
+      "inventory": 45513,
+      "name": "STÓŁ CATERINGOWY SKŁADANY OGRODOWY BIAŁY GARDENSTEIN GRENE 180 X 74 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, description.sections.0.items: description.sections[0].items is required; description.sections.0.type: description.sections[0].type is not allowed; description.sections.0.content: description.sections[0].content is not allowed; description: description must be a string; dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "description.sections.0.items": "\"description.sections[0].items\" is required",
+            "description.sections.0.type": "\"description.sections[0].type\" is not allowed",
+            "description.sections.0.content": "\"description.sections[0].content\" is not allowed",
+            "description": "\"description\" must be a string",
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "vpgtpSXjgVi2F",
+        "traceId": "vpgtpSXjgVi2F"
+      }
+    },
+    {
+      "sku": "1463",
+      "bl_id": "642480694",
+      "inventory": 45513,
+      "name": "STÓŁ CATERINGOWY SKŁADANY OGRODOWY BIAŁY GARDENSTEIN GRENE 180 X 74 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, description.sections.0.items: description.sections[0].items is required; description.sections.0.type: description.sections[0].type is not allowed; description.sections.0.content: description.sections[0].content is not allowed; description: description must be a string; dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "description.sections.0.items": "\"description.sections[0].items\" is required",
+            "description.sections.0.type": "\"description.sections[0].type\" is not allowed",
+            "description.sections.0.content": "\"description.sections[0].content\" is not allowed",
+            "description": "\"description\" must be a string",
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "cgjjrV94IyCca",
+        "traceId": "cgjjrV94IyCca"
+      }
+    },
+    {
+      "sku": "1711",
+      "bl_id": "642480547",
+      "inventory": 45513,
+      "name": "LEŻAK OGRODOWY PLAŻOWY SKŁADANY CZARNY GARDENSTEIN OLDEN 98 X 62 X 14 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, description.sections.0.items: description.sections[0].items is required; description.sections.0.type: description.sections[0].type is not allowed; description.sections.0.content: description.sections[0].content is not allowed; description: description must be a string; dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "description.sections.0.items": "\"description.sections[0].items\" is required",
+            "description.sections.0.type": "\"description.sections[0].type\" is not allowed",
+            "description.sections.0.content": "\"description.sections[0].content\" is not allowed",
+            "description": "\"description\" must be a string",
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "9tr9jDvGlBIKF",
+        "traceId": "9tr9jDvGlBIKF"
+      }
+    },
+    {
+      "sku": "1711",
+      "bl_id": "642480695",
+      "inventory": 45513,
+      "name": "LEŻAK OGRODOWY PLAŻOWY SKŁADANY CZARNY GARDENSTEIN OLDEN 98 X 62 X 14 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, description.sections.0.items: description.sections[0].items is required; description.sections.0.type: description.sections[0].type is not allowed; description.sections.0.content: description.sections[0].content is not allowed; description: description must be a string; dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "description.sections.0.items": "\"description.sections[0].items\" is required",
+            "description.sections.0.type": "\"description.sections[0].type\" is not allowed",
+            "description.sections.0.content": "\"description.sections[0].content\" is not allowed",
+            "description": "\"description\" must be a string",
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "njp9gWzhcRhlx",
+        "traceId": "njp9gWzhcRhlx"
+      }
+    },
+    {
+      "sku": "1711",
+      "bl_id": "642480547",
+      "inventory": 45513,
+      "name": "LEŻAK OGRODOWY PLAŻOWY SKŁADANY CZARNY GARDENSTEIN OLDEN 98 X 62 X 14 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, description.sections.0.items: description.sections[0].items is required; description.sections.0.type: description.sections[0].type is not allowed; description.sections.0.content: description.sections[0].content is not allowed; description: description must be a string; dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "description.sections.0.items": "\"description.sections[0].items\" is required",
+            "description.sections.0.type": "\"description.sections[0].type\" is not allowed",
+            "description.sections.0.content": "\"description.sections[0].content\" is not allowed",
+            "description": "\"description\" must be a string",
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "cgjjrql1p92A4",
+        "traceId": "cgjjrql1p92A4"
+      }
+    },
+    {
+      "sku": "1711",
+      "bl_id": "642480695",
+      "inventory": 45513,
+      "name": "LEŻAK OGRODOWY PLAŻOWY SKŁADANY CZARNY GARDENSTEIN OLDEN 98 X 62 X 14 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, description.sections.0.items: description.sections[0].items is required; description.sections.0.type: description.sections[0].type is not allowed; description.sections.0.content: description.sections[0].content is not allowed; description: description must be a string; dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "description.sections.0.items": "\"description.sections[0].items\" is required",
+            "description.sections.0.type": "\"description.sections[0].type\" is not allowed",
+            "description.sections.0.content": "\"description.sections[0].content\" is not allowed",
+            "description": "\"description\" must be a string",
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "lm4xqfUz2AIZ8",
+        "traceId": "lm4xqfUz2AIZ8"
+      }
+    },
+    {
+      "sku": "1714",
+      "bl_id": "642480548",
+      "inventory": 45513,
+      "name": "LEŻAK OGRODOWY SKŁADANY PLAŻOWY BEŻOWY GARDENSTEIN OLDEN 98 X 62 X 14 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, description.sections.0.items: description.sections[0].items is required; description.sections.0.type: description.sections[0].type is not allowed; description.sections.0.content: description.sections[0].content is not allowed; description: description must be a string; dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "description.sections.0.items": "\"description.sections[0].items\" is required",
+            "description.sections.0.type": "\"description.sections[0].type\" is not allowed",
+            "description.sections.0.content": "\"description.sections[0].content\" is not allowed",
+            "description": "\"description\" must be a string",
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "f4kw53Xsqf_mV",
+        "traceId": "f4kw53Xsqf_mV"
+      }
+    },
+    {
+      "sku": "1714",
+      "bl_id": "642480696",
+      "inventory": 45513,
+      "name": "LEŻAK OGRODOWY SKŁADANY PLAŻOWY BEŻOWY GARDENSTEIN OLDEN 98 X 62 X 14 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, description.sections.0.items: description.sections[0].items is required; description.sections.0.type: description.sections[0].type is not allowed; description.sections.0.content: description.sections[0].content is not allowed; description: description must be a string; dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "description.sections.0.items": "\"description.sections[0].items\" is required",
+            "description.sections.0.type": "\"description.sections[0].type\" is not allowed",
+            "description.sections.0.content": "\"description.sections[0].content\" is not allowed",
+            "description": "\"description\" must be a string",
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "gsw7bLYvvofNn",
+        "traceId": "gsw7bLYvvofNn"
+      }
+    },
+    {
+      "sku": "10",
+      "bl_id": "372679007",
+      "inventory": 52173,
+      "name": "Pokrywa osłona plandeka na basen 305 cm INTEX 28021",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, description.sections.0.items: description.sections[0].items is required; description.sections.0.type: description.sections[0].type is not allowed; description.sections.0.content: description.sections[0].content is not allowed; description: description must be a string; dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "description.sections.0.items": "\"description.sections[0].items\" is required",
+            "description.sections.0.type": "\"description.sections[0].type\" is not allowed",
+            "description.sections.0.content": "\"description.sections[0].content\" is not allowed",
+            "description": "\"description\" must be a string",
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "9vq4rR_MpnPWY",
+        "traceId": "9vq4rR_MpnPWY"
+      }
+    },
+    {
+      "sku": "10",
+      "bl_id": "372679007",
+      "inventory": 52173,
+      "name": "Pokrywa osłona plandeka na basen 305 cm INTEX 28021",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, description.sections.0.items: description.sections[0].items is required; description.sections.0.type: description.sections[0].type is not allowed; description.sections.0.content: description.sections[0].content is not allowed; description: description must be a string; dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "description.sections.0.items": "\"description.sections[0].items\" is required",
+            "description.sections.0.type": "\"description.sections[0].type\" is not allowed",
+            "description.sections.0.content": "\"description.sections[0].content\" is not allowed",
+            "description": "\"description\" must be a string",
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "85gbpF4A555Z8",
+        "traceId": "85gbpF4A555Z8"
+      }
+    },
+    {
+      "sku": "10",
+      "bl_id": "372679007",
+      "inventory": 52173,
+      "name": "Pokrywa osłona plandeka na basen 305 cm INTEX 28021",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, description.sections.0.items: description.sections[0].items is required; description.sections.0.type: description.sections[0].type is not allowed; description.sections.0.content: description.sections[0].content is not allowed; description: description must be a string; dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "description.sections.0.items": "\"description.sections[0].items\" is required",
+            "description.sections.0.type": "\"description.sections[0].type\" is not allowed",
+            "description.sections.0.content": "\"description.sections[0].content\" is not allowed",
+            "description": "\"description\" must be a string",
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "xcfq70kGF-okY",
+        "traceId": "xcfq70kGF-okY"
+      }
+    },
+    {
+      "sku": "10-1",
+      "bl_id": "633172967",
+      "inventory": 52173,
+      "name": "Pokrywa osłona plandeka na basen 305 cm INTEX 28021",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, description.sections.0.items: description.sections[0].items is required; description.sections.0.type: description.sections[0].type is not allowed; description.sections.0.content: description.sections[0].content is not allowed; description: description must be a string; dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "description.sections.0.items": "\"description.sections[0].items\" is required",
+            "description.sections.0.type": "\"description.sections[0].type\" is not allowed",
+            "description.sections.0.content": "\"description.sections[0].content\" is not allowed",
+            "description": "\"description\" must be a string",
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "njp9gn9EOc6Ha",
+        "traceId": "njp9gn9EOc6Ha"
+      }
+    },
+    {
+      "sku": "10-1",
+      "bl_id": "633172967",
+      "inventory": 52173,
+      "name": "Pokrywa osłona plandeka na basen 305 cm INTEX 28021",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, description.sections.0.items: description.sections[0].items is required; description.sections.0.type: description.sections[0].type is not allowed; description.sections.0.content: description.sections[0].content is not allowed; description: description must be a string; dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "description.sections.0.items": "\"description.sections[0].items\" is required",
+            "description.sections.0.type": "\"description.sections[0].type\" is not allowed",
+            "description.sections.0.content": "\"description.sections[0].content\" is not allowed",
+            "description": "\"description\" must be a string",
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "clxzgEcjunBa5",
+        "traceId": "clxzgEcjunBa5"
+      }
+    },
+    {
+      "sku": "10-1",
+      "bl_id": "633172967",
+      "inventory": 52173,
+      "name": "Pokrywa osłona plandeka na basen 305 cm INTEX 28021",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, description.sections.0.items: description.sections[0].items is required; description.sections.0.type: description.sections[0].type is not allowed; description.sections.0.content: description.sections[0].content is not allowed; description: description must be a string; dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "description.sections.0.items": "\"description.sections[0].items\" is required",
+            "description.sections.0.type": "\"description.sections[0].type\" is not allowed",
+            "description.sections.0.content": "\"description.sections[0].content\" is not allowed",
+            "description": "\"description\" must be a string",
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "8gmv86mU6QwM4",
+        "traceId": "8gmv86mU6QwM4"
+      }
+    },
+    {
+      "sku": "10-2",
+      "bl_id": "633172968",
+      "inventory": 52173,
+      "name": "Pokrywa osłona plandeka na basen 305 cm INTEX 28021",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, description.sections.0.items: description.sections[0].items is required; description.sections.0.type: description.sections[0].type is not allowed; description.sections.0.content: description.sections[0].content is not allowed; description: description must be a string; dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "description.sections.0.items": "\"description.sections[0].items\" is required",
+            "description.sections.0.type": "\"description.sections[0].type\" is not allowed",
+            "description.sections.0.content": "\"description.sections[0].content\" is not allowed",
+            "description": "\"description\" must be a string",
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "44r7siST-NuYY",
+        "traceId": "44r7siST-NuYY"
+      }
+    },
+    {
+      "sku": "10-2",
+      "bl_id": "633172968",
+      "inventory": 52173,
+      "name": "Pokrywa osłona plandeka na basen 305 cm INTEX 28021",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, description.sections.0.items: description.sections[0].items is required; description.sections.0.type: description.sections[0].type is not allowed; description.sections.0.content: description.sections[0].content is not allowed; description: description must be a string; dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "description.sections.0.items": "\"description.sections[0].items\" is required",
+            "description.sections.0.type": "\"description.sections[0].type\" is not allowed",
+            "description.sections.0.content": "\"description.sections[0].content\" is not allowed",
+            "description": "\"description\" must be a string",
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "cgjjrYsdvLVSy",
+        "traceId": "cgjjrYsdvLVSy"
+      }
+    },
+    {
+      "sku": "10-2",
+      "bl_id": "633172968",
+      "inventory": 52173,
+      "name": "Pokrywa osłona plandeka na basen 305 cm INTEX 28021",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, description.sections.0.items: description.sections[0].items is required; description.sections.0.type: description.sections[0].type is not allowed; description.sections.0.content: description.sections[0].content is not allowed; description: description must be a string; dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "description.sections.0.items": "\"description.sections[0].items\" is required",
+            "description.sections.0.type": "\"description.sections[0].type\" is not allowed",
+            "description.sections.0.content": "\"description.sections[0].content\" is not allowed",
+            "description": "\"description\" must be a string",
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "xcfq7apmBRf-b",
+        "traceId": "xcfq7apmBRf-b"
+      }
+    },
+    {
+      "sku": "10-3",
+      "bl_id": "633172969",
+      "inventory": 52173,
+      "name": "Pokrywa osłona plandeka na basen 305 cm INTEX 28021",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, description.sections.0.items: description.sections[0].items is required; description.sections.0.type: description.sections[0].type is not allowed; description.sections.0.content: description.sections[0].content is not allowed; description: description must be a string; dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "description.sections.0.items": "\"description.sections[0].items\" is required",
+            "description.sections.0.type": "\"description.sections[0].type\" is not allowed",
+            "description.sections.0.content": "\"description.sections[0].content\" is not allowed",
+            "description": "\"description\" must be a string",
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "vvc7lIfQRzeL1",
+        "traceId": "vvc7lIfQRzeL1"
+      }
+    }
+  ]
+}

@@ -1,0 +1,199 @@
+[15:55:34] Loaded 12896 categories, 11314 leafs
+[15:55:34] Context: 912392 chars
+[15:55:34] BL inv 45513: fetching...
+[15:55:36] BL inv 52173: fetching...
+[15:55:40] BL inv 111230: fetching...
+[15:55:42] BL products: 2758
+[15:55:42] Batch 1/56: 50 SKU...
+[15:56:05]   → 50/50 matched
+[15:56:05] Batch 2/56: 50 SKU...
+[15:56:30]   → 50/50 matched
+[15:56:30] Batch 3/56: 50 SKU...
+[15:56:57]   ⚠️  JSON fail (attempt 1): Expecting property name enclosed in double quotes: line 48 column 3 (char 778)
+[15:57:00]   ⚠️  API fail (attempt 2): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[15:57:37]   → 50/50 matched
+[15:57:37] Batch 4/56: 50 SKU...
+[15:58:07]   → 50/50 matched
+[15:58:07] Batch 5/56: 50 SKU...
+[15:58:33]   → 50/50 matched
+[15:58:33] Batch 6/56: 50 SKU...
+[15:59:04]   → 50/50 matched
+[15:59:04] Batch 7/56: 50 SKU...
+[15:59:30]   → 50/50 matched
+[15:59:30] Batch 8/56: 50 SKU...
+[16:00:00]   → 50/50 matched
+[16:00:00] Batch 9/56: 50 SKU...
+[16:00:00]   ⚠️  API fail (attempt 1): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:00:26]   → 50/50 matched
+[16:00:26] Batch 10/56: 50 SKU...
+[16:00:41]   → 50/50 matched
+[16:00:41] Batch 11/56: 50 SKU...
+[16:01:06]   → 50/50 matched
+[16:01:06] Batch 12/56: 50 SKU...
+[16:01:13]   → 50/50 matched
+[16:01:13] Batch 13/56: 50 SKU...
+[16:01:33]   → 50/50 matched
+[16:01:33] Batch 14/56: 50 SKU...
+[16:01:34]   ⚠️  API fail (attempt 1): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:01:40]   ⚠️  API fail (attempt 2): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:01:45]   ⚠️  API fail (attempt 3): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:01:50]   → 0/50 matched
+[16:01:50] Batch 15/56: 50 SKU...
+[16:01:51]   ⚠️  API fail (attempt 1): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:01:56]   ⚠️  API fail (attempt 2): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:02:02]   ⚠️  API fail (attempt 3): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:02:07]   → 0/50 matched
+[16:02:07] Batch 16/56: 50 SKU...
+[16:02:27]   → 50/50 matched
+[16:02:27] Batch 17/56: 50 SKU...
+[16:02:57]   → 50/50 matched
+[16:02:57] Batch 18/56: 50 SKU...
+[16:03:24]   → 50/50 matched
+[16:03:24] Batch 19/56: 50 SKU...
+[16:03:52]   → 50/50 matched
+[16:03:52] Batch 20/56: 50 SKU...
+[16:04:16]   → 50/50 matched
+[16:04:16] Batch 21/56: 50 SKU...
+[16:04:38]   → 50/50 matched
+[16:04:38] Batch 22/56: 50 SKU...
+[16:05:02]   → 49/50 matched
+[16:05:02] Batch 23/56: 50 SKU...
+[16:05:03]   ⚠️  API fail (attempt 1): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:05:32]   → 50/50 matched
+[16:05:32] Batch 24/56: 50 SKU...
+[16:06:02]   → 50/50 matched
+[16:06:02] Batch 25/56: 50 SKU...
+[16:06:30]   → 50/50 matched
+[16:06:30] Batch 26/56: 50 SKU...
+[16:06:52]   → 50/50 matched
+[16:06:52] Batch 27/56: 50 SKU...
+[16:07:13]   → 50/50 matched
+[16:07:13] Batch 28/56: 50 SKU...
+[16:07:31]   → 50/50 matched
+[16:07:31] Batch 29/56: 50 SKU...
+[16:07:53]   → 50/50 matched
+[16:07:53] Batch 30/56: 50 SKU...
+[16:07:54]   ⚠️  API fail (attempt 1): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:07:59]   ⚠️  API fail (attempt 2): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:08:30]   → 50/50 matched
+[16:08:30] Batch 31/56: 50 SKU...
+[16:08:56]   → 50/50 matched
+[16:08:56] Batch 32/56: 50 SKU...
+[16:09:10]   → 50/50 matched
+[16:09:10] Batch 33/56: 50 SKU...
+[16:09:22]   → 50/50 matched
+[16:09:22] Batch 34/56: 50 SKU...
+[16:09:39]   → 50/50 matched
+[16:09:39] Batch 35/56: 50 SKU...
+[16:09:40]   ⚠️  API fail (attempt 1): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:09:45]   ⚠️  API fail (attempt 2): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:09:51]   ⚠️  API fail (attempt 3): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:09:56]   → 0/50 matched
+[16:09:56] Batch 36/56: 50 SKU...
+[16:09:57]   ⚠️  API fail (attempt 1): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:10:02]   ⚠️  API fail (attempt 2): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:10:18]   → 50/50 matched
+[16:10:18] Batch 37/56: 50 SKU...
+[16:10:29]   → 50/50 matched
+[16:10:29] Batch 38/56: 50 SKU...
+[16:10:37]   → 50/50 matched
+[16:10:37] Batch 39/56: 50 SKU...
+[16:10:37]   ⚠️  API fail (attempt 1): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:10:43]   ⚠️  API fail (attempt 2): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:10:49]   ⚠️  API fail (attempt 3): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:10:54]   → 0/50 matched
+[16:10:54] Batch 40/56: 50 SKU...
+[16:10:55]   ⚠️  API fail (attempt 1): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:11:00]   ⚠️  API fail (attempt 2): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:11:33]   → 50/50 matched
+[16:11:33] Batch 41/56: 50 SKU...
+[16:11:40]   → 50/50 matched
+[16:11:40] Batch 42/56: 50 SKU...
+[16:11:54]   → 50/50 matched
+[16:11:54] Batch 43/56: 50 SKU...
+[16:11:54]   ⚠️  API fail (attempt 1): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:12:00]   ⚠️  API fail (attempt 2): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:12:16]   → 50/50 matched
+[16:12:16] Batch 44/56: 50 SKU...
+[16:12:22]   → 50/50 matched
+[16:12:22] Batch 45/56: 50 SKU...
+[16:12:30]   → 50/50 matched
+[16:12:30] Batch 46/56: 50 SKU...
+[16:12:30]   ⚠️  API fail (attempt 1): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:12:37]   ⚠️  API fail (attempt 2): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:12:43]   ⚠️  API fail (attempt 3): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:12:48]   → 0/50 matched
+[16:12:48] Batch 47/56: 50 SKU...
+[16:12:48]   ⚠️  API fail (attempt 1): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:12:54]   ⚠️  API fail (attempt 2): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:13:00]   ⚠️  API fail (attempt 3): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:13:05]   → 0/50 matched
+[16:13:05] Batch 48/56: 50 SKU...
+[16:13:28]   → 50/50 matched
+[16:13:28] Batch 49/56: 50 SKU...
+[16:13:51]   → 50/50 matched
+[16:13:51] Batch 50/56: 50 SKU...
+[16:14:20]   → 50/50 matched
+[16:14:20] Batch 51/56: 50 SKU...
+[16:14:49]   ⚠️  JSON fail (attempt 1): Expecting value: line 18 column 13 (char 367)
+[16:15:16]   ⚠️  JSON fail (attempt 2): Expecting property name enclosed in double quotes: line 27 column 21 (char 555)
+[16:15:44]   → 50/50 matched
+[16:15:44] Batch 52/56: 50 SKU...
+[16:16:07]   → 50/50 matched
+[16:16:07] Batch 53/56: 50 SKU...
+[16:16:35]   ⚠️  JSON fail (attempt 1): Expecting ',' delimiter: line 18 column 18 (char 384)
+[16:17:06]   ⚠️  JSON fail (attempt 2): Expecting value: line 18 column 16 (char 382)
+[16:17:34]   → 50/50 matched
+[16:17:34] Batch 54/56: 50 SKU...
+[16:17:56]   → 50/50 matched
+[16:17:56] Batch 55/56: 50 SKU...
+[16:17:57]   ⚠️  API fail (attempt 1): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:18:03]   ⚠️  API fail (attempt 2): ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more info
+[16:18:35]   → 50/50 matched
+[16:18:35] Batch 56/56: 8 SKU...
+[16:18:43]   → 8/8 matched
+[16:18:43] TOTAL matched: 2457 / 2758
+[16:18:43] Saved: /Users/jakubknap/Documents/Projects/marketia-xml-pro/output/ai_classify_20260721_161843.json
+[16:18:43] Top 15 kategorie:
+[16:18:43]    131× 515: Dom i ogród > Ogród > Baseny ogrodowe i osprzęt > Akcesoria basenowe
+[16:18:43]    118× 516: Dom i ogród > Ogród > Baseny ogrodowe i osprzęt > Baseny ogrodowe
+[16:18:43]    109× 10286: Sport i turystyka > Turystyka > Śpiwory, materace i karimaty > Materace
+[16:18:43]    105× 519: Dom i ogród > Ogród > Baseny ogrodowe i osprzęt > Pokrywy, folie, plandeki basenowe
+[16:18:43]     91× 557: Dom i ogród > Ogród > Meble ogrodowe > Stoły i stoliki ogrodowe
+[16:18:43]     90× 520: Dom i ogród > Ogród > Baseny ogrodowe i osprzęt > Pompy i filtry basenowe
+[16:18:43]     73× 1787: Dziecko > Zabawki ogrodowe > Baseny i zabawki do wody > Zabawki wodne
+[16:18:43]     69× 1785: Dziecko > Zabawki ogrodowe > Baseny i zabawki do wody > Baseny
+[16:18:43]     69× 552: Dom i ogród > Ogród > Meble ogrodowe > Leżaki i leżanki ogrodowe
+[16:18:43]     57× 14: Dom i ogród > Budowa i Remont > Drzwi wewnętrzne i zewnętrzne > Daszki nad drzwi
+[16:18:43]     53× 9819: Sport i turystyka > Sporty wodne > Pływanie > Rękawki, deski i koła dmuchane
+[16:18:43]     45× 330: Dom i ogród > Meble > Salon > Krzesła
+[16:18:43]     39× 10196: Sport i turystyka > Turystyka > Na plażę/Na piknik > Materace plażowe i akcesoria dmuchane
+[16:18:43]     38× 551: Dom i ogród > Ogród > Meble ogrodowe > Krzesła ogrodowe
+[16:18:43]     37× 2848: Elektronika > RTV i AGD > Elektronika > Elektronika > Aparatura pomiarowa > Pozostałe
+[16:18:43] PATCH payload: 2457
+[16:18:55]   batch [1-100]: ok=59 fail=41
+[16:19:06]   batch [101-200]: ok=51 fail=49
+[16:19:19]   batch [201-300]: ok=69 fail=31
+[16:19:29]   batch [301-400]: ok=58 fail=42
+[16:19:41]   batch [401-500]: ok=44 fail=56
+[16:19:45]   batch [501-600]: ok=100 fail=0
+[16:19:56]   batch [601-700]: ok=83 fail=17
+[16:20:08]   batch [701-800]: ok=70 fail=30
+[16:20:19]   batch [801-900]: ok=63 fail=37
+[16:20:30]   batch [901-1000]: ok=66 fail=34
+[16:20:42]   batch [1001-1100]: ok=47 fail=53
+[16:20:53]   batch [1101-1200]: ok=64 fail=36
+[16:21:06]   batch [1201-1300]: ok=74 fail=26
+[16:21:12]   batch [1301-1400]: ok=100 fail=0
+[16:21:18]   batch [1401-1500]: ok=100 fail=0
+[16:21:23]   batch [1501-1600]: ok=100 fail=0
+[16:21:31]   batch [1601-1700]: ok=100 fail=0
+[16:21:36]   batch [1701-1800]: ok=100 fail=0
+[16:21:41]   batch [1801-1900]: ok=100 fail=0
+[16:21:46]   batch [1901-2000]: ok=100 fail=0
+[16:21:57]   batch [2001-2100]: ok=95 fail=5
+[16:22:07]   batch [2101-2200]: ok=100 fail=0
+[16:22:16]   batch [2201-2300]: ok=100 fail=0
+[16:22:26]   batch [2301-2400]: ok=56 fail=44
+[16:22:37]   batch [2401-2457]: ok=47 fail=10
+[16:22:38] CATEGORY SUMMARY: OK=1946 FAIL=511

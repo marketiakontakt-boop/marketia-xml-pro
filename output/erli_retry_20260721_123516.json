@@ -1,0 +1,4901 @@
+{
+  "timestamp": "20260721_123516",
+  "src": "output/erli_pilot_20260721_120601.json",
+  "results": [
+    {
+      "sku": "3833",
+      "bl_id": "642480582",
+      "inventory": 45513,
+      "name": "STOLIK OGRODOWY KWADRATOWY METALOWY 80 X 80 CM GARDENSTEIN BREKKE",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "lxdk4-35TGdbM",
+        "traceId": "lxdk4-35TGdbM"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "3834",
+      "bl_id": "642480583",
+      "inventory": 45513,
+      "name": "STOLIK OGRODOWY OKRĄGŁY METALOWY Z OTWOREM NA PARASOL GARDENSTEIN BREKKE",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "lxdk4tcHWdeiP",
+        "traceId": "lxdk4tcHWdeiP"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "3844",
+      "bl_id": "642480585",
+      "inventory": 45513,
+      "name": "PARASOL GRZEJNIK GAZOWY OGRODOWY 13 KW GARDENSTEIN BREKKE Z POKROWCEM",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "9tr9jDcx5j6Mg",
+        "traceId": "9tr9jDcx5j6Mg"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "3890",
+      "bl_id": "642480587",
+      "inventory": 45513,
+      "name": "NAMIOT OGRODOWY PAWILON SKŁADANY ZIELONY 300 X 300 CM GARDENSTEIN STIGEN",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "44r7sQdB7Fgu0",
+        "traceId": "44r7sQdB7Fgu0"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "3892",
+      "bl_id": "642480588",
+      "inventory": 45513,
+      "name": "NAMIOT OGRODOWY PAWILON IMPREZOWY SZARY 300 X 300 CM GARDENSTEIN STIGEN",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "clxzgOZDp1-dX",
+        "traceId": "clxzgOZDp1-dX"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "3893",
+      "bl_id": "642480589",
+      "inventory": 45513,
+      "name": "NAMIOT OGRODOWY PAWILON HANDLOWY ZIELONY GARDENSTEIN STIGEN 200 X 200 X",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "ch8jxY95MaV1F",
+        "traceId": "ch8jxY95MaV1F"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "4233",
+      "bl_id": "642480591",
+      "inventory": 45513,
+      "name": "STOLIK OGRODOWY KWADRATOWY METALOWY 105 CM GARDENSTEIN BREKKE",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "85gbppjLdYOKH",
+        "traceId": "85gbppjLdYOKH"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "4577",
+      "bl_id": "642480592",
+      "inventory": 45513,
+      "name": "KOMPLET 2 KRZESEŁ OGRODOWYCH SKŁADANYCH JASNY SZARY GARDENSTEIN EINAR",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "clxzgn6FSzNd8",
+        "traceId": "clxzgn6FSzNd8"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "4583",
+      "bl_id": "642480593",
+      "inventory": 45513,
+      "name": "PARASOL OGRODOWY BALKONOWY UCHYLNY ZIELONY 270 CM GARDENSTEIN FLOM",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "vqw6wDuoxa1Cl",
+        "traceId": "vqw6wDuoxa1Cl"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "4662",
+      "bl_id": "642480595",
+      "inventory": 45513,
+      "name": "NAMIOT OGRODOWY ROZKŁADANY Z DASZKIEM 300 X 300 CM GARDENSTEIN BREKKE",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "clxzgpoEMDSYa",
+        "traceId": "clxzgpoEMDSYa"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "4666",
+      "bl_id": "642480597",
+      "inventory": 45513,
+      "name": "POKROWIEC NA STÓŁ CATERINGOWY BIAŁY 240 X 76 X 74 CM GARDENSTEIN TORVEN",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "vvc7l_zEmfAbr",
+        "traceId": "vvc7l_zEmfAbr"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "4699",
+      "bl_id": "642480599",
+      "inventory": 45513,
+      "name": "GRZEJNIK GAZOWY OGRODOWY 11 KW NA POKROWIEC GARDENSTEIN SANDEN 45 X 45 CM",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "w7mklXgajWJ7f",
+        "traceId": "w7mklXgajWJ7f"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "833",
+      "bl_id": "642480551",
+      "inventory": 45513,
+      "name": "HUŚTAWKA OGRODOWA ROZKŁADANA 3-OSOBOWA BEŻOWA GARDENSTEIN FALKEN 160 X 110",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "w7mkl5wvMAWhl",
+        "traceId": "w7mkl5wvMAWhl"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "840",
+      "bl_id": "642480554",
+      "inventory": 45513,
+      "name": "SUSZARKA OGRODOWA OBROTOWA ALUMINIOWA 60 M GARDENSTEIN JERN Z POKROWCEM",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "85gbp10S_tUdd",
+        "traceId": "85gbp10S_tUdd"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-008",
+      "bl_id": "604190376",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DELFIN DO PŁYWANIA DUŻA 175 X 66 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "ch8jxf_kS-1U9",
+        "traceId": "ch8jxf_kS-1U9"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-008-1",
+      "bl_id": "645163527",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DELFIN DO PŁYWANIA DUŻA 175 X 66 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "vvc7l7DTJv8hT",
+        "traceId": "vvc7l7DTJv8hT"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-008-2",
+      "bl_id": "645163530",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DELFIN DO PŁYWANIA DUŻA 175 X 66 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "vqw6wsp0ZbHua",
+        "traceId": "vqw6wsp0ZbHua"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-008-3",
+      "bl_id": "645163534",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DELFIN DO PŁYWANIA DUŻA 175 X 66 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "j55zlsPknCFW3",
+        "traceId": "j55zlsPknCFW3"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-008-4",
+      "bl_id": "645163539",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DELFIN DO PŁYWANIA DUŻA 175 X 66 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "6zz99dtp9jHwp",
+        "traceId": "6zz99dtp9jHwp"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-041",
+      "bl_id": "604190465",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY RODZINNY PROSTOKĄTNY TURKUSOWY 262 X 175 X 56 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "vqw6wmwl0aoc6",
+        "traceId": "vqw6wmwl0aoc6"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-041-1",
+      "bl_id": "645163805",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY RODZINNY PROSTOKĄTNY TURKUSOWY 262 X 175 X 56 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "9vq4rgCfmqEbQ",
+        "traceId": "9vq4rgCfmqEbQ"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-041-2",
+      "bl_id": "645163808",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY RODZINNY PROSTOKĄTNY TURKUSOWY 262 X 175 X 56 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "ch8jxMxiMnK_5",
+        "traceId": "ch8jxMxiMnK_5"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-041-3",
+      "bl_id": "645163811",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY RODZINNY PROSTOKĄTNY TURKUSOWY 262 X 175 X 56 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "lxdk49PKsPG9Y",
+        "traceId": "lxdk49PKsPG9Y"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-342",
+      "bl_id": "604190328",
+      "inventory": 45513,
+      "name": "INTEX POMPKA RĘCZNA TŁOKOWA UNIWERSALNA 29 CM DO BASENU MATERACA",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "vpgtpZhlcyCKe",
+        "traceId": "vpgtpZhlcyCKe"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-342-1",
+      "bl_id": "645163296",
+      "inventory": 45513,
+      "name": "INTEX POMPKA RĘCZNA TŁOKOWA UNIWERSALNA 29 CM DO BASENU MATERACA",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "9tr9jpIOmtrV1",
+        "traceId": "9tr9jpIOmtrV1"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-342-2",
+      "bl_id": "645163299",
+      "inventory": 45513,
+      "name": "INTEX POMPKA RĘCZNA TŁOKOWA UNIWERSALNA 29 CM DO BASENU MATERACA",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "85gbp911JVhR2",
+        "traceId": "85gbp911JVhR2"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-342-3",
+      "bl_id": "645163303",
+      "inventory": 45513,
+      "name": "INTEX POMPKA RĘCZNA TŁOKOWA UNIWERSALNA 29 CM DO BASENU MATERACA",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "8gmv8oT3c7HSw",
+        "traceId": "8gmv8oT3c7HSw"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-342-4",
+      "bl_id": "645163306",
+      "inventory": 45513,
+      "name": "INTEX POMPKA RĘCZNA TŁOKOWA UNIWERSALNA 29 CM DO BASENU MATERACA",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "vqw6w3VxHGZiY",
+        "traceId": "vqw6w3VxHGZiY"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-342-5",
+      "bl_id": "645163308",
+      "inventory": 45513,
+      "name": "INTEX POMPKA RĘCZNA TŁOKOWA UNIWERSALNA 29 CM DO BASENU MATERACA",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "njp9ggkepRj2j",
+        "traceId": "njp9ggkepRj2j"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-342-6",
+      "bl_id": "645163312",
+      "inventory": 45513,
+      "name": "INTEX POMPKA RĘCZNA TŁOKOWA UNIWERSALNA 29 CM DO BASENU MATERACA",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "85gbpfUa-KEEi",
+        "traceId": "85gbpfUa-KEEi"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-342-7",
+      "bl_id": "645163315",
+      "inventory": 45513,
+      "name": "INTEX POMPKA RĘCZNA TŁOKOWA UNIWERSALNA 29 CM DO BASENU MATERACA",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "t7rlpwMC_4y1d",
+        "traceId": "t7rlpwMC_4y1d"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-342-8",
+      "bl_id": "645163317",
+      "inventory": 45513,
+      "name": "INTEX POMPKA RĘCZNA TŁOKOWA UNIWERSALNA 29 CM DO BASENU MATERACA",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "xcfq7CyJOCuib",
+        "traceId": "xcfq7CyJOCuib"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-343",
+      "bl_id": "604190316",
+      "inventory": 45513,
+      "name": "INTEX POMPKA RĘCZNA TŁOKOWA UNIWERSALNA 36 CM DO BASENU MATERACA",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "8gmv8uq9Al0Z2",
+        "traceId": "8gmv8uq9Al0Z2"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-343-1",
+      "bl_id": "645163277",
+      "inventory": 45513,
+      "name": "INTEX POMPKA RĘCZNA TŁOKOWA UNIWERSALNA 36 CM DO BASENU MATERACA",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "4q7kjwM_tO7Yp",
+        "traceId": "4q7kjwM_tO7Yp"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-343-2",
+      "bl_id": "645163279",
+      "inventory": 45513,
+      "name": "INTEX POMPKA RĘCZNA TŁOKOWA UNIWERSALNA 36 CM DO BASENU MATERACA",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "xcfq7_VAaxrsQ",
+        "traceId": "xcfq7_VAaxrsQ"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-343-3",
+      "bl_id": "645163282",
+      "inventory": 45513,
+      "name": "INTEX POMPKA RĘCZNA TŁOKOWA UNIWERSALNA 36 CM DO BASENU MATERACA",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "t7rlpM11QGfQN",
+        "traceId": "t7rlpM11QGfQN"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-343-4",
+      "bl_id": "645163285",
+      "inventory": 45513,
+      "name": "INTEX POMPKA RĘCZNA TŁOKOWA UNIWERSALNA 36 CM DO BASENU MATERACA",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "8gmv8eI14-mp6",
+        "traceId": "8gmv8eI14-mp6"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-343-5",
+      "bl_id": "645163288",
+      "inventory": 45513,
+      "name": "INTEX POMPKA RĘCZNA TŁOKOWA UNIWERSALNA 36 CM DO BASENU MATERACA",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "6zz99mfRvnAC9",
+        "traceId": "6zz99mfRvnAC9"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-343-6",
+      "bl_id": "645163291",
+      "inventory": 45513,
+      "name": "INTEX POMPKA RĘCZNA TŁOKOWA UNIWERSALNA 36 CM DO BASENU MATERACA",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "vpgtpFDuCuG1L",
+        "traceId": "vpgtpFDuCuG1L"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-443-1",
+      "bl_id": "645163548",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY PROSTOKĄTNY DLA DZIECI 166 X 100 X 25 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "ch8jxecNX3IMY",
+        "traceId": "ch8jxecNX3IMY"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-443-2",
+      "bl_id": "645163552",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY PROSTOKĄTNY DLA DZIECI 166 X 100 X 25 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "njp9gXmN3pEqG",
+        "traceId": "njp9gXmN3pEqG"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-443-3",
+      "bl_id": "645163555",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY PROSTOKĄTNY DLA DZIECI 166 X 100 X 25 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "vvc7l_LP0awLD",
+        "traceId": "vvc7l_LP0awLD"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-443-4",
+      "bl_id": "645163559",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY PROSTOKĄTNY DLA DZIECI 166 X 100 X 25 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "85gbp_pzvWzpr",
+        "traceId": "85gbp_pzvWzpr"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-518",
+      "bl_id": "604190346",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY OGRODOWY ANANASY PVC 132 X 28 CM 248 L",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "9vq4reSXYGWbx",
+        "traceId": "9vq4reSXYGWbx"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-518-1",
+      "bl_id": "645163367",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY OGRODOWY ANANASY PVC 132 X 28 CM 248 L",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "lxdk4ia5PU-dy",
+        "traceId": "lxdk4ia5PU-dy"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-518-2",
+      "bl_id": "645163370",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY OGRODOWY ANANASY PVC 132 X 28 CM 248 L",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "vvc7li1psdRlr",
+        "traceId": "vvc7li1psdRlr"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-566",
+      "bl_id": "604190355",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY OGRODOWY 188X46 CM 58431",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.4: images[4] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.4": "\"images[4]\" contains a duplicate value"
+          }
+        },
+        "spanId": "cgjjrKDa_eF3e",
+        "traceId": "cgjjrKDa_eF3e"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572",
+      "bl_id": "604190369",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "vvc7l0SSK0Hiu",
+        "traceId": "vvc7l0SSK0Hiu"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-1",
+      "bl_id": "645163399",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "f4kw5dCnOEMrK",
+        "traceId": "f4kw5dCnOEMrK"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-10",
+      "bl_id": "645163420",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "vpgtpXZdB9fvt",
+        "traceId": "vpgtpXZdB9fvt"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-11",
+      "bl_id": "645163421",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "vpgtpk1R9s8g-",
+        "traceId": "vpgtpk1R9s8g-"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-12",
+      "bl_id": "645163423",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "njp9g-tEItpSM",
+        "traceId": "njp9g-tEItpSM"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-13",
+      "bl_id": "645163426",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "t7rlp_n8ElK50",
+        "traceId": "t7rlp_n8ElK50"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-14",
+      "bl_id": "645163428",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "w7mkljUTuTsFm",
+        "traceId": "w7mkljUTuTsFm"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-15",
+      "bl_id": "645163430",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "njp9gAe1y266Z",
+        "traceId": "njp9gAe1y266Z"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-16",
+      "bl_id": "645163432",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "vpgtpJiDS_6G_",
+        "traceId": "vpgtpJiDS_6G_"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-17",
+      "bl_id": "645163437",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "85gbpgI6RUKfS",
+        "traceId": "85gbpgI6RUKfS"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-18",
+      "bl_id": "645163439",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "n567j1uUpXQFn",
+        "traceId": "n567j1uUpXQFn"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-19",
+      "bl_id": "645163442",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "9vq4rdQgvkHQJ",
+        "traceId": "9vq4rdQgvkHQJ"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-2",
+      "bl_id": "645163402",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "cgjjrdmihYIgW",
+        "traceId": "cgjjrdmihYIgW"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-20",
+      "bl_id": "645163445",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "lxdk4DdAmSqkh",
+        "traceId": "lxdk4DdAmSqkh"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-21",
+      "bl_id": "645163448",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "j55zlJE3PzzLY",
+        "traceId": "j55zlJE3PzzLY"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-22",
+      "bl_id": "645163451",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "44r7sONm_EC5C",
+        "traceId": "44r7sONm_EC5C"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-23",
+      "bl_id": "645163455",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "8gmv8RHIQP5XR",
+        "traceId": "8gmv8RHIQP5XR"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-24",
+      "bl_id": "645163457",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "lm4xqHhGmtTQk",
+        "traceId": "lm4xqHhGmtTQk"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-25",
+      "bl_id": "645163461",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "9vq4rG4Odh9s_",
+        "traceId": "9vq4rG4Odh9s_"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-26",
+      "bl_id": "645163463",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "9tr9jbOxnLPss",
+        "traceId": "9tr9jbOxnLPss"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-27",
+      "bl_id": "645163467",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "8gmv8UUb3iFmK",
+        "traceId": "8gmv8UUb3iFmK"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-28",
+      "bl_id": "645163471",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "vpgtpR8aVS7fZ",
+        "traceId": "vpgtpR8aVS7fZ"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-29",
+      "bl_id": "645163473",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "85gbpkp_bppve",
+        "traceId": "85gbpkp_bppve"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-3",
+      "bl_id": "645163403",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "lxdk4zk8C4rWz",
+        "traceId": "lxdk4zk8C4rWz"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-30",
+      "bl_id": "645163476",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "8gmv8iKU9rKGS",
+        "traceId": "8gmv8iKU9rKGS"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-31",
+      "bl_id": "645163479",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "vpgtpEETN5xBW",
+        "traceId": "vpgtpEETN5xBW"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-32",
+      "bl_id": "645163481",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "j55zlt7olcmDS",
+        "traceId": "j55zlt7olcmDS"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-33",
+      "bl_id": "645163484",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "vqw6wEJO2nyfE",
+        "traceId": "vqw6wEJO2nyfE"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-34",
+      "bl_id": "645163488",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "gsw7bl9NhA98_",
+        "traceId": "gsw7bl9NhA98_"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-35",
+      "bl_id": "645163491",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "w7mkloj4YudVT",
+        "traceId": "w7mkloj4YudVT"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-36",
+      "bl_id": "645163496",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "4q7kjIvaZR5Ug",
+        "traceId": "4q7kjIvaZR5Ug"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-4",
+      "bl_id": "645163405",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "8gmv8qzBsekVK",
+        "traceId": "8gmv8qzBsekVK"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-5",
+      "bl_id": "645163408",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "8gmv8mmJnEtNA",
+        "traceId": "8gmv8mmJnEtNA"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-6",
+      "bl_id": "645163410",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "8gmv8XYOPX2K5",
+        "traceId": "8gmv8XYOPX2K5"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-7",
+      "bl_id": "645163411",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "j55zlcWe7S27h",
+        "traceId": "j55zlcWe7S27h"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-8",
+      "bl_id": "645163415",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "ch8jxtbvzrrcg",
+        "traceId": "ch8jxtbvzrrcg"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-572-9",
+      "bl_id": "645163417",
+      "inventory": 45513,
+      "name": "INTEX KOŁO DMUCHANE DO PŁYWANIA OPONA Z UCHWYTAMI 91 CM PVC 59252",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "9vq4r_hZ_Xs5X",
+        "traceId": "9vq4r_hZ_Xs5X"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-578",
+      "bl_id": "604190400",
+      "inventory": 45513,
+      "name": "INTEX FOTELIK DMUCHANY DO PŁYWANIA DLA MALUCHÓW 70 CM Z OPARCIEM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "n567jxC1IIRoF",
+        "traceId": "n567jxC1IIRoF"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-591",
+      "bl_id": "604190363",
+      "inventory": 45513,
+      "name": "INTEX RĘKAWKI DO PŁYWANIA POMARAŃCZOWE DMUCHANE 23 X 15 CM DLA DZIECI",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "85gbpYwg1UvaV",
+        "traceId": "85gbpYwg1UvaV"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-591-1",
+      "bl_id": "645163391",
+      "inventory": 45513,
+      "name": "INTEX RĘKAWKI DO PŁYWANIA POMARAŃCZOWE DMUCHANE 23 X 15 CM DLA DZIECI",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "8gmv8h-Gh--ni",
+        "traceId": "8gmv8h-Gh--ni"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-591-2",
+      "bl_id": "645163393",
+      "inventory": 45513,
+      "name": "INTEX RĘKAWKI DO PŁYWANIA POMARAŃCZOWE DMUCHANE 23 X 15 CM DLA DZIECI",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "t7rlpUk5xzVX4",
+        "traceId": "t7rlpUk5xzVX4"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-594",
+      "bl_id": "604190371",
+      "inventory": 45513,
+      "name": "INTEX PIŁKA PLAŻOWA DMUCHANA KOLOROWA WZORY 51 CM 59020",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "vvc7lpNRmc2XC",
+        "traceId": "vvc7lpNRmc2XC"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-594-1",
+      "bl_id": "645163501",
+      "inventory": 45513,
+      "name": "INTEX PIŁKA PLAŻOWA DMUCHANA KOLOROWA WZORY 51 CM 59020",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "n567jEnulPGM3",
+        "traceId": "n567jEnulPGM3"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-594-2",
+      "bl_id": "645163504",
+      "inventory": 45513,
+      "name": "INTEX PIŁKA PLAŻOWA DMUCHANA KOLOROWA WZORY 51 CM 59020",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "t7rlpR8cBdbPE",
+        "traceId": "t7rlpR8cBdbPE"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-594-3",
+      "bl_id": "645163507",
+      "inventory": 45513,
+      "name": "INTEX PIŁKA PLAŻOWA DMUCHANA KOLOROWA WZORY 51 CM 59020",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "lxdk4Wcxpb1oy",
+        "traceId": "lxdk4Wcxpb1oy"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-594-4",
+      "bl_id": "645163510",
+      "inventory": 45513,
+      "name": "INTEX PIŁKA PLAŻOWA DMUCHANA KOLOROWA WZORY 51 CM 59020",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "lm4xqcBMdupDB",
+        "traceId": "lm4xqcBMdupDB"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-594-5",
+      "bl_id": "645163513",
+      "inventory": 45513,
+      "name": "INTEX PIŁKA PLAŻOWA DMUCHANA KOLOROWA WZORY 51 CM 59020",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "8gmv8bPI4rrn0",
+        "traceId": "8gmv8bPI4rrn0"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-594-6",
+      "bl_id": "645163516",
+      "inventory": 45513,
+      "name": "INTEX PIŁKA PLAŻOWA DMUCHANA KOLOROWA WZORY 51 CM 59020",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "n567jw5Rghjuj",
+        "traceId": "n567jw5Rghjuj"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-594-7",
+      "bl_id": "645163519",
+      "inventory": 45513,
+      "name": "INTEX PIŁKA PLAŻOWA DMUCHANA KOLOROWA WZORY 51 CM 59020",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "44r7ssutHUS60",
+        "traceId": "44r7ssutHUS60"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-594-8",
+      "bl_id": "645163523",
+      "inventory": 45513,
+      "name": "INTEX PIŁKA PLAŻOWA DMUCHANA KOLOROWA WZORY 51 CM 59020",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "6zz99yOVBqbqF",
+        "traceId": "6zz99yOVBqbqF"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-597",
+      "bl_id": "604190358",
+      "inventory": 45513,
+      "name": "INTEX FOTELIK DMUCHANY DO PŁYWANIA DLA MALUCHÓW 79 X 79 CM POOL SCHOOL",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "8gmv8kIrwNOXH",
+        "traceId": "8gmv8kIrwNOXH"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-597-1",
+      "bl_id": "645163385",
+      "inventory": 45513,
+      "name": "INTEX FOTELIK DMUCHANY DO PŁYWANIA DLA MALUCHÓW 79 X 79 CM POOL SCHOOL",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "ch8jxddgaYz3x",
+        "traceId": "ch8jxddgaYz3x"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-597-2",
+      "bl_id": "645163386",
+      "inventory": 45513,
+      "name": "INTEX FOTELIK DMUCHANY DO PŁYWANIA DLA MALUCHÓW 79 X 79 CM POOL SCHOOL",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "6zz99Ih8OcEOe",
+        "traceId": "6zz99Ih8OcEOe"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-597-3",
+      "bl_id": "645163388",
+      "inventory": 45513,
+      "name": "INTEX FOTELIK DMUCHANY DO PŁYWANIA DLA MALUCHÓW 79 X 79 CM POOL SCHOOL",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "xcfq7YDkKaxgp",
+        "traceId": "xcfq7YDkKaxgp"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-825",
+      "bl_id": "604190352",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY OGRODOWY OKRĄGŁY NIEBIESKI 147 X 33 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "ch8jxwS6TvuiN",
+        "traceId": "ch8jxwS6TvuiN"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-825-1",
+      "bl_id": "645163375",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY OGRODOWY OKRĄGŁY NIEBIESKI 147 X 33 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "j55zl0u-pTFZU",
+        "traceId": "j55zl0u-pTFZU"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-825-2",
+      "bl_id": "645163377",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY OGRODOWY OKRĄGŁY NIEBIESKI 147 X 33 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "85gbpc_9ZrH-V",
+        "traceId": "85gbpc_9ZrH-V"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-825-3",
+      "bl_id": "645163380",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY OGRODOWY OKRĄGŁY NIEBIESKI 147 X 33 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "njp9g-npadtkT",
+        "traceId": "njp9g-npadtkT"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-843",
+      "bl_id": "604190407",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DO PŁYWANIA ALIGATOR 168 X 86 CM MAKS 40 KG",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "vpgtpJowbXtzB",
+        "traceId": "vpgtpJowbXtzB"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-843-1",
+      "bl_id": "645163573",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DO PŁYWANIA ALIGATOR 168 X 86 CM MAKS 40 KG",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "njp9gKfG-MQfZ",
+        "traceId": "njp9gKfG-MQfZ"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-843-10",
+      "bl_id": "645163650",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DO PŁYWANIA ALIGATOR 168 X 86 CM MAKS 40 KG",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "cgjjrHsWFNPKn",
+        "traceId": "cgjjrHsWFNPKn"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-843-11",
+      "bl_id": "645163659",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DO PŁYWANIA ALIGATOR 168 X 86 CM MAKS 40 KG",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "lm4xqtoDITQFx",
+        "traceId": "lm4xqtoDITQFx"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-843-12",
+      "bl_id": "645163667",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DO PŁYWANIA ALIGATOR 168 X 86 CM MAKS 40 KG",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "ch8jxWsUZLKEB",
+        "traceId": "ch8jxWsUZLKEB"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-843-13",
+      "bl_id": "645163676",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DO PŁYWANIA ALIGATOR 168 X 86 CM MAKS 40 KG",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "44r7spFPGKgVk",
+        "traceId": "44r7spFPGKgVk"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-843-14",
+      "bl_id": "645163685",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DO PŁYWANIA ALIGATOR 168 X 86 CM MAKS 40 KG",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "9vq4rmBeJqWRq",
+        "traceId": "9vq4rmBeJqWRq"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-843-15",
+      "bl_id": "645163694",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DO PŁYWANIA ALIGATOR 168 X 86 CM MAKS 40 KG",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "clxzgXx39wQY7",
+        "traceId": "clxzgXx39wQY7"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-843-16",
+      "bl_id": "645163701",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DO PŁYWANIA ALIGATOR 168 X 86 CM MAKS 40 KG",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "6zz9939of9FEM",
+        "traceId": "6zz9939of9FEM"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-843-17",
+      "bl_id": "645163711",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DO PŁYWANIA ALIGATOR 168 X 86 CM MAKS 40 KG",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "xcfq7QM9wVQY-",
+        "traceId": "xcfq7QM9wVQY-"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-843-18",
+      "bl_id": "645163721",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DO PŁYWANIA ALIGATOR 168 X 86 CM MAKS 40 KG",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "44r7sPzomeizd",
+        "traceId": "44r7sPzomeizd"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-843-19",
+      "bl_id": "645163728",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DO PŁYWANIA ALIGATOR 168 X 86 CM MAKS 40 KG",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "85gbpVOxEuSsK",
+        "traceId": "85gbpVOxEuSsK"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-843-2",
+      "bl_id": "645163583",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DO PŁYWANIA ALIGATOR 168 X 86 CM MAKS 40 KG",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "44r7sWlToEPnn",
+        "traceId": "44r7sWlToEPnn"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-843-20",
+      "bl_id": "645163737",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DO PŁYWANIA ALIGATOR 168 X 86 CM MAKS 40 KG",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "lxdk4WNnHJihe",
+        "traceId": "lxdk4WNnHJihe"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-843-3",
+      "bl_id": "645163591",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DO PŁYWANIA ALIGATOR 168 X 86 CM MAKS 40 KG",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "w7mkl0cxNW9Tg",
+        "traceId": "w7mkl0cxNW9Tg"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-843-4",
+      "bl_id": "645163598",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DO PŁYWANIA ALIGATOR 168 X 86 CM MAKS 40 KG",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "lm4xqVRUuSzJn",
+        "traceId": "lm4xqVRUuSzJn"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-843-5",
+      "bl_id": "645163608",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DO PŁYWANIA ALIGATOR 168 X 86 CM MAKS 40 KG",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "9vq4rTACkyIRG",
+        "traceId": "9vq4rTACkyIRG"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-843-6",
+      "bl_id": "645163616",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DO PŁYWANIA ALIGATOR 168 X 86 CM MAKS 40 KG",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "n567jNRMmCE_M",
+        "traceId": "n567jNRMmCE_M"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-843-7",
+      "bl_id": "645163624",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DO PŁYWANIA ALIGATOR 168 X 86 CM MAKS 40 KG",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "j55zlfVgBkWeT",
+        "traceId": "j55zlfVgBkWeT"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-843-8",
+      "bl_id": "645163633",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DO PŁYWANIA ALIGATOR 168 X 86 CM MAKS 40 KG",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "xcfq7jNeLw8p2",
+        "traceId": "xcfq7jNeLw8p2"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-843-9",
+      "bl_id": "645163642",
+      "inventory": 45513,
+      "name": "INTEX ZABAWKA DMUCHANA DO PŁYWANIA ALIGATOR 168 X 86 CM MAKS 40 KG",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "xcfq7d7bBP_zX",
+        "traceId": "xcfq7d7bBP_zX"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-859",
+      "bl_id": "604190342",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY OGRODOWY OKRĄGŁY NIEBIESKI 114 X 25 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "f4kw53ue2wQKS",
+        "traceId": "f4kw53ue2wQKS"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-859-1",
+      "bl_id": "645163350",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY OGRODOWY OKRĄGŁY NIEBIESKI 114 X 25 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "cgjjrl7F5D_UF",
+        "traceId": "cgjjrl7F5D_UF"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-859-2",
+      "bl_id": "645163354",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY OGRODOWY OKRĄGŁY NIEBIESKI 114 X 25 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "vvc7l1OZBDt51",
+        "traceId": "vvc7l1OZBDt51"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-859-3",
+      "bl_id": "645163356",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY OGRODOWY OKRĄGŁY NIEBIESKI 114 X 25 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "4q7kjqND8dcbD",
+        "traceId": "4q7kjqND8dcbD"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-859-4",
+      "bl_id": "645163359",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY OGRODOWY OKRĄGŁY NIEBIESKI 114 X 25 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "44r7srUwzUNRb",
+        "traceId": "44r7srUwzUNRb"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-859-5",
+      "bl_id": "645163361",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY OGRODOWY OKRĄGŁY NIEBIESKI 114 X 25 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "cgjjrZA47nYPI",
+        "traceId": "cgjjrZA47nYPI"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-859-6",
+      "bl_id": "645163363",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY OGRODOWY OKRĄGŁY NIEBIESKI 114 X 25 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "j55zlE6uWXXpj",
+        "traceId": "j55zlE6uWXXpj"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-D77",
+      "bl_id": "604190332",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY BRODZIK DLA DZIECI MUCHOMOREK 102 X 89 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "t7rlpVPEOQHuL",
+        "traceId": "t7rlpVPEOQHuL"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-D77-1",
+      "bl_id": "645163322",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY BRODZIK DLA DZIECI MUCHOMOREK 102 X 89 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "njp9gHWGEiLIX",
+        "traceId": "njp9gHWGEiLIX"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-D77-2",
+      "bl_id": "645163326",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY BRODZIK DLA DZIECI MUCHOMOREK 102 X 89 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "6zz9965wFPdUQ",
+        "traceId": "6zz9965wFPdUQ"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-D77-3",
+      "bl_id": "645163330",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY BRODZIK DLA DZIECI MUCHOMOREK 102 X 89 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "44r7soibq07aR",
+        "traceId": "44r7soibq07aR"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-D77-4",
+      "bl_id": "645163332",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY BRODZIK DLA DZIECI MUCHOMOREK 102 X 89 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "n567jkuzna1I3",
+        "traceId": "n567jkuzna1I3"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-D77-5",
+      "bl_id": "645163335",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY BRODZIK DLA DZIECI MUCHOMOREK 102 X 89 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "njp9gezdCOO19",
+        "traceId": "njp9gezdCOO19"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-D77-6",
+      "bl_id": "645163338",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY BRODZIK DLA DZIECI MUCHOMOREK 102 X 89 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "xcfq7XW8eX1Dk",
+        "traceId": "xcfq7XW8eX1Dk"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-D77-7",
+      "bl_id": "645163342",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY BRODZIK DLA DZIECI MUCHOMOREK 102 X 89 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "85gbpy4tUoChC",
+        "traceId": "85gbpy4tUoChC"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-D77-8",
+      "bl_id": "645163346",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY BRODZIK DLA DZIECI MUCHOMOREK 102 X 89 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "6zz99NsqjQz53",
+        "traceId": "6zz99NsqjQz53"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-F57",
+      "bl_id": "604190365",
+      "inventory": 45513,
+      "name": "INTEX DMUCHANE KOŁO DO PŁYWANIA DONUT 99 X 25 CM PVC 56263",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "cgjjrDBgAXiy7",
+        "traceId": "cgjjrDBgAXiy7"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-J76",
+      "bl_id": "604190447",
+      "inventory": 45513,
+      "name": "INTEX BASEN ROZPOROWY OGRODOWY Z POMPĄ FILTRUJĄCĄ 305 X 61 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "85gbpHGu7Ql8p",
+        "traceId": "85gbpHGu7Ql8p"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-J76-1",
+      "bl_id": "645163748",
+      "inventory": 45513,
+      "name": "INTEX BASEN ROZPOROWY OGRODOWY Z POMPĄ FILTRUJĄCĄ 305 X 61 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "xcfq7UimoUrph",
+        "traceId": "xcfq7UimoUrph"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-J76-2",
+      "bl_id": "645163752",
+      "inventory": 45513,
+      "name": "INTEX BASEN ROZPOROWY OGRODOWY Z POMPĄ FILTRUJĄCĄ 305 X 61 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "lxdk4FEnn3lpP",
+        "traceId": "lxdk4FEnn3lpP"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-J76-3",
+      "bl_id": "645163756",
+      "inventory": 45513,
+      "name": "INTEX BASEN ROZPOROWY OGRODOWY Z POMPĄ FILTRUJĄCĄ 305 X 61 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "vqw6wXfoIov8H",
+        "traceId": "vqw6wXfoIov8H"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-J76-4",
+      "bl_id": "645163761",
+      "inventory": 45513,
+      "name": "INTEX BASEN ROZPOROWY OGRODOWY Z POMPĄ FILTRUJĄCĄ 305 X 61 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "n567jjzy1vgud",
+        "traceId": "n567jjzy1vgud"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-K07",
+      "bl_id": "604190449",
+      "inventory": 45513,
+      "name": "INTEX BASEN ROZPOROWY Z POMPĄ EASY SET 305 X 61 CM 3077 L",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "9tr9j-iZx-oSs",
+        "traceId": "9tr9j-iZx-oSs"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-K07-1",
+      "bl_id": "645163769",
+      "inventory": 45513,
+      "name": "INTEX BASEN ROZPOROWY Z POMPĄ EASY SET 305 X 61 CM 3077 L",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "85gbpOjdLc4Sa",
+        "traceId": "85gbpOjdLc4Sa"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-K07-2",
+      "bl_id": "645163773",
+      "inventory": 45513,
+      "name": "INTEX BASEN ROZPOROWY Z POMPĄ EASY SET 305 X 61 CM 3077 L",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "lm4xq4wncXZa6",
+        "traceId": "lm4xq4wncXZa6"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-K07-3",
+      "bl_id": "645163777",
+      "inventory": 45513,
+      "name": "INTEX BASEN ROZPOROWY Z POMPĄ EASY SET 305 X 61 CM 3077 L",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "9vq4rp4dSe9-z",
+        "traceId": "9vq4rp4dSe9-z"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-K07-4",
+      "bl_id": "645163782",
+      "inventory": 45513,
+      "name": "INTEX BASEN ROZPOROWY Z POMPĄ EASY SET 305 X 61 CM 3077 L",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "vvc7lzg9C1yJ_",
+        "traceId": "vvc7lzg9C1yJ_"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-K07-5",
+      "bl_id": "645163784",
+      "inventory": 45513,
+      "name": "INTEX BASEN ROZPOROWY Z POMPĄ EASY SET 305 X 61 CM 3077 L",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "9vq4re3sNT7t9",
+        "traceId": "9vq4re3sNT7t9"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-K07-6",
+      "bl_id": "645163789",
+      "inventory": 45513,
+      "name": "INTEX BASEN ROZPOROWY Z POMPĄ EASY SET 305 X 61 CM 3077 L",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "n567jBjZ6FGqS",
+        "traceId": "n567jBjZ6FGqS"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-K07-7",
+      "bl_id": "645163793",
+      "inventory": 45513,
+      "name": "INTEX BASEN ROZPOROWY Z POMPĄ EASY SET 305 X 61 CM 3077 L",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "njp9gncpgmgGe",
+        "traceId": "njp9gncpgmgGe"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "A-K07-8",
+      "bl_id": "645163798",
+      "inventory": 45513,
+      "name": "INTEX BASEN ROZPOROWY Z POMPĄ EASY SET 305 X 61 CM 3077 L",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "9vq4rKMJ7RjCv",
+        "traceId": "9vq4rKMJ7RjCv"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "B-163",
+      "bl_id": "604190349",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY OGRODOWY TĘCZOWY DLA DZIECI 147 X 33 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "cgjjraSVrvYyM",
+        "traceId": "cgjjraSVrvYyM"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "B-163-1",
+      "bl_id": "645163372",
+      "inventory": 45513,
+      "name": "INTEX BASEN DMUCHANY OGRODOWY TĘCZOWY DLA DZIECI 147 X 33 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "6zz99WADtRkv1",
+        "traceId": "6zz99WADtRkv1"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "F-209",
+      "bl_id": "604190318",
+      "inventory": 45513,
+      "name": "MAKE DO KARMIENIA ZESTAW 3W1 BIAŁO-RÓŻOWE LUX",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.3: images[3] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.3": "\"images[3]\" contains a duplicate value"
+          }
+        },
+        "spanId": "vpgtpdF5fmObk",
+        "traceId": "vpgtpdF5fmObk"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "F-255",
+      "bl_id": "604190378",
+      "inventory": 45513,
+      "name": "TAFFY JEŹDZIK ODPYCHACZ CHODZIK AUTO DLA DZIECKA HOPLA TOYS DLA DZIECI",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.3: images[3] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.3": "\"images[3]\" contains a duplicate value"
+          }
+        },
+        "spanId": "xcfq70XJrrvz-",
+        "traceId": "xcfq70XJrrvz-"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "F-256",
+      "bl_id": "604190381",
+      "inventory": 45513,
+      "name": "PEPPY ODPYCHACZ CHODZIK QUAD W KOLORZE CZERWONYM HOPLA TOYS EN 71",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.3: images[3] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.3": "\"images[3]\" contains a duplicate value"
+          }
+        },
+        "spanId": "f4kw52aT31vq-",
+        "traceId": "f4kw52aT31vq-"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "F-280",
+      "bl_id": "604190413",
+      "inventory": 45513,
+      "name": "NIBBLES - BENZ ANTOS JEŹDZIK ODPYCHACZ TRUCK Z FUNKCJAMI DŹWIĘKO HOPLA TOYS",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.3: images[3] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.3": "\"images[3]\" contains a duplicate value"
+          }
+        },
+        "spanId": "clxzgGHo78s1H",
+        "traceId": "clxzgGHo78s1H"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "F-281",
+      "bl_id": "604190410",
+      "inventory": 45513,
+      "name": "SQUEAK - BENZ G-CLASS G350D JEŹDZIK ODPYCHACZ Z FUNKCJAMI DŹWIĘK HOPLA TOYS",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.3: images[3] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.3": "\"images[3]\" contains a duplicate value"
+          }
+        },
+        "spanId": "6zz99vgAjuqYe",
+        "traceId": "6zz99vgAjuqYe"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "G-124",
+      "bl_id": "604190472",
+      "inventory": 45513,
+      "name": "ROLY BUJACZEK SKŁADANA KOŁYSKA Z ZABAWKAMI BIAŁO-GRAFITOWY HOPLA TOYS",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.3: images[3] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.3": "\"images[3]\" contains a duplicate value"
+          }
+        },
+        "spanId": "njp9gEki16-Ww",
+        "traceId": "njp9gEki16-Ww"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "G-127",
+      "bl_id": "604190475",
+      "inventory": 45513,
+      "name": "ROLY BUJACZEK SKŁADANA KOŁYSKA Z ZABAWKAMI BIAŁO-RÓŻOWY HOPLA TOYS EN 71",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.3: images[3] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.3": "\"images[3]\" contains a duplicate value"
+          }
+        },
+        "spanId": "j55zlSzoJ56Mm",
+        "traceId": "j55zlSzoJ56Mm"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "G-193",
+      "bl_id": "604190470",
+      "inventory": 45513,
+      "name": "FEPA TYPU FISZKA ZE ŚWIĘCĄCYMI KOŁAMI LED NIEBIESKA 2W1",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.3: images[3] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.3": "\"images[3]\" contains a duplicate value"
+          }
+        },
+        "spanId": "n567jAKMC3AUY",
+        "traceId": "n567jAKMC3AUY"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "G-744",
+      "bl_id": "646350400",
+      "inventory": 45513,
+      "name": "Huśtawka ogrodowa Bocianie Gniazdo XL, 100 cm, 150 kg, niebieska",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "4q7kjzAXpRB8Z",
+        "traceId": "4q7kjzAXpRB8Z"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "R-029",
+      "bl_id": "604190324",
+      "inventory": 45513,
+      "name": "NOUGAT ODPYCHACZ SAMOCHÓD 2W1 - CZERWONY HOPLA TOYS DLA DZIECI",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.3: images[3] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.3": "\"images[3]\" contains a duplicate value"
+          }
+        },
+        "spanId": "9vq4rq7VDDJmo",
+        "traceId": "9vq4rq7VDDJmo"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "R-032",
+      "bl_id": "604190326",
+      "inventory": 45513,
+      "name": "NOUGAT ODPYCHACZ SAMOCHÓD 2W1 - NIEBIESKI HOPLA TOYS CERTYFIKAT",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.3: images[3] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.3": "\"images[3]\" contains a duplicate value"
+          }
+        },
+        "spanId": "ch8jxSPEXGqR2",
+        "traceId": "ch8jxSPEXGqR2"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "R-188",
+      "bl_id": "604190416",
+      "inventory": 45513,
+      "name": "NIBBLES - BENZ ANTOS JEŹDZIK ODPYCHACZ TRUCK Z FUNKCJAMI DŹWIĘKO HOPLA TOYS",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.3: images[3] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.3": "\"images[3]\" contains a duplicate value"
+          }
+        },
+        "spanId": "f4kw56XvSVM9F",
+        "traceId": "f4kw56XvSVM9F"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "R-969",
+      "bl_id": "604190460",
+      "inventory": 45513,
+      "name": "KOSZ KOSZYK TERMICZNY PIKNIKOWY NA ZAKUPY PLAŻĘ Z 2 UCHWYTAMI - W LIFEKRAFT",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "j55zlZRt5IExA",
+        "traceId": "j55zlZRt5IExA"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "R-971",
+      "bl_id": "604190463",
+      "inventory": 45513,
+      "name": "KOSZ KOSZYK TERMICZNY PIKNIKOWY NA ZAKUPY PLAŻĘ Z 2 UCHWYTAMI - W LIFEKRAFT",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.1: images[1] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.1": "\"images[1]\" contains a duplicate value"
+          }
+        },
+        "spanId": "ch8jxPO9QECt7",
+        "traceId": "ch8jxPO9QECt7"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "X-173",
+      "bl_id": "604190387",
+      "inventory": 45513,
+      "name": "ROWER ROWEREK TRÓJKOŁOWY BIEGOWY BAUERKRAFT 3W1 CZERWONY HOPLA TOYS",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, images.3: images[3] contains a duplicate value",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "images.3": "\"images[3]\" contains a duplicate value"
+          }
+        },
+        "spanId": "cgjjrDLt5RYMx",
+        "traceId": "cgjjrDLt5RYMx"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "3228",
+      "bl_id": "372680203",
+      "inventory": 52173,
+      "name": "Plastikowy regał łazienkowy z 4 półkami kółka biały ModernHome",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "vqw6wl3hDg0PJ",
+        "traceId": "vqw6wl3hDg0PJ"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "3538",
+      "bl_id": "372680908",
+      "inventory": 52173,
+      "name": "Odkurzacz basenowy do czyszczenia automatyczny do basenu ZX300 INTEX 28005",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "cgjjria2PIKvJ",
+        "traceId": "cgjjria2PIKvJ"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "3808-2",
+      "bl_id": "642058109",
+      "inventory": 52173,
+      "name": "KOCIOŁEK ŻELIWNY OGRODOWY 10 L GARDENSTEIN HALDEN 32 X 32 X 26 CM",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "9tr9j1IgnGqI9",
+        "traceId": "9tr9j1IgnGqI9"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "3821",
+      "bl_id": "372681634",
+      "inventory": 52173,
+      "name": "Sztuczny bluszcz żywopłot 500x50 cm zielona osłona na balkon maskująca",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "vqw6wRBjAuzWa",
+        "traceId": "vqw6wRBjAuzWa"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "3834-3",
+      "bl_id": "642058131",
+      "inventory": 52173,
+      "name": "STOLIK OGRODOWY OKRĄGŁY METALOWY Z OTWOREM NA PARASOL GARDENSTEIN BREKKE",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "f4kw53n9Fw4XE",
+        "traceId": "f4kw53n9Fw4XE"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "3904",
+      "bl_id": "372681923",
+      "inventory": 52173,
+      "name": "Kettlebell kettle 4 kg do ćwiczeń hantla kula odważnik obciążenie ciężar fitness ModernHome",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "6zz99Nr6kVsUX",
+        "traceId": "6zz99Nr6kVsUX"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "3918",
+      "bl_id": "372681962",
+      "inventory": 52173,
+      "name": "Hantle sześciokątne zestaw 2x2 kg ciężarki do ćwiczeń obciążniki fitness różowe ModernHome",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "njp9g1vIW-aGj",
+        "traceId": "njp9g1vIW-aGj"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "393",
+      "bl_id": "372678818",
+      "inventory": 52173,
+      "name": "Duża pompka ręczna do matareca basenu DOUBLE QUICK II INTEX 68614",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "vpgtp4dM1c8om",
+        "traceId": "vpgtp4dM1c8om"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "393-1",
+      "bl_id": "633172936",
+      "inventory": 52173,
+      "name": "Duża pompka ręczna do matareca basenu DOUBLE QUICK II INTEX 68614",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "njp9gYXftQ1Zr",
+        "traceId": "njp9gYXftQ1Zr"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "393-3",
+      "bl_id": "633172938",
+      "inventory": 52173,
+      "name": "Duża pompka ręczna do matareca basenu DOUBLE QUICK II INTEX 68614",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "vpgtpS0Qnb4Rx",
+        "traceId": "vpgtpS0Qnb4Rx"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "4233-2",
+      "bl_id": "642058183",
+      "inventory": 52173,
+      "name": "STOLIK OGRODOWY KWADRATOWY METALOWY 105 CM GARDENSTEIN BREKKE",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "vvc7l5ryGimb0",
+        "traceId": "vvc7l5ryGimb0"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "4233-3",
+      "bl_id": "642058185",
+      "inventory": 52173,
+      "name": "STOLIK OGRODOWY KWADRATOWY METALOWY 105 CM GARDENSTEIN BREKKE",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "vvc7lhO_9tr4v",
+        "traceId": "vvc7lhO_9tr4v"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "4246",
+      "bl_id": "372682055",
+      "inventory": 52173,
+      "name": "Lodówka turystyczna przenośna samochodowa 29L 220-240V DC12V funkcja grzania wkład gratis niebieska",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "j55zlEcE7NHgN",
+        "traceId": "j55zlEcE7NHgN"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "4248",
+      "bl_id": "372682061",
+      "inventory": 52173,
+      "name": "Piła łańcuchowa akumulatorowa mini pilarka ręczna silnik bezszczotkowy 21V + walizka",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "8gmv8JJj2y2-3",
+        "traceId": "8gmv8JJj2y2-3"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "4252",
+      "bl_id": "372682072",
+      "inventory": 52173,
+      "name": "Składany parasol ogrodowy balkonowy regulowany 210 cm szary",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "lm4xqFzy_kPl3",
+        "traceId": "lm4xqFzy_kPl3"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "4583-6",
+      "bl_id": "642058214",
+      "inventory": 52173,
+      "name": "PARASOL OGRODOWY BALKONOWY UCHYLNY ZIELONY 270 CM GARDENSTEIN FLOM",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "gsw7bQ4VdMyV3",
+        "traceId": "gsw7bQ4VdMyV3"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "4583-8",
+      "bl_id": "642058217",
+      "inventory": 52173,
+      "name": "PARASOL OGRODOWY BALKONOWY UCHYLNY ZIELONY 270 CM GARDENSTEIN FLOM",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "n567jw5xbHfS0",
+        "traceId": "n567jw5xbHfS0"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "4586",
+      "bl_id": "372682246",
+      "inventory": 52173,
+      "name": "Zestaw mebli dla dzieci stolik + 2 krzesła tablica kredowa ECOTOYS",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "gsw7bGxuYSdVv",
+        "traceId": "gsw7bGxuYSdVv"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "4592",
+      "bl_id": "372682265",
+      "inventory": 52173,
+      "name": "Rebounder do piłki nożnej trenażer piłkarski bramka do odbijania piłki 100x100 cm MOVEPRO",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "cgjjr8gmGnnni",
+        "traceId": "cgjjr8gmGnnni"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "4599",
+      "bl_id": "372682282",
+      "inventory": 52173,
+      "name": "Sztuczny bluszcz żywopłot 3 szt. 500x150 cm zielona osłona na balkon maskująca",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "lxdk4xTWl2LAr",
+        "traceId": "lxdk4xTWl2LAr"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "4606",
+      "bl_id": "372682307",
+      "inventory": 52173,
+      "name": "Dwustronna mata bambusowa 100x500 cm na balkon taras ogrodzenie antracyt MultiGarden",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "j55zlztjyBrR-",
+        "traceId": "j55zlztjyBrR-"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "4609",
+      "bl_id": "372682316",
+      "inventory": 52173,
+      "name": "Dwustronna mata bambusowa 150x300 cm na balkon taras ogrodzenie naturalna MultiGarden",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "xcfq7_bJHSstl",
+        "traceId": "xcfq7_bJHSstl"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "4611",
+      "bl_id": "372682322",
+      "inventory": 52173,
+      "name": "Składany parawan ogrodowy pokojowy 4-panelowy 167x216 cm beżowy MultiGarden",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "t7rlpnGmreQGW",
+        "traceId": "t7rlpnGmreQGW"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "4612",
+      "bl_id": "372682325",
+      "inventory": 52173,
+      "name": "Składany parawan ogrodowy pokojowy 4-panelowy 167x216 cm szary MultiGarden",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "j55zlSENbKz8o",
+        "traceId": "j55zlSENbKz8o"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "4614",
+      "bl_id": "372682331",
+      "inventory": 52173,
+      "name": "Składany parawan ogrodowy pokojowy 3-panelowy 167x164 cm beżowy MultiGarden",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "44r7saJbi3nKP",
+        "traceId": "44r7saJbi3nKP"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "913-10",
+      "bl_id": "635744161",
+      "inventory": 52173,
+      "name": "NAMIOT DLA DZIECI DOMEK DO ZABAWY SUCHY BASEN FARMA HOPLA TOYS",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "gsw7bd0dT91WD",
+        "traceId": "gsw7bd0dT91WD"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "913-2",
+      "bl_id": "635744147",
+      "inventory": 52173,
+      "name": "NAMIOT DLA DZIECI DOMEK DO ZABAWY SUCHY BASEN FARMA HOPLA TOYS",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "gsw7bDX_sGpQU",
+        "traceId": "gsw7bDX_sGpQU"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "913-4",
+      "bl_id": "635744151",
+      "inventory": 52173,
+      "name": "NAMIOT DLA DZIECI DOMEK DO ZABAWY SUCHY BASEN FARMA HOPLA TOYS",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "4q7kjoNCI626h",
+        "traceId": "4q7kjoNCI626h"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "913-7",
+      "bl_id": "635744156",
+      "inventory": 52173,
+      "name": "NAMIOT DLA DZIECI DOMEK DO ZABAWY SUCHY BASEN FARMA HOPLA TOYS",
+      "mapped": true,
+      "erli_status": 429,
+      "erli_response": {
+        "failureType": "rateLimit",
+        "message": "Rate limited",
+        "httpCode": 429,
+        "polishMessage": "Wystąpił nieoczekiwany błąd",
+        "payload": "Rate limited",
+        "spanId": "4q7kjTKTq5v91",
+        "traceId": "4q7kjTKTq5v91"
+      },
+      "retry_status": 202,
+      "retry_response": {
+        "raw": ""
+      }
+    }
+  ]
+}

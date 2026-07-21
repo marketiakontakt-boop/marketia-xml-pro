@@ -1,0 +1,61 @@
+{
+  "timestamp": "20260721_133818",
+  "dry_run": false,
+  "results": [
+    {
+      "sku": "01LB31AA01",
+      "bl_id": "650452766",
+      "inventory": 111230,
+      "name": "Butelka Filtrująca LAICA GlaSSmart 1,1L Szklana z Filtrem FAST DISK",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "01LBR70A21",
+      "bl_id": "650452831",
+      "inventory": 111230,
+      "name": "Butelka filtrująca LAICA MyLAICA 550ml stalowa bidon z filtrem FAST DISK",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "01LBR70B21",
+      "bl_id": "650452837",
+      "inventory": 111230,
+      "name": "Butelka filtrująca LAICA MyLAICA 550ml stalowa bidon z filtrem FAST DISK",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "01LBR70C21",
+      "bl_id": "650452771",
+      "inventory": 111230,
+      "name": "Butelka filtrująca LAICA MyLAICA 550ml stalowa bidon z filtrem FAST DISK",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    },
+    {
+      "sku": "01LC3M2A7ES150",
+      "bl_id": "650452751",
+      "inventory": 111230,
+      "name": "Filtr do Wody LAICA Coffee & Tea 3 szt Wkład do Dzbanków Filtrujących",
+      "mapped": true,
+      "erli_status": 202,
+      "erli_response": {
+        "raw": ""
+      }
+    }
+  ]
+}

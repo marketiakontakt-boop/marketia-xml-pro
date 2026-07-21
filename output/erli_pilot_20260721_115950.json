@@ -1,0 +1,466 @@
+{
+  "timestamp": "20260721_115950",
+  "dry_run": false,
+  "results": [
+    {
+      "sku": "1463",
+      "bl_id": "642480546",
+      "inventory": 45513,
+      "name": "STÓŁ CATERINGOWY SKŁADANY OGRODOWY BIAŁY GARDENSTEIN GRENE 180 X 74 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "cgjjr7-vLfUrM",
+        "traceId": "cgjjr7-vLfUrM"
+      }
+    },
+    {
+      "sku": "1711",
+      "bl_id": "642480547",
+      "inventory": 45513,
+      "name": "LEŻAK OGRODOWY PLAŻOWY SKŁADANY CZARNY GARDENSTEIN OLDEN 98 X 62 X 14 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "vpgtpnINs1O6I",
+        "traceId": "vpgtpnINs1O6I"
+      }
+    },
+    {
+      "sku": "1714",
+      "bl_id": "642480548",
+      "inventory": 45513,
+      "name": "LEŻAK OGRODOWY SKŁADANY PLAŻOWY BEŻOWY GARDENSTEIN OLDEN 98 X 62 X 14 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "44r7szMQEfKV7",
+        "traceId": "44r7szMQEfKV7"
+      }
+    },
+    {
+      "sku": "2162",
+      "bl_id": "642480553",
+      "inventory": 45513,
+      "name": "ZESTAW MEBLI OGRODOWYCH METALOWYCH 4-OSOBOWYCH GARDENSTEIN JORN 90 X 50 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "j55zlTLFjgp1Z",
+        "traceId": "j55zlTLFjgp1Z"
+      }
+    },
+    {
+      "sku": "2168",
+      "bl_id": "642480549",
+      "inventory": 45513,
+      "name": "LEŻAK OGRODOWY SKŁADANY ALUMINIOWY CZARNY GARDENSTEIN OLDEN 90 X 62 X 13 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "w7mklA2MOCGtU",
+        "traceId": "w7mklA2MOCGtU"
+      }
+    },
+    {
+      "sku": "2169",
+      "bl_id": "642480550",
+      "inventory": 45513,
+      "name": "LEŻAK OGRODOWY SKŁADANY ALUMINIOWY BEŻOWY GARDENSTEIN OLDEN 90 X 62 X 13 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "vvc7lphvcJUV3",
+        "traceId": "vvc7lphvcJUV3"
+      }
+    },
+    {
+      "sku": "2538",
+      "bl_id": "642480555",
+      "inventory": 45513,
+      "name": "STÓŁ OGRODOWY DREWNIANY Z METALOWYMI NOGAMI GARDENSTEIN EINAR 140 X 80 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "njp9ggf34VJ5e",
+        "traceId": "njp9ggf34VJ5e"
+      }
+    },
+    {
+      "sku": "2541",
+      "bl_id": "642480556",
+      "inventory": 45513,
+      "name": "ZESTAW STÓŁ I 2 ŁAWKI DREWNIANY SKŁADANY GARDENSTEIN GRENE 180 X 74 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "ch8jx8C6G461x",
+        "traceId": "ch8jx8C6G461x"
+      }
+    },
+    {
+      "sku": "2542",
+      "bl_id": "642480557",
+      "inventory": 45513,
+      "name": "ZESTAW MEBLI OGRODOWYCH SKŁADANY STÓŁ 2 ŁAWKI GARDENSTEIN GRENE 180 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "vvc7lbD_evKGE",
+        "traceId": "vvc7lbD_evKGE"
+      }
+    },
+    {
+      "sku": "2640",
+      "bl_id": "642480558",
+      "inventory": 45513,
+      "name": "STÓŁ OGRODOWY SKŁADANY CATERINGOWY BRĄZOWY GARDENSTEIN GRENE 180 X 74 CM",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "w7mkl3d6ms13V",
+        "traceId": "w7mkl3d6ms13V"
+      }
+    },
+    {
+      "sku": "10",
+      "bl_id": "372679007",
+      "inventory": 52173,
+      "name": "Pokrywa osłona plandeka na basen 305 cm INTEX 28021",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "8gmv86w765Qzk",
+        "traceId": "8gmv86w765Qzk"
+      }
+    },
+    {
+      "sku": "10-1",
+      "bl_id": "633172967",
+      "inventory": 52173,
+      "name": "Pokrywa osłona plandeka na basen 305 cm INTEX 28021",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "t7rlpj7E8hl9d",
+        "traceId": "t7rlpj7E8hl9d"
+      }
+    },
+    {
+      "sku": "10-2",
+      "bl_id": "633172968",
+      "inventory": 52173,
+      "name": "Pokrywa osłona plandeka na basen 305 cm INTEX 28021",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "njp9gmiS_oP3Q",
+        "traceId": "njp9gmiS_oP3Q"
+      }
+    },
+    {
+      "sku": "10-3",
+      "bl_id": "633172969",
+      "inventory": 52173,
+      "name": "Pokrywa osłona plandeka na basen 305 cm INTEX 28021",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "9tr9jMCrlgCQh",
+        "traceId": "9tr9jMCrlgCQh"
+      }
+    },
+    {
+      "sku": "100",
+      "bl_id": "372674308",
+      "inventory": 52173,
+      "name": "Zestaw do czyszczenia basenów odkurzacz wodny siatka szczotka INTEX 28003",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "n567jXVmAL8Jo",
+        "traceId": "n567jXVmAL8Jo"
+      }
+    },
+    {
+      "sku": "100-1",
+      "bl_id": "633172610",
+      "inventory": 52173,
+      "name": "Zestaw do czyszczenia basenów odkurzacz wodny siatka szczotka INTEX 28003",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "vqw6w3EUR6-fG",
+        "traceId": "vqw6w3EUR6-fG"
+      }
+    },
+    {
+      "sku": "100-10",
+      "bl_id": "633172628",
+      "inventory": 52173,
+      "name": "Zestaw do czyszczenia basenów odkurzacz wodny siatka szczotka INTEX 28003",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "cgjjrBqqzUwk-",
+        "traceId": "cgjjrBqqzUwk-"
+      }
+    },
+    {
+      "sku": "100-2",
+      "bl_id": "633172612",
+      "inventory": 52173,
+      "name": "Zestaw do czyszczenia basenów odkurzacz wodny siatka szczotka INTEX 28003",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "85gbprUT9urQL",
+        "traceId": "85gbprUT9urQL"
+      }
+    },
+    {
+      "sku": "100-3",
+      "bl_id": "633172613",
+      "inventory": 52173,
+      "name": "Zestaw do czyszczenia basenów odkurzacz wodny siatka szczotka INTEX 28003",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "cgjjrMbDW8EKQ",
+        "traceId": "cgjjrMbDW8EKQ"
+      }
+    },
+    {
+      "sku": "100-4",
+      "bl_id": "633172616",
+      "inventory": 52173,
+      "name": "Zestaw do czyszczenia basenów odkurzacz wodny siatka szczotka INTEX 28003",
+      "mapped": true,
+      "erli_status": 400,
+      "erli_response": {
+        "name": "ValidationFailure",
+        "message": "Wystąpił problem z walidacją danych, dispatchTime.unit: dispatchTime.unit must be one of [hour, day, month]; dispatchTime.period: dispatchTime.period is required; dispatchTime.value: dispatchTime.value is not allowed",
+        "failureType": "validation",
+        "polishMessage": "Problem z walidacją, sprawdź pola",
+        "payload": {
+          "details": {
+            "dispatchTime.unit": "\"dispatchTime.unit\" must be one of [hour, day, month]",
+            "dispatchTime.period": "\"dispatchTime.period\" is required",
+            "dispatchTime.value": "\"dispatchTime.value\" is not allowed"
+          }
+        },
+        "spanId": "j55zljTjpw0iO",
+        "traceId": "j55zljTjpw0iO"
+      }
+    }
+  ]
+}
