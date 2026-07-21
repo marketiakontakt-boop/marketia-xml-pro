@@ -62,7 +62,7 @@ def conn():
 def brand_data():
     return {
         "hopla_toys":    {"name": "HOPLA TOYS",    "keywords": []},
-        "villago":       {"name": "VILLAGO",       "keywords": []},
+        "homestein":       {"name": "HOMESTEIN",       "keywords": []},
         "gardenstein":   {"name": "GARDENSTEIN",   "keywords": []},
         "intex":         {"name": "INTEX",         "keywords": []},
         "marketia_home": {"name": "MARKETIA HOME", "keywords": []},

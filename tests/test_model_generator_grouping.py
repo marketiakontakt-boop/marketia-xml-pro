@@ -197,9 +197,9 @@ def test_series_from_sku_none_without_suffix():
 
 def test_sku_series_groups_variants_together(gen):
     """Products with same model in SKU must share one pool name regardless of name analysis."""
-    p1 = _p("model_3544_1-AVOLA-DORY21", "villago", "KRZESŁO BOKU AVOLA - CZARNE")
-    p2 = _p("model_3545_1-AVOLA-DORY21", "villago", "KRZESŁO BOKU AVOLA - SZARE")
-    p3 = _p("model_3543_1-AVOLA-DORY21", "villago", "KRZESŁO BOKU AVOLA - SZARO-BIAŁE")
+    p1 = _p("model_3544_1-AVOLA-DORY21", "homestein", "KRZESŁO BOKU AVOLA - CZARNE")
+    p2 = _p("model_3545_1-AVOLA-DORY21", "homestein", "KRZESŁO BOKU AVOLA - SZARE")
+    p3 = _p("model_3543_1-AVOLA-DORY21", "homestein", "KRZESŁO BOKU AVOLA - SZARO-BIAŁE")
     gen.assign_all([p1, p2, p3])
 
     assert p1.model_name == p2.model_name == p3.model_name, (
@@ -208,10 +208,10 @@ def test_sku_series_groups_variants_together(gen):
 
 def test_sku_series_different_models_get_different_pools(gen):
     """AVOLA and ALBA are different series — must get different pool names."""
-    avola1 = _p("model_3544_1-AVOLA-DORY21", "villago", "KRZESŁO BOKU AVOLA - CZARNE")
-    avola2 = _p("model_3545_1-AVOLA-DORY21", "villago", "KRZESŁO BOKU AVOLA - SZARE")
-    alba1 = _p("model_3329_1-ALBA-FEMY24", "villago", "KRZESŁO KONUN ALBA - BIAŁE")
-    alba2 = _p("model_3330_1-ALBA-FEMY24", "villago", "KRZESŁO KONUN ALBA - CZARNE")
+    avola1 = _p("model_3544_1-AVOLA-DORY21", "homestein", "KRZESŁO BOKU AVOLA - CZARNE")
+    avola2 = _p("model_3545_1-AVOLA-DORY21", "homestein", "KRZESŁO BOKU AVOLA - SZARE")
+    alba1 = _p("model_3329_1-ALBA-FEMY24", "homestein", "KRZESŁO KONUN ALBA - BIAŁE")
+    alba2 = _p("model_3330_1-ALBA-FEMY24", "homestein", "KRZESŁO KONUN ALBA - CZARNE")
     gen.assign_all([avola1, avola2, alba1, alba2])
 
     assert avola1.model_name == avola2.model_name
@@ -222,7 +222,7 @@ def test_sku_series_different_models_get_different_pools(gen):
 
 def test_sku_series_replaces_supplier_word_in_name(gen):
     """AVOLA must be replaced by pool name in product.name."""
-    p = _p("model_3544_1-AVOLA-DORY21", "villago", "KRZESŁO BOKU AVOLA - CZARNE")
+    p = _p("model_3544_1-AVOLA-DORY21", "homestein", "KRZESŁO BOKU AVOLA - CZARNE")
     gen.assign_all([p])
 
     pool = p.model_name

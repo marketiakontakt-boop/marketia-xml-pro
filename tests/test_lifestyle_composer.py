@@ -23,13 +23,13 @@ def _rgba_circle(size: int = 400) -> Image.Image:
 
 
 def test_scene_prompts_cover_main_brands():
-    for brand in ("villago", "gardenstein", "intex", "zoovera", "hopla_toys"):
+    for brand in ("homestein", "gardenstein", "intex", "zoovera", "hopla_toys"):
         assert brand in _BRAND_SCENES, f"Missing scene for brand: {brand}"
         assert len(_BRAND_SCENES[brand]) >= 1
 
 
 def test_get_scene_prompt_returns_string_for_known_brand():
-    prompt = _get_scene_prompt("villago", "SKU-001")
+    prompt = _get_scene_prompt("homestein", "SKU-001")
     assert isinstance(prompt, str)
     assert len(prompt) > 20
 
@@ -90,7 +90,7 @@ def test_generate_lifestyle_thumbnails_skips_products_without_images():
         name="Test", category_name="", manufacturer_name="",
         description="", description_extra_1="", description_extra_2="",
     )
-    p.brand = "villago"
+    p.brand = "homestein"
     p.images = []
-    done, skipped = generate_lifestyle_thumbnails([p], brands=["villago"])
+    done, skipped = generate_lifestyle_thumbnails([p], brands=["homestein"])
     assert done == 0

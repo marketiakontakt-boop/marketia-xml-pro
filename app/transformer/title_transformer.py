@@ -39,7 +39,7 @@ _OEM_BY_BRAND: dict[str, frozenset[str]] = {
         "multigames", "multistar", "multigarden",
         "bauerkraft", "molden",
     }),
-    "villago":       frozenset(),
+    "homestein":       frozenset(),
     "intex":         frozenset(),
     "lifekraft":     frozenset(),
     "zoovera":       frozenset(),

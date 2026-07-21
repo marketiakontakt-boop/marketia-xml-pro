@@ -347,10 +347,10 @@ def _marketia_sparkle():
 
 
 # ---------------------------------------------------------------------------
-# VILLAGO ACCESSORIES — lifestyle accessories
+# HOMESTEIN ACCESSORIES — lifestyle accessories
 # ---------------------------------------------------------------------------
 
-def _villago_coffee():
+def _homestein_coffee():
     img, d = _canvas()
     # Saucer
     d.ellipse([100, 290, 300, 340], fill=(210, 190, 160, 220))
@@ -367,10 +367,10 @@ def _villago_coffee():
         pts = [(x, 185), (x + offset, 155), (x - offset, 130), (x + offset, 105)]
         for i in range(len(pts) - 1):
             d.line([pts[i], pts[i + 1]], fill=(180, 180, 180, 120), width=3)
-    _save(img, "villago", "coffee_cup")
+    _save(img, "homestein", "coffee_cup")
 
 
-def _villago_plant():
+def _homestein_plant():
     img, d = _canvas()
     # Small succulent
     d.rounded_rectangle([160, 290, 240, 360], radius=10, fill=(180, 100, 50, 230))
@@ -383,10 +383,10 @@ def _villago_plant():
         cx = int(200 + 50 * math.cos(rad))
         cy = int(280 + 50 * math.sin(rad))
         d.ellipse([cx - 35, cy - 50, cx + 35, cy + 10], fill=col)
-    _save(img, "villago", "plant_decor")
+    _save(img, "homestein", "plant_decor")
 
 
-def _villago_bag():
+def _homestein_bag():
     img, d = _canvas()
     # Bag body
     d.rounded_rectangle([100, 170, 300, 350], radius=18, fill=(70, 100, 160, 230))
@@ -397,10 +397,10 @@ def _villago_bag():
     # Zipper
     d.line([(145, 245), (255, 245)], fill=(200, 180, 100, 220), width=4)
     d.ellipse([192, 238, 208, 254], fill=(200, 180, 100, 230))
-    _save(img, "villago", "bag")
+    _save(img, "homestein", "bag")
 
 
-def _villago_bicycle():
+def _homestein_bicycle():
     img, d = _canvas()
     wc = (60, 100, 180, 220)
     # Wheels
@@ -418,10 +418,10 @@ def _villago_bicycle():
     d.line([(220, 150), (240, 170)], fill=wc, width=8)
     # Seat
     d.rounded_rectangle([180, 170, 220, 185], radius=5, fill=wc)
-    _save(img, "villago", "bicycle")
+    _save(img, "homestein", "bicycle")
 
 
-def _villago_lamp():
+def _homestein_lamp():
     img, d = _canvas()
     # Base
     d.rounded_rectangle([170, 340, 230, 380], radius=5, fill=(120, 100, 70, 230))
@@ -432,7 +432,7 @@ def _villago_lamp():
     d.polygon([(130, 200), (270, 200), (240, 120), (160, 120)], fill=(220, 200, 140, 230))
     # Glow
     d.ellipse([155, 190, 245, 240], fill=(255, 240, 180, 80))
-    _save(img, "villago", "lamp")
+    _save(img, "homestein", "lamp")
 
 
 # ---------------------------------------------------------------------------
@@ -653,11 +653,11 @@ def generate_all():
     _marketia_towel()
     _marketia_sparkle()
 
-    _villago_coffee()
-    _villago_plant()
-    _villago_bag()
-    _villago_bicycle()
-    _villago_lamp()
+    _homestein_coffee()
+    _homestein_plant()
+    _homestein_bag()
+    _homestein_bicycle()
+    _homestein_lamp()
 
     _hopla_star()
     _hopla_ball()

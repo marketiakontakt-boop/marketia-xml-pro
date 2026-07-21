@@ -59,7 +59,7 @@ def test_length_never_exceeds_max(tt):
 
 def test_word_boundary_trim(tt):
     long = "A " + " ".join(["bardzodlugislowo"] * 6)
-    p = _p(long, brand="villago", model="DEMU")
+    p = _p(long, brand="homestein", model="DEMU")
     tt.transform(p)
     assert " " not in p.title[-1]   # no trailing space
     assert not p.title.endswith("-")
@@ -69,10 +69,10 @@ def test_word_boundary_trim(tt):
 
 
 def test_strips_modernhome(tt):
-    p = _p("MODERNHOME VILLAGO LUGANO-39 2W1", brand="villago", model="LUGANO-39")
+    p = _p("MODERNHOME HOMESTEIN LUGANO-39 2W1", brand="homestein", model="LUGANO-39")
     tt.transform(p)
     assert "MODERNHOME" not in p.title
-    assert "VILLAGO" in p.title
+    assert "HOMESTEIN" in p.title
     assert "LUGANO-39" in p.title
 
 
@@ -101,8 +101,8 @@ def test_strips_bauerkraft(tt):
 
 
 def test_strips_all_known_oem_regardless_of_detected_brand(tt):
-    # supplier names are global noise; strip MODERNHOME even from a villago title
-    p = _p("MODERNHOME COŚ", brand="villago")
+    # supplier names are global noise; strip MODERNHOME even from a homestein title
+    p = _p("MODERNHOME COŚ", brand="homestein")
     tt.transform(p)
     assert "MODERNHOME" not in p.title
 
@@ -195,7 +195,7 @@ def test_short_title_gets_dimensions_from_attrs(tt):
 
 def test_product_type_matches_polish_plural(tt):
     # Detector token-set + stem-prefix match: "krzesła" matches "krzesło".
-    p = _p("Lugano-39", brand="villago", model="LUGANO-39")
+    p = _p("Lugano-39", brand="homestein", model="LUGANO-39")
     p.category_name = "meble/krzesła do jadalni"
     tt.transform(p)
     assert "KRZESŁO DO JADALNI" in p.title
@@ -247,7 +247,7 @@ def test_feature_tokens_from_attributes(tt):
 def test_enrichment_stops_at_target(tt):
     """Once we reach ENRICH_TARGET, we stop adding feature tokens to leave room
     for brand + model."""
-    p = _p("Krzesło tapicerowane", brand="villago", model="DEMU-12")
+    p = _p("Krzesło tapicerowane", brand="homestein", model="DEMU-12")
     p.category_name = "Meble/Krzesła do jadalni"
     p.attributes = {
         "Materiał dominujący": "welurowe",
@@ -258,7 +258,7 @@ def test_enrichment_stops_at_target(tt):
         "Liczba osób": "1",
     }
     tt.transform(p)
-    assert "VILLAGO" in p.title
+    assert "HOMESTEIN" in p.title
     assert "DEMU-12" in p.title
     assert len(p.title) <= 75
 
@@ -345,7 +345,7 @@ def test_validate_clean_title():
 
 def test_validate_catches_forbidden_do_metal():
     from app.transformer.title_transformer import validate_title
-    issues = validate_title("VILLAGO MILAN STÓŁ DO METAL CZARNY")
+    issues = validate_title("HOMESTEIN MILAN STÓŁ DO METAL CZARNY")
     assert any(i.startswith("forbidden:") for i in issues)
 
 
@@ -400,4 +400,4 @@ def test_detector_polish_plural_match():
     from app.transformer.product_type_detector import ProductTypeDetector
     d = ProductTypeDetector()
     # Category uses plural "krzesła"; dictionary key is singular "krzesło".
-    assert d.detect("Lugano-39", "krzesła do jadalni", "villago") == "KRZESŁO DO JADALNI"
+    assert d.detect("Lugano-39", "krzesła do jadalni", "homestein") == "KRZESŁO DO JADALNI"

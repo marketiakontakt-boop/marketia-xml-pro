@@ -22,14 +22,14 @@ def _mk_product(**kwargs) -> Product:
         height=0.0,
         length=0.0,
         quantity=10,
-        name="Bujak dziecięcy Villago",
+        name="Bujak dziecięcy HomeStein",
         category_name="Dziecko",
-        manufacturer_name="Villago",
+        manufacturer_name="HomeStein",
         description="<p>Testowy opis produktu dla dziecka.</p>",
         description_extra_1="",
         description_extra_2="",
         images=["https://cdn.example.com/img1.jpg"],
-        title="Bujak Villago Milan Drewniany Zabawka",
+        title="Bujak HomeStein Milan Drewniany Zabawka",
         thumbnail_url="https://i.ibb.co/abc/thumb.jpg",
     )
     defaults.update(kwargs)
@@ -43,7 +43,7 @@ def test_clean_title_trims_to_70() -> None:
 
 
 def test_clean_title_no_all_caps() -> None:
-    result = _clean_title("VILLAGO MILAN BUJAK DREWNIANY DLA DZIECKA")
+    result = _clean_title("HOMESTEIN MILAN BUJAK DREWNIANY DLA DZIECKA")
     # Should not be all-uppercase after cleaning
     assert result != result.upper() or all(c.islower() or not c.isalpha() for c in result)
     # No 4+ consecutive uppercase runs

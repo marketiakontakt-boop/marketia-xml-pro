@@ -35,7 +35,7 @@ CACHE_DB = Path(__file__).resolve().parents[2] / "cache" / "marketia.db"
 # ---------------------------------------------------------------------------
 
 _BRAND_SCENES: dict[str, list[str]] = {
-    "villago": [
+    "homestein": [
         (
             "Modern Scandinavian dining room interior. Warm light oak parquet floor, "
             "white walls, large window with soft afternoon daylight. Potted monstera "

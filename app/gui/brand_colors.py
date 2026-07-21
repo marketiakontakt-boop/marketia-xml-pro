@@ -4,7 +4,8 @@ from __future__ import annotations
 BRAND_COLORS: dict[str, tuple[str, str]] = {
     "intex":         ("#DBEAFE", "#1D4ED8"),
     "gardenstein":   ("#DCFCE7", "#15803D"),
-    "villago":       ("#FFEDD5", "#C2410C"),
+    "homestein":     ("#FFEDD5", "#C2410C"),
+    "carstein":      ("#FEE2E2", "#B91C1C"),
     "zoovera":       ("#EDE9FE", "#6D28D9"),
     "marketia_home": ("#E0F2FE", "#0369A1"),
     "hopla_toys":    ("#FCE7F3", "#9D174D"),

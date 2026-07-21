@@ -21,7 +21,7 @@ from app.parser.normalizer import Product
 
 def _product(
     sku: str = "T-001",
-    brand: str = "villago",
+    brand: str = "homestein",
     manufacturer_name: str = "JUMI",
     description: str = "",
     attributes: dict | None = None,
@@ -88,15 +88,15 @@ def test_spec_items_excludes_supplier_attrs():
         "Dostawca": "Alibaba Factory",
         "Materiał": "Drewno",
     })
-    brand_info = {"name": "VILLAGO"}
-    html_items = _spec_items(p, "VILLAGO")
+    brand_info = {"name": "HOMESTEIN"}
+    html_items = _spec_items(p, "HOMESTEIN")
     combined = " ".join(html_items)
     assert "JUMI" not in combined
     assert "Alibaba" not in combined
     assert "Producent" not in combined
     assert "Dostawca" not in combined
     # Own brand must still be there
-    assert "VILLAGO" in combined
+    assert "HOMESTEIN" in combined
     # Valid attrs must still be there
     assert "Biały" in combined
     assert "Drewno" in combined
@@ -106,16 +106,16 @@ def test_spec_items_excludes_supplier_attrs():
 
 def test_prompt_contains_brand_protection_instruction():
     p = _product(description="Świetny produkt marki JUMI")
-    brand_info = {"name": "VILLAGO"}
-    prompt = build_description_prompt_v2(p, brand_info, "villago")
+    brand_info = {"name": "HOMESTEIN"}
+    prompt = build_description_prompt_v2(p, brand_info, "homestein")
     # Must instruct AI to not use supplier brand
     assert "ZAKAZ" in prompt or "ignoruj nazwy marek" in prompt
 
 
 def test_prompt_does_not_send_supplier_attrs_to_ai():
     p = _product(attributes={"Producent": "JUMI", "Kolor": "Czarny"})
-    brand_info = {"name": "VILLAGO"}
-    prompt = build_description_prompt_v2(p, brand_info, "villago")
+    brand_info = {"name": "HOMESTEIN"}
+    prompt = build_description_prompt_v2(p, brand_info, "homestein")
     # Supplier key and value must not appear in attrs_block
     assert "Producent" not in prompt
     # But valid attribute must still be present
@@ -139,7 +139,7 @@ def _export_and_parse(products: list[Product]) -> etree._Element:
 
 
 def test_export_shows_own_brand_in_producent_attr():
-    """After sanitize, 'Producent: JUMI' becomes 'Producent: VILLAGO' in XML."""
+    """After sanitize, 'Producent: JUMI' becomes 'Producent: HOMESTEIN' in XML."""
     bm = BrandMapper()
     p = _product(attributes={"Kolor": "Szary", "Producent": "JUMI"})
     bm.sanitize_manufacturer_names([p])
@@ -148,17 +148,17 @@ def test_export_shows_own_brand_in_producent_attr():
         a.findtext("attribute_name"): a.findtext("attribute_value")
         for a in root.findall(".//attribute")
     }
-    assert attr_map.get("Producent") == "VILLAGO"
+    assert attr_map.get("Producent") == "HOMESTEIN"
     assert "JUMI" not in str(attr_map.values())
     assert attr_map.get("Kolor") == "Szary"
 
 
 def test_export_manufacturer_name_is_own_brand():
     p = _product(manufacturer_name="JUMI")
-    p.manufacturer_name = "VILLAGO"
+    p.manufacturer_name = "HOMESTEIN"
     root = _export_and_parse([p])
     mfr = root.findtext(".//manufacturer_name")
-    assert mfr == "VILLAGO"
+    assert mfr == "HOMESTEIN"
     assert "JUMI" not in (mfr or "")
 
 
@@ -179,9 +179,9 @@ def test_export_all_producer_keys_replaced():
     }
     assert "JUMI" not in str(attr_map.values())
     assert "Alibaba" not in str(attr_map.values())
-    assert attr_map.get("Producent") == "VILLAGO"
-    assert attr_map.get("Marka") == "VILLAGO"
-    assert attr_map.get("Dostawca") == "VILLAGO"
+    assert attr_map.get("Producent") == "HOMESTEIN"
+    assert attr_map.get("Marka") == "HOMESTEIN"
+    assert attr_map.get("Dostawca") == "HOMESTEIN"
     assert attr_map.get("Kolor") == "Czarny"
 
 
@@ -189,9 +189,9 @@ def test_export_all_producer_keys_replaced():
 
 def test_sanitize_replaces_jumi_manufacturer():
     bm = BrandMapper()
-    p = _product(manufacturer_name="JUMI", brand="villago")
+    p = _product(manufacturer_name="JUMI", brand="homestein")
     bm.sanitize_manufacturer_names([p])
-    assert p.manufacturer_name == "VILLAGO"
+    assert p.manufacturer_name == "HOMESTEIN"
     assert "JUMI" not in p.manufacturer_name
 
 
@@ -210,7 +210,7 @@ def test_sanitize_unknown_brand_clears_manufacturer():
 
 
 @pytest.mark.parametrize("brand,expected", [
-    ("villago", "VILLAGO"),
+    ("homestein", "HOMESTEIN"),
     ("gardenstein", "GARDENSTEIN"),
     ("intex", "INTEX"),
     ("hopla_toys", "HOPLA TOYS"),

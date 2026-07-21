@@ -64,7 +64,7 @@ class Product:
     images: list[str] = field(default_factory=list)
 
     # --- Derived (populated by transformers; empty until then) ---
-    brand: str = ""         # e.g. "villago" (matches data/brand_keywords.json key)
+    brand: str = ""         # e.g. "homestein" (matches data/brand_keywords.json key)
     model_name: str = ""    # e.g. "Milan"
     title: str = ""         # transformed final title (≤75 chars, UPPERCASE)
 

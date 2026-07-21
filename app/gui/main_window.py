@@ -949,7 +949,7 @@ class App(_BaseApp):
         brands = _all_known_brands()
         self._brand_menu.configure(values=["Wszystkie"] + brands)
         self._brand_menu.set("Wszystkie")
-        # Fix 2026-07-01: bez resetowania state filter zostaje stara wartość ("villago")
+        # Fix 2026-07-01: bez resetowania state filter zostaje stara wartość ("homestein")
         # która po transform może już nie istnieć → _filtered_products zwraca [] → user
         # widzi pustą tabelę i musi klikać filtry żeby "odświeżyć".
         self._filter_brand = "Wszystkie"
@@ -2410,7 +2410,7 @@ class App(_BaseApp):
                         setattr(p, field, val)
 
             # Fix 2026-07-03: reset filter state — inaczej jeśli user miał aktywny
-                # filtr marki (np. "villago"), po zmianie na "hopla_toys" filter zwraca 0 produktów
+                # filtr marki (np. "homestein"), po zmianie na "hopla_toys" filter zwraca 0 produktów
                 # i user widzi pustą listę (myśli że nic się nie stało).
             self._filter_brand = "Wszystkie"
             self._filter_ai = "Wszystkie"

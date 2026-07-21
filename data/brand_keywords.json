@@ -29,13 +29,28 @@
       "bramka piłkarska", "multigames", "multistar"
     ]
   },
-  "villago": {
-    "name": "VILLAGO",
-    "tagline": "Stwórz przestrzeń, którą pokochasz",
+  "homestein": {
+    "name": "HOMESTEIN",
+    "tagline": "Twój wymarzony dom",
     "keywords": [
       "sofa", "krzesło", "stół", "stolik", "fotel", "łóżko",
       "regał", "komoda", "szafka", "meble do domu", "wnętrz",
       "biurko", "stolik kawowy", "ława"
+    ]
+  },
+  "carstein": {
+    "name": "CARSTEIN",
+    "tagline": "Twoje auto zawsze zadbane",
+    "keywords": [
+      "samochód", "auto", "samochodowy", "samochodowe", "do auta", "do samochodu",
+      "mata bagażnika", "organizer samochodowy", "organizer do auta",
+      "pokrowiec na fotel", "pokrowiec samochodowy", "pokrowiec na siedzenie",
+      "ładowarka samochodowa", "uchwyt samochodowy", "uchwyt na telefon do auta",
+      "żarówka samochodowa", "lampa samochodowa", "lampka led do auta",
+      "kompresor samochodowy", "pompka samochodowa",
+      "osłona przeciwsłoneczna", "mata na deskę rozdzielczą",
+      "fotelik samochodowy", "fotelik dziecięcy",
+      "brelok samochodowy", "zapach do auta", "odświeżacz do samochodu"
     ]
   },
   "marketia_home": {

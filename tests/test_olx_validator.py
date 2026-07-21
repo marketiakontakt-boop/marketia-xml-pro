@@ -33,9 +33,9 @@ def _mk_product(**kwargs) -> Product:
         weight=1.0,
         width=0.0, height=0.0, length=0.0,
         quantity=10,
-        name="Bujak dziecięcy Villago Milan drewniana zabawka premium",
+        name="Bujak dziecięcy HomeStein Milan drewniana zabawka premium",
         category_name="Dziecko",
-        manufacturer_name="Villago",
+        manufacturer_name="HomeStein",
         description=(
             "<p>To jest opis testowy wystarczająco długi żeby przejść walidację "
             "minimalnej długości opisu na poziomie 80 znaków wymaganym przez OLX API.</p>"
@@ -43,7 +43,7 @@ def _mk_product(**kwargs) -> Product:
         description_extra_1="",
         description_extra_2="",
         images=["https://cdn.example.com/img1.jpg"],
-        title="Bujak Villago Milan drewniana zabawka premium 12m+",
+        title="Bujak HomeStein Milan drewniana zabawka premium 12m+",
         thumbnail_url="https://i.ibb.co/x/thumb.jpg",
     )
     defaults.update(kwargs)

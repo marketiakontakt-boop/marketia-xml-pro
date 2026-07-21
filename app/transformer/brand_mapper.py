@@ -34,7 +34,7 @@ class BrandMapper:
         if not text.strip():
             return UNKNOWN, 0.0
 
-        # 1. Explicit brand-name appearance (e.g. "VILLAGO ACCESSORIES ZAŚLEPKA...")
+        # 1. Explicit brand-name appearance (e.g. "HOMESTEIN ACCESSORIES ZAŚLEPKA...")
         #    Trust this over keyword scoring — high precision.
         for brand_key, brand_display in self._brand_display.items():
             if brand_display and brand_display in text:
