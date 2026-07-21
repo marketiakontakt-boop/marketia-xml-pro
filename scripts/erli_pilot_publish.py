@@ -76,13 +76,24 @@ def fetch_bl_products_for_manufacturers(inv_id: int) -> list[dict]:
     log(f"  Fetching products per manufacturer from inv {inv_id}...")
     all_ids: list[str] = []
     for mid in TARGET_MANUFACTURERS:
-        r = bl(
-            "getInventoryProductsList",
-            {"inventory_id": inv_id, "filter_manufacturer_id": mid},
-        )
-        products = r.get("products") or {}
-        log(f"    manufacturer {mid}: {len(products)} products")
-        all_ids.extend(products.keys())
+        page = 1
+        mfr_count = 0
+        while True:
+            r = bl(
+                "getInventoryProductsList",
+                {"inventory_id": inv_id, "filter_manufacturer_id": mid, "page": page},
+            )
+            products = r.get("products") or {}
+            if not products:
+                break
+            all_ids.extend(products.keys())
+            mfr_count += len(products)
+            if len(products) < 1000:
+                break
+            page += 1
+            if page > 20:
+                break
+        log(f"    manufacturer {mid}: {mfr_count} products")
 
     if not all_ids:
         return []
@@ -149,6 +160,8 @@ def bl_to_erli(bl_prod: dict) -> dict | None:
     else:
         image_urls = list(imgs)
     image_urls = [u for u in image_urls if u and isinstance(u, str) and u.startswith("http")]
+    # Dedup URL z zachowaniem kolejności (Erli odrzuca duplikaty)
+    image_urls = list(dict.fromkeys(image_urls))
 
     # Weight (g)
     weight_g = None
@@ -192,7 +205,11 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true", help="nie POST-uj, tylko dump mappings")
     parser.add_argument("--limit", type=int, default=20, help="ile SKU (default 20)")
     parser.add_argument("--per-inv", type=int, default=10, help="max per inventory")
+    parser.add_argument("--full", action="store_true", help="wystaw wszystkie (nadpisuje --limit/--per-inv)")
     args = parser.parse_args()
+    if args.full:
+        args.limit = 100_000
+        args.per_inv = 100_000
 
     if not BL_TOKEN:
         log("ERROR: brak BASELINKER_TOKEN w env")
@@ -277,9 +294,21 @@ def main() -> int:
             entry["erli_response"] = resp
             if status in (200, 201, 202):
                 log(f"    ✅ OK ({status})")
+                time.sleep(0.5)
+            elif status == 429:
+                log(f"    ⏳ RATE LIMIT (429), sleep 5s + retry once")
+                time.sleep(5.0)
+                status, resp = erli("POST", f"/products/{sku}", mapped)
+                entry["erli_status"] = status
+                entry["erli_response"] = resp
+                if status in (200, 201, 202):
+                    log(f"    ✅ OK ({status}) po retry")
+                else:
+                    log(f"    ❌ FAIL po retry ({status}): {json.dumps(resp)[:150]}")
+                time.sleep(1.0)
             else:
                 log(f"    ❌ FAIL ({status}): {json.dumps(resp)[:200]}")
-            time.sleep(0.5)  # rate limit safety
+                time.sleep(0.5)
         results.append(entry)
 
     # 4. Save + summary
