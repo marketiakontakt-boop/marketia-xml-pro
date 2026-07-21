@@ -1,37 +1,33 @@
-"""AI classifier SKU→Erli category używający Claude API.
+"""AI classifier SKU→Erli category używający Gemini (google-genai).
 
-Load /tmp/erli_cats_slim.json (pobrać osobno), fetch BL SKU (name), batch requests
-do Claude Sonnet 4.6 z prompt caching (drzewo Erli = cached prefix, SKU names varying suffix).
+Load /tmp/erli_cats_slim.json, fetch BL SKU (name), batch requests do Gemini
+2.5 Flash (szybki + tani). Parse JSON response → PATCH externalCategories.
 
-Parse response → PATCH externalCategories batch-update.
+Usage: venv/bin/python scripts/erli_ai_classify_categories.py [--dry-run] [--batch-size N] [--limit N]
 
-Cost estimate: ~2758 SKU / 50 per request = 55 requests × Sonnet 4.6.
-Z prompt caching drzewa (~50KB = 12K tokens cached, kolejne req read po 0.1×):
-  First req: ~$0.05, kolejne ~$0.015 each = ~$1 total.
-
-Usage: venv/bin/python scripts/erli_ai_classify_categories.py [--dry-run] [--batch-size 50]
-
-Wymagane env: ANTHROPIC_API_KEY, BASELINKER_TOKEN, ERLI_API_KEY
+Env: BASELINKER_TOKEN, ERLI_API_KEY, GEMINI_API_KEYS (comma-sep)
 """
 from __future__ import annotations
 
 import argparse
 import json
 import os
+import re
 import sys
 import time
 from datetime import UTC, datetime
 from pathlib import Path
 
-import anthropic
 import httpx
 from dotenv import load_dotenv
+from google import genai
+from google.genai import types
 
 load_dotenv()
 
 BL_TOKEN = os.getenv("BASELINKER_TOKEN")
 ERLI_KEY = os.getenv("ERLI_API_KEY")
-ANTHROPIC_KEY = os.getenv("ANTHROPIC_API_KEY")
+GEMINI_KEYS = [k.strip() for k in (os.getenv("GEMINI_API_KEYS") or "").split(",") if k.strip()]
 CATS_FILE = Path("/tmp/erli_cats_slim.json")
 INVENTORIES = [
     int(x) for x in (os.getenv("BL_ERLI_SYNC_INVENTORIES") or "45513,52173,111230").split(",")
@@ -59,7 +55,6 @@ def bl(method: str, params: dict, retries: int = 4) -> dict:
 
 
 def build_leaf_context(cats: list[dict]) -> str:
-    """Zwraca kompaktowy format `ID: FULL_PATH` per leaf, jeden per linia."""
     leafs = [c for c in cats if c.get("leaf")]
     lines = []
     for c in leafs:
@@ -70,7 +65,6 @@ def build_leaf_context(cats: list[dict]) -> str:
 
 
 def fetch_bl_products() -> list[tuple[str, str]]:
-    """Zwraca [(sku, name)] dla wszystkich SKU z target inv."""
     out = []
     seen = set()
     for inv_id in INVENTORIES:
@@ -102,111 +96,111 @@ def fetch_bl_products() -> list[tuple[str, str]]:
     return out
 
 
-CLASSIFY_PROMPT = """Klasyfikujesz produkty e-commerce do kategorii marketplace Erli.
-
-Poniżej lista dostępnych kategorii Erli (LEAF only — kategorie końcowe). Format `ID: PEŁNA_ŚCIEŻKA`:
-
-```
-{categories}
-```
-
-Dla każdego produktu poniżej dobierz NAJLEPSZĄ pasującą kategorię. Zwróć TYLKO JSON w formacie:
-```json
-{{"SKU_1": ID_KATEGORII, "SKU_2": ID_KATEGORII, ...}}
-```
-
-Wybieraj ID z listy powyżej. Jeśli produkt naprawdę nie pasuje do żadnej kategorii → użyj `null`.
-
-Produkty do klasyfikacji:
-{products}
-"""
-
-
-def classify_batch(client: anthropic.Anthropic, cats_context: str, batch: list[tuple[str, str]]) -> dict:
-    """Zwraca {sku: category_id | None} dla batch."""
+def classify_batch(client, model_name: str, cats_context: str, batch: list[tuple[str, str]]) -> dict:
     products_str = "\n".join(f"- {sku}: {name}" for sku, name in batch)
 
-    resp = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=8000,
-        system=[
-            {
-                "type": "text",
-                "text": CLASSIFY_PROMPT.format(categories=cats_context, products="{products}"),
-                "cache_control": {"type": "ephemeral"},
-            }
-        ],
-        messages=[{"role": "user", "content": f"Sklasyfikuj te produkty:\n{products_str}"}],
-    )
+    prompt = f"""Klasyfikujesz produkty e-commerce do kategorii marketplace Erli.
 
-    text = next((b.text for b in resp.content if b.type == "text"), "")
-    # Extract JSON
-    import re
-    m = re.search(r"\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}", text, re.DOTALL)
-    if not m:
-        log(f"  ⚠️  brak JSON w response: {text[:150]}")
-        return {}
-    try:
-        data = json.loads(m.group(0))
-        return data
-    except json.JSONDecodeError as e:
-        log(f"  ⚠️  JSON parse fail: {e}. Raw: {text[:200]}")
-        return {}
+Lista kategorii Erli (format `ID: PEŁNA_ŚCIEŻKA`, tylko LEAF):
+
+```
+{cats_context}
+```
+
+Dla każdego SKU dobierz NAJLEPSZĄ pasującą kategorię. Zwróć TYLKO poprawny JSON:
+{{"SKU1": 123, "SKU2": 456, ...}}
+
+Jeśli produkt naprawdę nie pasuje → użyj `null`. NIE dodawaj markdown code fence.
+
+Produkty:
+{products_str}
+"""
+
+    for attempt in range(3):
+        try:
+            resp = client.models.generate_content(
+                model=model_name,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    temperature=0.1,
+                    max_output_tokens=8000,
+                    response_mime_type="application/json",
+                ),
+            )
+            text = resp.text or ""
+            data = json.loads(text)
+            return data
+        except json.JSONDecodeError as e:
+            log(f"  ⚠️  JSON fail (attempt {attempt+1}): {e}")
+            time.sleep(2)
+        except Exception as e:
+            log(f"  ⚠️  API fail (attempt {attempt+1}): {type(e).__name__}: {str(e)[:150]}")
+            time.sleep(5)
+    return {}
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true")
-    parser.add_argument("--batch-size", type=int, default=50)
-    parser.add_argument("--limit", type=int, help="max SKU (test)")
+    parser.add_argument("--batch-size", type=int, default=30)
+    parser.add_argument("--limit", type=int)
+    parser.add_argument("--model", default="gemini-2.5-flash")
     args = parser.parse_args()
 
     if not CATS_FILE.exists():
-        log(f"ERROR: brak {CATS_FILE} — uruchom najpierw fetch drzewa")
+        log(f"ERROR: brak {CATS_FILE}")
         return 2
-    if not ANTHROPIC_KEY:
-        log("ERROR: brak ANTHROPIC_API_KEY")
+    if not GEMINI_KEYS:
+        log("ERROR: brak GEMINI_API_KEYS w .env")
         return 2
 
     cats = json.load(open(CATS_FILE, encoding="utf-8"))
-    log(f"Loaded {len(cats)} categories")
+    log(f"Loaded {len(cats)} categories, {sum(1 for c in cats if c.get('leaf'))} leafs")
     cats_context = build_leaf_context(cats)
-    log(f"Leaf context: {len(cats_context)} chars (~{len(cats_context) // 4} tokens)")
+    log(f"Context: {len(cats_context)} chars")
 
     products = fetch_bl_products()
     log(f"BL products: {len(products)}")
     if args.limit:
         products = products[: args.limit]
-        log(f"Applied --limit {args.limit}")
+        log(f"--limit {args.limit} → {len(products)}")
 
-    client = anthropic.Anthropic()
+    client = genai.Client(api_key=GEMINI_KEYS[0])
 
-    # Classify in batches
-    all_mappings: dict[str, str | None] = {}
+    all_mappings: dict[str, int | None] = {}
+    total_batches = (len(products) + args.batch_size - 1) // args.batch_size
     for i in range(0, len(products), args.batch_size):
         batch = products[i : i + args.batch_size]
-        log(f"Batch {i//args.batch_size + 1}/{(len(products)+args.batch_size-1)//args.batch_size}: {len(batch)} SKU...")
-        result = classify_batch(client, cats_context, batch)
-        # Merge — normalize int/str keys
+        bnum = i // args.batch_size + 1
+        log(f"Batch {bnum}/{total_batches}: {len(batch)} SKU...")
+        result = classify_batch(client, args.model, cats_context, batch)
+        matched_in_batch = sum(1 for v in result.values() if v)
         for sku, cat_id in result.items():
             all_mappings[str(sku)] = cat_id
-        log(f"  → classified {sum(1 for v in result.values() if v)} / {len(batch)}")
+        log(f"  → {matched_in_batch}/{len(batch)} matched")
 
     matched = {k: v for k, v in all_mappings.items() if v}
     log(f"TOTAL matched: {len(matched)} / {len(products)}")
 
+    # Save mapping
+    ts = datetime.now(UTC).strftime("%Y%m%d_%H%M%S")
+    out = Path(__file__).resolve().parent.parent / "output" / f"ai_classify_{ts}.json"
+    out.parent.mkdir(exist_ok=True)
+    out.write_text(json.dumps(all_mappings, ensure_ascii=False, indent=2), encoding="utf-8")
+    log(f"Saved: {out}")
+
+    from collections import Counter
+    counts = Counter(v for v in matched.values() if v)
+    log("Top 15 kategorie:")
+    for cid, cnt in counts.most_common(15):
+        try:
+            cid_int = int(cid)
+        except (ValueError, TypeError):
+            cid_int = None
+        path = next((f"{c['id']}: " + " > ".join(x.get('name', '?') for x in c.get('breadcrumb', [])) for c in cats if c['id'] == cid_int), str(cid))
+        log(f"  {cnt:4}× {path[:100]}")
+
     if args.dry_run:
-        # Save + top counts
-        out = Path(__file__).resolve().parent.parent / "output" / f"ai_classify_{datetime.now(UTC).strftime('%Y%m%d_%H%M%S')}.json"
-        out.parent.mkdir(exist_ok=True)
-        out.write_text(json.dumps(all_mappings, ensure_ascii=False, indent=2), encoding="utf-8")
-        log(f"DRY-RUN saved: {out}")
-        from collections import Counter
-        counts = Counter(v for v in matched.values())
-        log(f"Top 15 categories:")
-        for cid, cnt in counts.most_common(15):
-            path = next((f"{c['id']}: " + " > ".join(x.get('name', '?') for x in c.get('breadcrumb', [])) for c in cats if c['id'] == cid), str(cid))
-            log(f"  {cnt:4}× {path}")
         return 0
 
     # PATCH batch-update
@@ -237,7 +231,7 @@ def main() -> int:
             fail += len(chunk)
         time.sleep(0.5)
 
-    log(f"CATEGORY SUMMARY: OK={ok} FAIL={fail} SKIPPED (no match): {len(products) - len(matched)}")
+    log(f"CATEGORY SUMMARY: OK={ok} FAIL={fail}")
     return 0 if fail == 0 else 1
 
 
