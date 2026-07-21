@@ -14,6 +14,7 @@ import sys
 import time
 from datetime import UTC, datetime
 from pathlib import Path
+from urllib.parse import quote
 
 import httpx
 from dotenv import load_dotenv
@@ -87,8 +88,9 @@ def main() -> int:
             results.append(entry)
             continue
 
-        log(f"  [{i}/{len(failed)}] {sku}: POST /products/{sku} (imgs={len(mapped['images'])})...")
-        status, resp = erli("POST", f"/products/{sku}", mapped)
+        sku_enc = quote(str(sku), safe="")
+        log(f"  [{i}/{len(failed)}] {sku}: POST /products/{sku_enc} (imgs={len(mapped['images'])})...")
+        status, resp = erli("POST", f"/products/{sku_enc}", mapped)
         entry["retry_status"] = status
         entry["retry_response"] = resp
         if status in (200, 201, 202):
@@ -97,7 +99,7 @@ def main() -> int:
         elif status == 429:
             log(f"    ⏳ 429, sleep 10s + retry once")
             time.sleep(10)
-            status, resp = erli("POST", f"/products/{sku}", mapped)
+            status, resp = erli("POST", f"/products/{sku_enc}", mapped)
             entry["retry_status"] = status
             entry["retry_response"] = resp
             log(f"    → {status}: {json.dumps(resp)[:120]}")

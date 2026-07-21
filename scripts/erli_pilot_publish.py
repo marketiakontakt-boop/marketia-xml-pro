@@ -27,6 +27,7 @@ import sys
 import time
 from datetime import UTC, datetime
 from pathlib import Path
+from urllib.parse import quote
 
 import httpx
 from dotenv import load_dotenv
@@ -327,8 +328,9 @@ def main() -> int:
             entry["payload"] = mapped
             log(f"  [{i}/{len(picked)}] {sku}: DRY-RUN — name={mapped['name'][:50]!r}, price={mapped['price']}gr, imgs={len(mapped['images'])}")
         else:
-            log(f"  [{i}/{len(picked)}] {sku}: POST /products/{sku}...")
-            status, resp = erli("POST", f"/products/{sku}", mapped)
+            sku_enc = quote(str(sku), safe="")
+            log(f"  [{i}/{len(picked)}] {sku}: POST /products/{sku_enc}...")
+            status, resp = erli("POST", f"/products/{sku_enc}", mapped)
             entry["erli_status"] = status
             entry["erli_response"] = resp
             if status in (200, 201, 202):
@@ -337,7 +339,7 @@ def main() -> int:
             elif status == 429:
                 log(f"    ⏳ RATE LIMIT (429), sleep 5s + retry once")
                 time.sleep(5.0)
-                status, resp = erli("POST", f"/products/{sku}", mapped)
+                status, resp = erli("POST", f"/products/{sku_enc}", mapped)
                 entry["erli_status"] = status
                 entry["erli_response"] = resp
                 if status in (200, 201, 202):
