@@ -359,3 +359,93 @@
 [16:02:41]   batch [2701-2757]: ✅ HTTP 200
 [16:02:41] Saved: /Users/jakubknap/Documents/Projects/marketia-xml-pro/output/stock_sync_20260721_160241.json
 [16:02:41] SYNC SUMMARY: bl_sku=2758  payload=2757  batch_ok=2757  batch_fail=0
+[16:32:42] Sync inventories: [45513, 52173, 111230]
+[16:32:42] === FETCH BL ===
+[16:32:42] BL inv 45513: fetching product list...
+[16:32:42]   → 842 products, fetching data in batches of 100...
+[16:32:45]   → mapped 799 unique SKU
+[16:32:45] BL inv 52173: fetching product list...
+[16:32:45]   → 1558 products, fetching data in batches of 100...
+[16:32:50]   → mapped 1558 unique SKU
+[16:32:50]   ⚠️  duplicate SKU across inv: 1463 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 1711 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 1714 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 2168 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 2169 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 833 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 2162 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 840 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 2538 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 2541 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 2542 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 2640 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 2641 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3380 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3381 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3384 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3387 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3400 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3401 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3402 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3405 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3418 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3420 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3458 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3804 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3806 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3807 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3808 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3812 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3833 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3834 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3835 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3844 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3845 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3890 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3892 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 3893 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 4233 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 4577 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 4583 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 4659 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 4662 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 4664 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 4666 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 4698 (last wins)
+[16:32:50]   ⚠️  duplicate SKU across inv: 4699 (last wins)
+[16:32:50] BL inv 111230: fetching product list...
+[16:32:50]   → 448 products, fetching data in batches of 100...
+[16:32:52]   → mapped 447 unique SKU
+[16:32:52] Total unique SKU from BL: 2758
+[16:32:52] Payload items (price > 0): 2757
+[16:32:52] === PATCH ERLI ===
+[16:32:52]   batch [1-100]: ✅ HTTP 200
+[16:32:54]   batch [101-200]: ✅ HTTP 200
+[16:32:55]   batch [201-300]: ✅ HTTP 200
+[16:32:56]   batch [301-400]: ✅ HTTP 200
+[16:32:57]   batch [401-500]: ✅ HTTP 200
+[16:32:58]   batch [501-600]: ✅ HTTP 200
+[16:32:59]   batch [601-700]: ✅ HTTP 200
+[16:33:00]   batch [701-800]: ✅ HTTP 200
+[16:33:01]   batch [801-900]: ✅ HTTP 200
+[16:33:02]   batch [901-1000]: ✅ HTTP 200
+[16:33:04]   batch [1001-1100]: ✅ HTTP 200
+[16:33:05]   batch [1101-1200]: ✅ HTTP 200
+[16:33:06]   batch [1201-1300]: ✅ HTTP 200
+[16:33:07]   batch [1301-1400]: ✅ HTTP 200
+[16:33:08]   batch [1401-1500]: ✅ HTTP 200
+[16:33:09]   batch [1501-1600]: ✅ HTTP 200
+[16:33:11]   batch [1601-1700]: ✅ HTTP 200
+[16:33:12]   batch [1701-1800]: ✅ HTTP 200
+[16:33:13]   batch [1801-1900]: ✅ HTTP 200
+[16:33:14]   batch [1901-2000]: ✅ HTTP 200
+[16:33:15]   batch [2001-2100]: ✅ HTTP 200
+[16:33:16]   batch [2101-2200]: ✅ HTTP 200
+[16:33:17]   batch [2201-2300]: ✅ HTTP 200
+[16:33:19]   batch [2301-2400]: ✅ HTTP 200
+[16:33:20]   batch [2401-2500]: ✅ HTTP 200
+[16:33:21]   batch [2501-2600]: ✅ HTTP 200
+[16:33:22]   batch [2601-2700]: ✅ HTTP 200
+[16:33:23]   batch [2701-2757]: ✅ HTTP 200
+[16:33:24] Saved: /Users/jakubknap/Documents/Projects/marketia-xml-pro/output/stock_sync_20260721_163324.json
+[16:33:24] SYNC SUMMARY: bl_sku=2758  payload=2757  batch_ok=2757  batch_fail=0
