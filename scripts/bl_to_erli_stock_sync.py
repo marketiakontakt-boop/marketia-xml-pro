@@ -97,11 +97,11 @@ def fetch_bl_inventory_stock_price(inv_id: int) -> dict[str, dict]:
             # Sum stock po wszystkich warehouses
             stock_map = pdata.get("stock") or {}
             stock = sum(int(v or 0) for v in stock_map.values()) if isinstance(stock_map, dict) else int(stock_map or 0)
-            # Cena: bierz pierwsza z prices dict
+            # Cena: bierz z RETAIL price group (96668 = hurtownia × 1.35).
+            # BL automatycznie oblicza tę grupę jako dependent_on_price_group.
+            # Fallback: default group (30157) jeśli 96668 brak (nie powinno się zdarzyć).
             prices = pdata.get("prices") or {}
-            price_pln = 0.0
-            if prices:
-                price_pln = float(list(prices.values())[0] or 0)
+            price_pln = float(prices.get("96668") or prices.get("30157") or 0)
             price_grosze = int(round(price_pln * 100))
             sku_map[sku] = {"stock": max(stock, 0), "price": price_grosze, "bl_id": pid}
     log(f"  → mapped {len(sku_map)} unique SKU")
@@ -165,14 +165,13 @@ def main() -> int:
 
     log(f"Total unique SKU from BL: {len(sku_map)}")
 
-    # 2. Prepare batch payload — TYLKO stock, BEZ price
-    # (BL prices dla MultiStore inv = hurtowe brutto, nadpisałyby retail z markupem —
-    #  fix: 654 SKU podniesione ×1.30 manualnie 2026-07-22, sync nie może cofnąć)
+    # 2. Prepare batch payload — stock + retail price (z grupy 96668, BL auto-liczy ×1.35)
     items = [
-        {"externalId": sku, "stock": data["stock"]}
+        {"externalId": sku, "stock": data["stock"], "price": data["price"]}
         for sku, data in sku_map.items()
+        if data["price"] > 0  # skip SKU bez ceny
     ]
-    log(f"Payload items (stock only, price sync disabled): {len(items)}")
+    log(f"Payload items (stock + retail price from group 96668): {len(items)}")
 
     # 3. Batch PATCH
     log("=== PATCH ERLI ===")
