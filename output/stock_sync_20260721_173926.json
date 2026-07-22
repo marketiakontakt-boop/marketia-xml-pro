@@ -1,0 +1,13 @@
+{
+  "timestamp": "20260721_173926",
+  "dry_run": false,
+  "inventories": [
+    45513,
+    52173,
+    111230
+  ],
+  "bl_sku_count": 2758,
+  "payload_items": 2757,
+  "batch_ok": 0,
+  "batch_fail": 2757
+}

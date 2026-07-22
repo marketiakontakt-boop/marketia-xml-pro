@@ -165,13 +165,14 @@ def main() -> int:
 
     log(f"Total unique SKU from BL: {len(sku_map)}")
 
-    # 2. Prepare batch payload
+    # 2. Prepare batch payload — TYLKO stock, BEZ price
+    # (BL prices dla MultiStore inv = hurtowe brutto, nadpisałyby retail z markupem —
+    #  fix: 654 SKU podniesione ×1.30 manualnie 2026-07-22, sync nie może cofnąć)
     items = [
-        {"externalId": sku, "stock": data["stock"], "price": data["price"]}
+        {"externalId": sku, "stock": data["stock"]}
         for sku, data in sku_map.items()
-        if data["price"] > 0  # skip produkty z ceną 0
     ]
-    log(f"Payload items (price > 0): {len(items)}")
+    log(f"Payload items (stock only, price sync disabled): {len(items)}")
 
     # 3. Batch PATCH
     log("=== PATCH ERLI ===")

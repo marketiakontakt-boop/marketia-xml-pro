@@ -145,6 +145,7 @@ def main() -> int:
     parser.add_argument("--batch-size", type=int, default=30)
     parser.add_argument("--limit", type=int)
     parser.add_argument("--model", default="gemini-2.5-flash")
+    parser.add_argument("--only-skus-file", help="JSON file z listą SKU do klasyfikacji (retry)")
     args = parser.parse_args()
 
     if not CATS_FILE.exists():
@@ -161,6 +162,11 @@ def main() -> int:
 
     products = fetch_bl_products()
     log(f"BL products: {len(products)}")
+    if args.only_skus_file:
+        only = set(json.load(open(args.only_skus_file, encoding="utf-8")))
+        before = len(products)
+        products = [(s, n) for s, n in products if s in only]
+        log(f"--only-skus-file: filtered {before} → {len(products)}")
     if args.limit:
         products = products[: args.limit]
         log(f"--limit {args.limit} → {len(products)}")

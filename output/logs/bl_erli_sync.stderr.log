@@ -1,0 +1,91 @@
+Traceback (most recent call last):
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/venv/lib/python3.14/site-packages/httpcore/_sync/connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/venv/lib/python3.14/site-packages/httpcore/_sync/connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+        pool_request.request
+    )
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/venv/lib/python3.14/site-packages/httpcore/_sync/connection.py", line 103, in handle_request
+    return self._connection.handle_request(request)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/venv/lib/python3.14/site-packages/httpcore/_sync/http11.py", line 136, in handle_request
+    raise exc
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/venv/lib/python3.14/site-packages/httpcore/_sync/http11.py", line 106, in handle_request
+    ) = self._receive_response_headers(**kwargs)
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/venv/lib/python3.14/site-packages/httpcore/_sync/http11.py", line 177, in _receive_response_headers
+    event = self._receive_event(timeout=timeout)
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/venv/lib/python3.14/site-packages/httpcore/_sync/http11.py", line 217, in _receive_event
+    data = self._network_stream.read(
+        self.READ_NUM_BYTES, timeout=timeout
+    )
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/venv/lib/python3.14/site-packages/httpcore/_backends/sync.py", line 126, in read
+    with map_exceptions(exc_map):
+         ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/venv/lib/python3.14/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ReadTimeout: The read operation timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/scripts/bl_to_erli_stock_sync.py", line 200, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/scripts/bl_to_erli_stock_sync.py", line 178, in main
+    ok, fail = batch_patch_erli(items, dry_run=args.dry_run)
+               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/scripts/bl_to_erli_stock_sync.py", line 121, in batch_patch_erli
+    status, resp = erli("PATCH", "/products/batch-update", chunk)
+                   ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/scripts/bl_to_erli_stock_sync.py", line 60, in erli
+    r = httpx.request(
+        method, f"{ERLI_BASE}{path}",
+        headers={"Authorization": f"Bearer {ERLI_KEY}", "Content-Type": "application/json"},
+        json=json_body, timeout=60.0,
+    )
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/venv/lib/python3.14/site-packages/httpx/_api.py", line 109, in request
+    return client.request(
+           ~~~~~~~~~~~~~~^
+        method=method,
+        ^^^^^^^^^^^^^^
+    ...<8 lines>...
+        follow_redirects=follow_redirects,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/venv/lib/python3.14/site-packages/httpx/_client.py", line 825, in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/venv/lib/python3.14/site-packages/httpx/_client.py", line 914, in send
+    response = self._send_handling_auth(
+        request,
+    ...<2 lines>...
+        history=[],
+    )
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/venv/lib/python3.14/site-packages/httpx/_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+        request,
+        follow_redirects=follow_redirects,
+        history=history,
+    )
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/venv/lib/python3.14/site-packages/httpx/_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/venv/lib/python3.14/site-packages/httpx/_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 249, in handle_request
+    with map_httpcore_exceptions():
+         ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/Users/jakubknap/Documents/Projects/marketia-xml-pro/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ReadTimeout: The read operation timed out
