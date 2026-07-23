@@ -148,6 +148,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--limit", type=int, default=10)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--skip-existing", action="store_true", help="pomijaj SKU już w Erli")
     args = parser.parse_args()
 
     if not BL or not ERLI or not GEMINI_KEYS:
@@ -171,11 +172,42 @@ def main() -> int:
             break
     log(f"  → {len(ids)} product IDs")
 
-    # Pobierz first N
-    picked_ids = ids[: args.limit]
-    r = bl("getInventoryProductsData", {"inventory_id": GINDO_INV, "products": picked_ids})
-    products_raw = r.get("products") or {}
-    log(f"Pilot: {len(products_raw)} SKU")
+    # Pobierz batches żeby móc filtrować po SKU (nie bl_id)
+    all_products = {}
+    for i in range(0, len(ids), 100):
+        r = bl("getInventoryProductsData", {"inventory_id": GINDO_INV, "products": ids[i:i+100]})
+        all_products.update(r.get("products") or {})
+    log(f"  Fetched data for {len(all_products)} products")
+
+    # Skip existing on Erli
+    existing_skus: set[str] = set()
+    if args.skip_existing:
+        log("Fetch existing Erli SKUs...")
+        H = {"Authorization": f"Bearer {ERLI}", "Content-Type": "application/json"}
+        after = None
+        while True:
+            body = {"pagination": {"limit": 200, "sortField": "externalId", "order": "ASC"}}
+            if after: body["pagination"]["after"] = after
+            rr = httpx.post("https://erli.pl/svc/shop-api/products/_search", headers=H, json=body, timeout=30.0)
+            if rr.status_code != 200: break
+            items = rr.json()
+            if not items: break
+            for p in items:
+                existing_skus.add(p.get("externalId"))
+            after = items[-1].get("externalId")
+            if len(items) < 200: break
+            time.sleep(0.3)
+        log(f"  → {len(existing_skus)} SKU już w Erli")
+
+    # Filter + limit
+    products_raw = {}
+    for bl_id, pd in all_products.items():
+        sku = pd.get("sku")
+        if not sku: continue
+        if args.skip_existing and sku in existing_skus: continue
+        products_raw[bl_id] = pd
+        if len(products_raw) >= args.limit: break
+    log(f"Pilot: {len(products_raw)} SKU do wystawienia")
 
     # 2. Setup
     gemini = genai.Client(api_key=GEMINI_KEYS[0])
