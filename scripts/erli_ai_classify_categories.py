@@ -26,7 +26,7 @@ from google.genai import types
 load_dotenv()
 
 BL_TOKEN = os.getenv("BASELINKER_TOKEN")
-ERLI_KEY = os.getenv("ERLI_API_KEY")
+ERLI_KEY = os.getenv("ERLI_API_KEY")  # override via --erli-key-var
 GEMINI_KEYS = [k.strip() for k in (os.getenv("GEMINI_API_KEYS") or "").split(",") if k.strip()]
 CATS_FILE = Path("/tmp/erli_cats_slim.json")
 INVENTORIES = [
@@ -146,6 +146,8 @@ def main() -> int:
     parser.add_argument("--limit", type=int)
     parser.add_argument("--model", default="gemini-2.5-flash")
     parser.add_argument("--only-skus-file", help="JSON file z listą SKU do klasyfikacji (retry)")
+    parser.add_argument("--erli-key-var", default="ERLI_API_KEY", help="env var name for Erli key (ERLI_API_KEY / ERLI_GARDENSTEIN_KEY)")
+    parser.add_argument("--fetch-missing-cat", action="store_true", help="Auto-fetch SKU z Erli z buyableProblems.category")
     args = parser.parse_args()
 
     if not CATS_FILE.exists():
@@ -154,6 +156,43 @@ def main() -> int:
     if not GEMINI_KEYS:
         log("ERROR: brak GEMINI_API_KEYS w .env")
         return 2
+
+    # Override Erli key per --erli-key-var (dla GardenStein sub-sklep)
+    global ERLI_KEY
+    ERLI_KEY = os.getenv(args.erli_key_var)
+    if not ERLI_KEY:
+        log(f"ERROR: brak {args.erli_key_var} w .env")
+        return 2
+    log(f"Erli key: {args.erli_key_var}")
+
+    # Auto-fetch SKU z missing category z Erli
+    if args.fetch_missing_cat:
+        log("Fetch SKU z buyableProblems.category z Erli...")
+        H = {"Authorization": f"Bearer {ERLI_KEY}", "Content-Type": "application/json"}
+        missing = []
+        after = None
+        while True:
+            body = {"pagination": {"limit": 200, "sortField": "externalId", "order": "ASC"}}
+            if after:
+                body["pagination"]["after"] = after
+            r = httpx.post("https://erli.pl/svc/shop-api/products/_search", headers=H, json=body, timeout=30.0)
+            if r.status_code != 200:
+                break
+            items = r.json()
+            if not items:
+                break
+            for p in items:
+                prob = p.get("buyableProblems") or []
+                if "category" in prob and "archived" not in prob:
+                    missing.append(p.get("externalId"))
+            after = items[-1].get("externalId")
+            if len(items) < 200:
+                break
+            time.sleep(0.3)
+        log(f"  → {len(missing)} SKU z missing category")
+        args.only_skus_file = f"/tmp/erli_missing_cat_{args.erli_key_var}.json"
+        with open(args.only_skus_file, "w", encoding="utf-8") as f:
+            json.dump(missing, f)
 
     cats = json.load(open(CATS_FILE, encoding="utf-8"))
     log(f"Loaded {len(cats)} categories, {sum(1 for c in cats if c.get('leaf'))} leafs")
