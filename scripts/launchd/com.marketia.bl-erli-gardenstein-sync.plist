@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.marketia.bl-erli-gardenstein-sync</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/jakubknap/Documents/Projects/marketia-xml-pro/venv/bin/python</string>
+        <string>/Users/jakubknap/Documents/Projects/marketia-xml-pro/scripts/bl_to_erli_gardenstein_stock_sync.py</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>/Users/jakubknap/Documents/Projects/marketia-xml-pro</string>
+    <key>StartInterval</key>
+    <integer>900</integer>
+    <key>RunAtLoad</key>
+    <false/>
+    <key>StandardOutPath</key>
+    <string>/Users/jakubknap/Documents/Projects/marketia-xml-pro/output/logs/bl_erli_gardenstein_sync.stdout.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/jakubknap/Documents/Projects/marketia-xml-pro/output/logs/bl_erli_gardenstein_sync.stderr.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+</dict>
+</plist>
